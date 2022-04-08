@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 
 import java.util.Collections;
+import java.util.Random;
 
 import entity.card.*;
 
@@ -40,7 +41,13 @@ public class GameLogic {
 	}
 
 	public void newGame() {
+		// set parameters
 		this.setGameEnd(false);
+		this.setPlayState(true);
+		Random rand = new Random();
+		this.setPlayerTurn(rand.nextInt(4));
+
+		// create all cards, put in cardPiles
 		cardPile = new ArrayList<UnitCard>();
 		for (Color color : colorArray) {
 			for (int i = 0; i < 10; i++) {
@@ -80,27 +87,50 @@ public class GameLogic {
 	}
 
 	private void dealCard() {
+		// create all players, then deal 5 cards to each player randomly
+		// draw cardOnTable
 		bot1 = new Player();
 		bot2 = new Player();
 		bot3 = new Player();
 		user = new Player();
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 20; i += 4) {
-			bot1.getCardList().add(cardPile.remove(i));
-			bot2.getCardList().add(cardPile.remove(i + 1));
-			bot3.getCardList().add(cardPile.remove(i + 2));
-			user.getCardList().add(cardPile.remove(i + 3));
+		for (int i = 0; i < 12; i += 4) {
+			bot1.getCardList().add(cardPile.remove(0));
+			bot2.getCardList().add(cardPile.remove(1));
+			bot3.getCardList().add(cardPile.remove(2));
+			user.getCardList().add(cardPile.remove(3));
 		}
 		cardOnTable = cardPile.remove(20);
 	}
-	
-	public void move() {
+
+	public void runTurn() {
+		if (playState) {
+			if (getPlayerTurn()%4 == 0) {
+				GameLogic.getInstance().getUser().play();
+			}
+			else if (getPlayerTurn()%4 == 1) {
+				GameLogic.getInstance().getBot1().play();
+			}
+			else if (getPlayerTurn()%4 == 2) {
+				GameLogic.getInstance().getBot2().play();
+			}
+			else {
+				GameLogic.getInstance().getBot3().play();
+			}
+
+		} else {
+			setPlayState(true);
+		}
+		move();
+	}
+
+	private void move() {
 		if (isClockwise)
 			playerTurn += 1;
 		else
 			playerTurn -= 1;
 	}
-	
+
 	public ArrayList<UnitCard> getCardPile() {
 		return this.cardPile;
 	}
@@ -196,8 +226,21 @@ public class GameLogic {
 	public void setGameWin(boolean isGameWin) {
 		this.isGameWin = isGameWin;
 	}
-	
+
 	public Player getUser() {
 		return this.user;
 	}
+
+	public Player getBot1() {
+		return this.bot1;
+	}
+
+	public Player getBot2() {
+		return this.bot2;
+	}
+
+	public Player getBot3() {
+		return this.bot3;
+	}
+
 }

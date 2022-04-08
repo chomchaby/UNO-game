@@ -13,11 +13,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import logic.GameLogic;
 
-public class UserCardPane extends BotCardPane {
-
-	public UserCardPane(UnitCard card) {
-		super(card);
-		this.setOnMousePressed(new EventHandler<MouseEvent>() {
+public class FontCardPane extends StackPane {
+	private UnitCard card;
+	
+	public FontCardPane(UnitCard card) {
+		this.card = card;
+		this.setPrefHeight(110);
+		this.setPrefWidth(80);
+		this.initializeCardColor();
+		this.draw();
+		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				onClickHandler();
@@ -27,15 +32,18 @@ public class UserCardPane extends BotCardPane {
 	}
 
 	private void onClickHandler() {
-		if (GameLogic.getInstance().isGameEnd())
-			return;
-		else {
-			System.out.println("Press me again");
-		}
+		if (GameLogic.getInstance().getUser().getCardList().contains(card))
+			System.out.println("Sexy game");
+	}
+	
+	private void initializeCardColor() {
+		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		BackgroundFill[] bgFillA = { bgFill };
+		this.setBackground(new Background(bgFillA));
+
 	}
 
-	@Override
-	protected void draw() {
+	private void draw() {
 		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));

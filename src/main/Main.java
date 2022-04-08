@@ -20,6 +20,8 @@ public class Main {
 		cardList.add(GreenStop);		
 		cardList.add(RedRotate);
 		GameLogic.getInstance();
+		
+		
 
 	}
 }

@@ -1,6 +1,8 @@
 package main;
 
-import gui.UserPane;
+import gui.BotDeckPane;
+import gui.TablePane;
+import gui.UserDeckPane;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,8 +23,12 @@ public class Main2 extends Application {
 		root.setPrefWidth(1200);
 		root.setAlignment(Pos.CENTER);
 		GameLogic.getInstance();
-		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
-		root.getChildren().add(userPane);
+		UserDeckPane userDeckPane = new UserDeckPane(GameLogic.getInstance().getUser());
+		BotDeckPane botDeckPane = new BotDeckPane(GameLogic.getInstance().getUser());
+		TablePane tablePane = new TablePane();
+//		root.add(userDeckPane,0,0);
+//		root.add(botDeckPane,0,0);
+		root.add(tablePane, 0, 0);
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Unooo");

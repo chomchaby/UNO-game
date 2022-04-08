@@ -25,17 +25,18 @@ public class Player {
 		if (this.getDrawableCardList().size() == 0) {
 			UnitCard newCard = this.pick(1).get(0);
 			if (newCard.isDrawable())
-				this.draw(newCard);
+				this.drawCard(newCard);
 		} else {
-			UnitCard drawCard = this.wiseDraw(this.getDrawableCardList());
-			this.draw(drawCard);
-			if (drawCard.getAction() != GameAction.NONE)
-				((EffectCard) drawCard).takeAction();
+			UnitCard cardToDraw = this.wiseDraw(this.getDrawableCardList());
+			this.drawCard(cardToDraw);
+			if (cardToDraw.getAction() != GameAction.NONE)
+				((EffectCard) cardToDraw).takeAction();
 		}
 	}
 
-	private void draw(UnitCard card) {
+	private void drawCard(UnitCard card) {
 		this.getCardList().remove(card);
+		
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
 		GameLogic.getInstance().setCardOnTable(card);
