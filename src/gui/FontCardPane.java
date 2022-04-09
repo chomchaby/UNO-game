@@ -15,7 +15,7 @@ import logic.GameLogic;
 
 public class FontCardPane extends StackPane {
 	private UnitCard card;
-	
+
 	public FontCardPane(UnitCard card) {
 		this.card = card;
 		this.setPrefHeight(110);
@@ -35,7 +35,7 @@ public class FontCardPane extends StackPane {
 		if (GameLogic.getInstance().getUser().getCardList().contains(card))
 			System.out.println("Sexy game");
 	}
-	
+
 	private void initializeCardColor() {
 		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };

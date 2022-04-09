@@ -94,7 +94,7 @@ public class GameLogic {
 		bot3 = new Player();
 		user = new Player();
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 12; i += 4) {
+		for (int i = 0; i < 4; i += 4) {
 			bot1.getCardList().add(cardPile.remove(0));
 			bot2.getCardList().add(cardPile.remove(1));
 			bot3.getCardList().add(cardPile.remove(2));
@@ -105,16 +105,13 @@ public class GameLogic {
 
 	public void runTurn() {
 		if (playState) {
-			if (getPlayerTurn()%4 == 0) {
+			if (getPlayerTurn() % 4 == 0) {
 				GameLogic.getInstance().getUser().play();
-			}
-			else if (getPlayerTurn()%4 == 1) {
+			} else if (getPlayerTurn() % 4 == 1) {
 				GameLogic.getInstance().getBot1().play();
-			}
-			else if (getPlayerTurn()%4 == 2) {
+			} else if (getPlayerTurn() % 4 == 2) {
 				GameLogic.getInstance().getBot2().play();
-			}
-			else {
+			} else {
 				GameLogic.getInstance().getBot3().play();
 			}
 

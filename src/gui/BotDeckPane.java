@@ -14,13 +14,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class BotDeckPane extends GridPane implements Updatable{
+public class BotDeckPane extends GridPane implements Updatable {
 	private Player bot;
-	
+
 	public BotDeckPane(Player bot) {
 		this.bot = bot;
-		this.setHgap(5);
-		this.setPrefWidth(500);
+		this.setHgap(4);
+		this.setMaxWidth(360);
+		this.setPrefWidth(360);
+		this.setMaxHeight(120);
 		this.setPrefHeight(120);
 		this.setPadding(new Insets(10));
 		this.setBorder(new Border(
@@ -31,24 +33,24 @@ public class BotDeckPane extends GridPane implements Updatable{
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
 		updateCardInPane();
-		
+
 	}
-	
+
 	@Override
 	public void updateCardInPane() {
 		this.getChildren().clear();
 		int amount = bot.getCardList().size();
-		for (int i = 0; i<Math.min(5, amount); i++) {
+		for (int i = 0; i < Math.min(4, amount); i++) {
 			BackCardPane backCardPane = new BackCardPane();
-			this.add(backCardPane,i,0);
+			this.add(backCardPane, i, 0);
 		}
-		if (amount > 5) {
-			Text cardLeftNumber = new Text("+"+Integer.toString(amount-5)+" cards");
-			cardLeftNumber.setStyle("-fx-font-size:20;");
-			this.add(cardLeftNumber,5,0);
+		if (amount > 4) {
+			Text cardLeftNumber = new Text(" +" + Integer.toString(amount - 4) + "cards");
+			if (amount - 4 == 1)
+				cardLeftNumber.setText(" +1card");
+			cardLeftNumber.setStyle("-fx-font-size:18;");
+			this.add(cardLeftNumber, 4, 0);
 		}
 	}
-	
-	
-	
+
 }

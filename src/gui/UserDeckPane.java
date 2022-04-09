@@ -19,11 +19,11 @@ public class UserDeckPane extends GridPane implements Updatable {
 
 	public UserDeckPane(Player owner) {
 		this.owner = owner;
-		this.setHgap(10);
-		this.setVgap(10);
-		this.setPrefWidth(900);
-		this.setPrefHeight(300);
-		this.setPadding(new Insets(20));
+		this.setHgap(6);
+		this.setVgap(8);
+		this.setMaxWidth(900);
+		this.setPrefHeight(250);
+		this.setPadding(new Insets(10));
 		this.setBorder(new Border(
 				new BorderStroke(Color.LIGHTGREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		this.setAlignment(Pos.CENTER);
@@ -34,6 +34,7 @@ public class UserDeckPane extends GridPane implements Updatable {
 		updateCardInPane();
 
 	}
+
 	@Override
 	public void updateCardInPane() {
 		this.getChildren().clear();
