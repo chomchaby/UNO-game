@@ -20,7 +20,7 @@ public class GameLogic {
 
 	private int playerTurn;
 	private boolean isClockwise;
-	private boolean playState;
+	private boolean playable;
 	private int numberState;
 	private Color colorState;
 
@@ -43,7 +43,7 @@ public class GameLogic {
 	public void newGame() {
 		// set parameters
 		this.setGameEnd(false);
-		this.setPlayState(true);
+		this.setPlayable(true);
 		Random rand = new Random();
 		this.setPlayerTurn(rand.nextInt(4));
 
@@ -89,34 +89,35 @@ public class GameLogic {
 	private void dealCard() {
 		// create all players, then deal 5 cards to each player randomly
 		// draw cardOnTable
+		user = new Player();
 		bot1 = new Player();
 		bot2 = new Player();
 		bot3 = new Player();
-		user = new Player();
+
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 4; i += 4) {
-			bot1.getCardList().add(cardPile.remove(0));
-			bot2.getCardList().add(cardPile.remove(1));
-			bot3.getCardList().add(cardPile.remove(2));
-			user.getCardList().add(cardPile.remove(3));
+		for (int i = 0; i < 48; i += 4) {
+			user.getCardList().add(cardPile.remove(0));
+			bot1.getCardList().add(cardPile.remove(1));
+			bot2.getCardList().add(cardPile.remove(2));
+			bot3.getCardList().add(cardPile.remove(3));
 		}
-		cardOnTable = cardPile.remove(20);
+		cardOnTable = cardPile.remove(0);
 	}
 
 	public void runTurn() {
-		if (playState) {
+		if (playable) {
 			if (getPlayerTurn() % 4 == 0) {
-				GameLogic.getInstance().getUser().play();
+				getUser().play();
 			} else if (getPlayerTurn() % 4 == 1) {
-				GameLogic.getInstance().getBot1().play();
+				getBot1().play();
 			} else if (getPlayerTurn() % 4 == 2) {
-				GameLogic.getInstance().getBot2().play();
+				getBot2().play();
 			} else {
-				GameLogic.getInstance().getBot3().play();
+				getBot3().play();
 			}
 
 		} else {
-			setPlayState(true);
+			setPlayable(true);
 		}
 		move();
 	}
@@ -126,6 +127,10 @@ public class GameLogic {
 			playerTurn += 1;
 		else
 			playerTurn -= 1;
+	}
+	
+	public void setUserName(String name) {
+		user.setName(name);
 	}
 
 	public ArrayList<UnitCard> getCardPile() {
@@ -152,12 +157,12 @@ public class GameLogic {
 		this.isClockwise = isClockwise;
 	}
 
-	public boolean isPlayState() {
-		return playState;
+	public boolean isPlayable() {
+		return playable;
 	}
 
-	public void setPlayState(boolean playState) {
-		this.playState = playState;
+	public void setPlayable(boolean playable) {
+		this.playable = playable;
 	}
 
 	public int getNumberState() {

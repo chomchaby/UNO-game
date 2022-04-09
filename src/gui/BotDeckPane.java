@@ -13,9 +13,17 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import logic.GameLogic;
 
 public class BotDeckPane extends GridPane implements Updatable {
 	private Player bot;
+
+	private static final Border NORMAL_BORDER = new Border(
+			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+	private static final Border GREEN_BORDER = new Border(
+			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(7)));
+	private static final Border RED_BORDER = new Border(
+			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(7)));
 
 	public BotDeckPane(Player bot) {
 		this.bot = bot;
@@ -25,8 +33,7 @@ public class BotDeckPane extends GridPane implements Updatable {
 		this.setMaxHeight(120);
 		this.setPrefHeight(120);
 		this.setPadding(new Insets(10));
-		this.setBorder(new Border(
-				new BorderStroke(Color.LIGHTGREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		this.setBorder(NORMAL_BORDER);
 		this.setAlignment(Pos.CENTER);
 
 		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, CornerRadii.EMPTY, Insets.EMPTY);
@@ -38,6 +45,23 @@ public class BotDeckPane extends GridPane implements Updatable {
 
 	@Override
 	public void updateCardInPane() {
+		// update border
+		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
+			this.setBorder(GREEN_BORDER);
+		} else if (GameLogic.getInstance().isPlayable()) {
+			if (this.getBorder() == NORMAL_BORDER) {
+				this.setBorder(GREEN_BORDER);
+			} else {
+				this.setBorder(NORMAL_BORDER);
+			}
+		} else {
+			if (this.getBorder() == NORMAL_BORDER) {
+				this.setBorder(RED_BORDER);
+			} else {
+				this.setBorder(NORMAL_BORDER);
+			}
+		}
+		// update cards
 		this.getChildren().clear();
 		int amount = bot.getCardList().size();
 		for (int i = 0; i < Math.min(4, amount); i++) {

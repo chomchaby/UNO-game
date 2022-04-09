@@ -20,7 +20,7 @@ public class FontCardPane extends StackPane {
 		this.card = card;
 		this.setPrefHeight(110);
 		this.setPrefWidth(80);
-		this.initializeCardColor();
+//		this.initializeCardColor();
 		this.draw();
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -36,21 +36,17 @@ public class FontCardPane extends StackPane {
 			System.out.println("Sexy game");
 	}
 
-	private void initializeCardColor() {
-		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
-		BackgroundFill[] bgFillA = { bgFill };
-		this.setBackground(new Background(bgFillA));
-
-	}
-
 	private void draw() {
-		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		
+		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, new CornerRadii(9), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
+		
 		Rectangle shape = new Rectangle(70, 100, card.getColor());
 		shape.setArcWidth(8);
 		shape.setArcHeight(8);
 		this.getChildren().add(shape);
+		
 		Text cardText = new Text(Integer.toString(card.getNumber()));
 		cardText.setStyle("-fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 50; -fx-font-color: yellow");
 		this.getChildren().add(cardText);

@@ -9,8 +9,9 @@ import logic.GameAction;
 import logic.GameLogic;
 
 public class Player {
-	ArrayList<UnitCard> cardList;
-	ArrayList<UnitCard> drawableCardList;
+	private String name;
+	private ArrayList<UnitCard> cardList;
+	private ArrayList<UnitCard> drawableCardList;
 
 	public Player() {
 		cardList = new ArrayList<UnitCard>();
@@ -60,6 +61,13 @@ public class Player {
 
 	public boolean isWin() {
 		return this.getCardList().size() == 0;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName() {
+		return this.name;
 	}
 
 	public ArrayList<UnitCard> getCardList() {

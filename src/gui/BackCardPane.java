@@ -13,19 +13,16 @@ public class BackCardPane extends StackPane {
 	public BackCardPane() {
 		this.setPrefHeight(80);
 		this.setPrefWidth(58);
-		this.initializeCardColor();
 		this.draw();
 
 	}
 
-	private void initializeCardColor() {
-		BackgroundFill bgFill = new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY);
+	private void draw() {
+		
+		BackgroundFill bgFill = new BackgroundFill(Color.RED, new CornerRadii(9), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
-
-	}
-
-	private void draw() {
+		
 		Text cardText = new Text("Uno");
 		cardText.setStyle("-fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 15; -fx-font-color: yellow");
 		this.getChildren().add(cardText);

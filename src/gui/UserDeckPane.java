@@ -13,19 +13,27 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import logic.GameLogic;
 
 public class UserDeckPane extends GridPane implements Updatable {
+	
 	private Player owner;
+	
+	private static final Border NORMAL_BORDER = new Border(
+			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+	private static final Border GREEN_BORDER = new Border(
+			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(9)));
+	private static final Border RED_BORDER = new Border(
+			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(9)));
 
 	public UserDeckPane(Player owner) {
 		this.owner = owner;
 		this.setHgap(6);
 		this.setVgap(8);
 		this.setMaxWidth(900);
-		this.setPrefHeight(250);
+		this.setPrefHeight(270);
 		this.setPadding(new Insets(10));
-		this.setBorder(new Border(
-				new BorderStroke(Color.LIGHTGREY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		this.setBorder(NORMAL_BORDER);
 		this.setAlignment(Pos.CENTER);
 
 		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, CornerRadii.EMPTY, Insets.EMPTY);
@@ -37,6 +45,29 @@ public class UserDeckPane extends GridPane implements Updatable {
 
 	@Override
 	public void updateCardInPane() {
+		
+		// update border
+		if (!(GameLogic.getInstance().getCurrentPlayer() == owner)) {
+			this.setBorder(GREEN_BORDER);
+		}
+		else if (GameLogic.getInstance().isPlayable()){
+			if (this.getBorder() == NORMAL_BORDER) {
+				this.setBorder(GREEN_BORDER);
+			}
+			else {
+				this.setBorder(NORMAL_BORDER);
+			}
+		}
+		else {
+			if (this.getBorder() == NORMAL_BORDER) {
+				this.setBorder(RED_BORDER);
+			}
+			else {
+				this.setBorder(NORMAL_BORDER);
+			}
+		}
+		
+		//update cards
 		this.getChildren().clear();
 		int amount = owner.getCardList().size();
 		int column = amount / 9;

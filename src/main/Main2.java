@@ -1,6 +1,9 @@
 package main;
 
+import java.util.Scanner;
+
 import gui.BotDeckPane;
+import gui.StatusPane;
 import gui.TablePane;
 import gui.UserDeckPane;
 import javafx.application.Application;
@@ -16,11 +19,19 @@ public class Main2 extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// ask name
+	    Scanner myObj = new Scanner(System.in); 
+	    System.out.println("Enter your name: ");
+	    String userName = myObj.nextLine();  
+	    System.out.println("Username is: " + userName); 
+	    // create game
+		GameLogic.getInstance().setUserName(userName);
+		
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(10));
 		root.setPrefHeight(750);
 		root.setPrefWidth(1250);
-		GameLogic.getInstance();
+
 		UserDeckPane userDeckPane = new UserDeckPane(GameLogic.getInstance().getUser());
 		BotDeckPane botDeckPane = new BotDeckPane(GameLogic.getInstance().getUser());
 
@@ -42,10 +53,13 @@ public class Main2 extends Application {
 		rotationRight.setPivotY(50);
 		botDeckPane3.getTransforms().add(rotationRight);
 
+		GameLogic.getInstance().setCurrentPlayer(GameLogic.getInstance().getUser());
+		StatusPane statusPane = new StatusPane();
 		TablePane tablePane = new TablePane();
-
-		root.setCenter(tablePane);
-		BorderPane.setAlignment(tablePane, Pos.CENTER);
+		statusPane.getChildren().add(tablePane);
+		
+		root.setCenter(statusPane);
+		BorderPane.setAlignment(statusPane, Pos.CENTER);
 		root.setBottom(userDeckPane);
 		BorderPane.setAlignment(userDeckPane, Pos.CENTER);
 		root.setLeft(botDeckPane1);
