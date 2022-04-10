@@ -16,6 +16,10 @@ public class Player {
 	public Player() {
 		cardList = new ArrayList<UnitCard>();
 	}
+	public Player(String name) {
+		this.name = name;
+		cardList = new ArrayList<UnitCard>();
+	}
 
 	public void play() {
 		drawableCardList = new ArrayList<UnitCard>();
@@ -35,12 +39,12 @@ public class Player {
 		}
 	}
 
-	private void drawCard(UnitCard card) {
+	public void drawCard(UnitCard card) {
 		this.getCardList().remove(card);
-		
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
 		GameLogic.getInstance().setCardOnTable(card);
+		
 	}
 
 	public ArrayList<UnitCard> pick(int n) {
@@ -50,6 +54,7 @@ public class Player {
 			pickedCard.add(newCard);
 			this.getCardList().add(newCard);
 			GameLogic.getInstance().getCardPile().remove(newCard);
+			
 		}
 		return pickedCard;
 	}

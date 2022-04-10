@@ -14,38 +14,35 @@ import javafx.scene.paint.Color;
 public class GameLogic {
 
 	private static GameLogic instance = null;
-	private boolean isGameEnd;
-	private boolean isGameWin;
 	private static final Color[] colorArray = { Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW };
 
+	private boolean isGameEnd;
+	private boolean isGameWin;
+
 	private int playerTurn;
-	private boolean isClockwise;
-	private boolean playable;
+	private Player currentPlayer;
 	private int numberState;
 	private Color colorState;
+	private boolean isClockwise;
+	private boolean playable;
+	private boolean colorSelectionState;
+
+	private Player beforePlayer;
+	private Player nextPlayer;
 
 	private UnitCard cardOnTable;
 	private ArrayList<UnitCard> cardPile;
 
-	private Player beforePlayer;
-	private Player currentPlayer;
-	private Player nextPlayer;
-
-	private Player bot1;
-	private Player bot2;
-	private Player bot3;
 	private Player user;
+	private Player botJesica;
+	private Player botMagaret;
+	private Player botVanda;
 
 	private GameLogic() {
 		this.newGame();
 	}
 
 	public void newGame() {
-		// set parameters
-		this.setGameEnd(false);
-		this.setPlayable(true);
-		Random rand = new Random();
-		this.setPlayerTurn(rand.nextInt(4));
 
 		// create all cards, put in cardPiles
 		cardPile = new ArrayList<UnitCard>();
@@ -77,6 +74,17 @@ public class GameLogic {
 		}
 		dealCard();
 
+		// set parameters
+		Random rand = new Random();
+		setPlayerTurn(rand.nextInt(4));
+		setCurrentPlayer();
+		setNumberState(cardOnTable.getNumber());
+		setColorState(cardOnTable.getColor());
+		setClockwise(true);
+		setPlayable(true);
+		setColorSelectionState(true);
+		setGameEnd(false);
+
 	}
 
 	public static GameLogic getInstance() {
@@ -90,32 +98,23 @@ public class GameLogic {
 		// create all players, then deal 5 cards to each player randomly
 		// draw cardOnTable
 		user = new Player();
-		bot1 = new Player();
-		bot2 = new Player();
-		bot3 = new Player();
+		botJesica = new Player("Jesica");
+		botMagaret = new Player("Magaret");
+		botVanda = new Player("Vanda");
 
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 48; i += 4) {
+		for (int i = 0; i < 4; i++) {
 			user.getCardList().add(cardPile.remove(0));
-			bot1.getCardList().add(cardPile.remove(1));
-			bot2.getCardList().add(cardPile.remove(2));
-			bot3.getCardList().add(cardPile.remove(3));
+			botJesica.getCardList().add(cardPile.remove(0));
+			botMagaret.getCardList().add(cardPile.remove(0));
+			botVanda.getCardList().add(cardPile.remove(0));
 		}
 		cardOnTable = cardPile.remove(0);
 	}
 
 	public void runTurn() {
 		if (playable) {
-			if (getPlayerTurn() % 4 == 0) {
-				getUser().play();
-			} else if (getPlayerTurn() % 4 == 1) {
-				getBot1().play();
-			} else if (getPlayerTurn() % 4 == 2) {
-				getBot2().play();
-			} else {
-				getBot3().play();
-			}
-
+			currentPlayer.play();
 		} else {
 			setPlayable(true);
 		}
@@ -128,17 +127,26 @@ public class GameLogic {
 		else
 			playerTurn -= 1;
 	}
-	
+
+	// setter and getter
 	public void setUserName(String name) {
 		user.setName(name);
 	}
 
 	public ArrayList<UnitCard> getCardPile() {
-		return this.cardPile;
+		return cardPile;
 	}
 
 	public void setCardPile(ArrayList<UnitCard> cardPile) {
 		this.cardPile = cardPile;
+	}
+
+	public UnitCard getCardOnTable() {
+		return cardOnTable;
+	}
+
+	public void setCardOnTable(UnitCard cardOnTable) {
+		this.cardOnTable = cardOnTable;
 	}
 
 	public int getPlayerTurn() {
@@ -147,6 +155,38 @@ public class GameLogic {
 
 	public void setPlayerTurn(int playerTurn) {
 		this.playerTurn = playerTurn;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer() {
+		if (playerTurn % 4 == 0) {
+			currentPlayer = user;
+		} else if (playerTurn % 4 == 1) {
+			currentPlayer = botJesica;
+		} else if (playerTurn % 4 == 2) {
+			currentPlayer = botMagaret;
+		} else {
+			currentPlayer = botVanda;
+		}
+	}
+
+	public int getNumberState() {
+		return numberState;
+	}
+
+	public void setNumberState(int n) {
+		numberState = n;
+	}
+
+	public Color getColorState() {
+		return colorState;
+	}
+
+	public void setColorState(Color color) {
+		colorState = color;
 	}
 
 	public boolean isClockwise() {
@@ -165,28 +205,12 @@ public class GameLogic {
 		this.playable = playable;
 	}
 
-	public int getNumberState() {
-		return numberState;
+	public boolean isColorSelectionState() {
+		return colorSelectionState;
 	}
 
-	public void setNumberState(int numberState) {
-		this.numberState = numberState;
-	}
-
-	public Color getColorState() {
-		return colorState;
-	}
-
-	public void setColorState(Color colorState) {
-		this.colorState = colorState;
-	}
-
-	public UnitCard getCardOnTable() {
-		return cardOnTable;
-	}
-
-	public void setCardOnTable(UnitCard cardOnTable) {
-		this.cardOnTable = cardOnTable;
+	public void setColorSelectionState(boolean state) {
+		colorSelectionState = state;
 	}
 
 	public Player getBeforePlayer() {
@@ -195,14 +219,6 @@ public class GameLogic {
 
 	public void setBeforePlayer(Player beforePlayer) {
 		this.beforePlayer = beforePlayer;
-	}
-
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
 	}
 
 	public Player getNextPlayer() {
@@ -230,19 +246,19 @@ public class GameLogic {
 	}
 
 	public Player getUser() {
-		return this.user;
+		return user;
 	}
 
-	public Player getBot1() {
-		return this.bot1;
+	public Player getBotJesica() {
+		return botJesica;
 	}
 
-	public Player getBot2() {
-		return this.bot2;
+	public Player getBotMagaret() {
+		return botMagaret;
 	}
 
-	public Player getBot3() {
-		return this.bot3;
+	public Player getBotVanda() {
+		return botVanda;
 	}
 
 }

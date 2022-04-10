@@ -20,7 +20,6 @@ public class FontCardPane extends StackPane {
 		this.card = card;
 		this.setPrefHeight(110);
 		this.setPrefWidth(80);
-//		this.initializeCardColor();
 		this.draw();
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -32,8 +31,9 @@ public class FontCardPane extends StackPane {
 	}
 
 	private void onClickHandler() {
-		if (GameLogic.getInstance().getUser().getCardList().contains(card))
+		if (card != GameLogic.getInstance().getCardOnTable())
 			System.out.println("Sexy game");
+			GameLogic.getInstance().getUser().pick(1);
 	}
 
 	private void draw() {

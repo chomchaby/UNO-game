@@ -1,5 +1,7 @@
 package entity.card;
 
+import java.util.Scanner;
+
 import javafx.scene.paint.Color;
 import logic.GameAction;
 import logic.GameLogic;
@@ -18,9 +20,7 @@ public class ColorCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		// create gui for choosing color;
-		Color chosenColor = Color.GREEN;
-		GameLogic.getInstance().setColorState(chosenColor);
+		GameLogic.getInstance().setColorSelectionState(true);
 		GameLogic.getInstance().setNumberState(-1);
 	}
 

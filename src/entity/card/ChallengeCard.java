@@ -2,6 +2,7 @@ package entity.card;
 
 import javafx.scene.paint.Color;
 import logic.GameAction;
+import logic.GameLogic;
 
 public class ChallengeCard extends EffectCard {
 
@@ -17,8 +18,9 @@ public class ChallengeCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		// TODO Auto-generated method stub
-
+		GameLogic.getInstance().setColorSelectionState(true);
+		GameLogic.getInstance().setNumberState(-1);
+		
 	}
 
 	@Override

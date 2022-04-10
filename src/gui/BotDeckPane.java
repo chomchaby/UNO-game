@@ -39,15 +39,22 @@ public class BotDeckPane extends GridPane implements Updatable {
 		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, CornerRadii.EMPTY, Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
-		updateCardInPane();
+		update();
 
 	}
 
 	@Override
-	public void updateCardInPane() {
+	public void update() {
 		// update border
+		try {
+			Thread.sleep(2000);
+		}
+		catch (InterruptedException e) {
+			System.out.println(bot.getName() + "is interrupted");
+		}
+
 		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
-			this.setBorder(GREEN_BORDER);
+			this.setBorder(NORMAL_BORDER);
 		} else if (GameLogic.getInstance().isPlayable()) {
 			if (this.getBorder() == NORMAL_BORDER) {
 				this.setBorder(GREEN_BORDER);

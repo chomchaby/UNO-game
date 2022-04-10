@@ -7,14 +7,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameLogic;
 
-public class TablePane extends HBox implements Updatable{
+public class TablePane extends HBox implements Updatable {
 
 	private BackCardPane cardPilePane;
 	private FontCardPane cardOnTablePane;
-	
+	private Color color;
 	private Image rotationPNG;
 	private final String clockwiseURL;
 	private final String counterClockwiseURL;
@@ -23,8 +24,8 @@ public class TablePane extends HBox implements Updatable{
 		// setting pane
 		this.setSpacing(30);
 		this.setAlignment(Pos.CENTER);
-		
-		// setting card pile 
+
+		// setting card pile
 		this.cardPilePane = new BackCardPane();
 		this.cardPilePane.setPrefWidth(80);
 		this.cardPilePane.setMaxHeight(110);
@@ -40,12 +41,13 @@ public class TablePane extends HBox implements Updatable{
 		this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
 		this.cardOnTablePane.setMaxHeight(110);
 		this.getChildren().add(cardOnTablePane);
-		
+
 		// setting color bar
-		Rectangle colorReg = new Rectangle(25, 25, GameLogic.getInstance().getCardOnTable().getColor());
-		colorReg.setArcWidth(15);
-		colorReg.setArcHeight(15);
-			
+		color = GameLogic.getInstance().getColorState();
+		Rectangle colorRec = new Rectangle(25, 25, color);
+		colorRec.setArcWidth(15);
+		colorRec.setArcHeight(15);
+
 		// setting rotation sign
 		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
 		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
@@ -53,37 +55,43 @@ public class TablePane extends HBox implements Updatable{
 		ImageView imageView = new ImageView(rotationPNG);
 		imageView.setFitHeight(50);
 		imageView.setFitWidth(50);
-		
+
 		// combine color bar and rotation sign
 		VBox imagePane = new VBox();
 		imagePane.setAlignment(Pos.CENTER);
 		imagePane.setSpacing(15);
-		imagePane.getChildren().add(colorReg);
+		imagePane.getChildren().add(colorRec);
 		imagePane.getChildren().add(imageView);
 
 		this.getChildren().add(imagePane);
-		
+
 	}
+
 	@Override
-	public void updateCardInPane() {
+	public void update() {
 		setCardOnTablePane();
+		color = GameLogic.getInstance().getColorState();
 		setRotationImage();
 	}
-
-	private void cardPilePaneOnClickHandler() {
-
-	}
-
 
 	private void setCardOnTablePane() {
 		this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
 		this.cardOnTablePane.setMaxHeight(110);
 	}
+
 	private void setRotationImage() {
 		if (GameLogic.getInstance().isClockwise())
 			rotationPNG = new Image(clockwiseURL);
 		else
 			rotationPNG = new Image(counterClockwiseURL);
+	}
+
+	private void cardPilePaneOnClickHandler() {
+		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser())
+			return;
+		else {
+			GameLogic.getInstance().getUser().pick(1);
+		}
 	}
 
 }
