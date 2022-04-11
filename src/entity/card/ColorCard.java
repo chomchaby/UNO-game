@@ -1,7 +1,6 @@
 package entity.card;
 
-import java.util.Scanner;
-
+import entity.player.Bot;
 import javafx.scene.paint.Color;
 import logic.GameAction;
 import logic.GameLogic;
@@ -9,7 +8,7 @@ import logic.GameLogic;
 public class ColorCard extends EffectCard {
 
 	public ColorCard() {
-		super(-1, Color.WHITE);
+		super(14, Color.BLACK);
 		this.gameAction = GameAction.CHANGECOLOR;
 	}
 
@@ -20,8 +19,15 @@ public class ColorCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		GameLogic.getInstance().setColorSelectionState(true);
-		GameLogic.getInstance().setNumberState(-1);
+
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+			GameLogic.getInstance().processing();
+			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
+			GameLogic.getInstance().setColorState(bot.chooseColor());
+		} 
+		else {
+			GameLogic.getInstance().setColorSelectionState(true);	
+		}
 	}
 
 	@Override

@@ -1,55 +1,74 @@
 package entity.player;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import entity.card.EffectCard;
 import entity.card.UnitCard;
-import logic.GameAction;
+import javafx.scene.paint.Color;
 import logic.GameLogic;
 
-public class User extends Player{
-	
+public class User extends Player {
+
+	private boolean drawn, picked, turnEnd;
+
 	public User() {
 		super();
 	}
+
 	@Override
 	public void play() {
+		System.out.println("User Turn");
 		drawableCardList = new ArrayList<UnitCard>();
 		for (UnitCard card : this.getCardList()) {
 			if (card.isDrawable())
 				this.getDrawableCardList().add(card);
 		}
-		System.out.println("User Turnnnnnnnnnnnnnnnnn");
-//		if (this.getDrawableCardList().size() == 0) {
-//			UnitCard newCard = this.pick(1).get(0);
-//			if (newCard.isDrawable())
-//				this.drawCard(newCard);
-//		} else {
-//			UnitCard cardToDraw = this.wiseDraw(this.getDrawableCardList());
-//			this.drawCard(cardToDraw);
-//			if (cardToDraw.getAction() != GameAction.NONE)
-//				((EffectCard) cardToDraw).takeAction();
-//		}
+		while (!turnEnd) {
+			if (isDrawn()) {
+				turnEnd = true;
+			} else if (isPicked()) {
+				boolean endTurn = true;
+				for (UnitCard card : this.getCardList()) {
+					if (card.isDrawable())
+						endTurn = false;
+					break;
+				}
+				if (endTurn)
+					turnEnd = true;
+			}
+			System.out.println(turnEnd);
+		}
+		setDrawn(false);
+		setPicked(false);
+		turnEnd = false;
+		GameLogic.getInstance().processing();
 	}
+
 	@Override
 	public void drawCard(UnitCard card) {
-		this.getCardList().remove(card);
-		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
-		Collections.shuffle(GameLogic.getInstance().getCardPile());
-		GameLogic.getInstance().setCardOnTable(card);
-		
+		super.drawCard(card);
+		if (card.getColor() != Color.BLACK)
+			setDrawn(true);
 	}
+
 	@Override
-	public ArrayList<UnitCard> pick(int n) {
-		ArrayList<UnitCard> pickedCard = new ArrayList<UnitCard>();
-		for (int i = 0; i < n; i++) {
-			UnitCard newCard = GameLogic.getInstance().getCardPile().get(0);
-			pickedCard.add(newCard);
-			this.getCardList().add(newCard);
-			GameLogic.getInstance().getCardPile().remove(newCard);
-			
-		}
-		return pickedCard;
+	public void pick(int n) {
+		super.pick(n);
+		if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getUser())
+			setPicked(true);
+	}
+
+	public boolean isDrawn() {
+		return drawn;
+	}
+
+	public void setDrawn(boolean drawn) {
+		this.drawn = drawn;
+	}
+
+	public boolean isPicked() {
+		return picked;
+	}
+
+	public void setPicked(boolean picked) {
+		this.picked = picked;
 	}
 }

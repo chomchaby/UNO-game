@@ -48,7 +48,7 @@ public class BotDeckPane extends GridPane implements Updatable {
 		// update border
 		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
 			this.setBorder(NORMAL_BORDER);
-		} else if (GameLogic.getInstance().isPlayable()) {
+		} else if (bot.isPlayable()) {
 			if (this.getBorder() == NORMAL_BORDER) {
 				this.setBorder(GREEN_BORDER);
 			} else {
@@ -69,7 +69,7 @@ public class BotDeckPane extends GridPane implements Updatable {
 			this.add(backCardPane, i, 0);
 		}
 		if (amount > 4) {
-			Text cardLeftNumber = new Text(" +" + Integer.toString(amount - 4) + "cards");
+			Text cardLeftNumber = new Text(" +" + Integer.toString(amount - 4) + " cards");
 			if (amount - 4 == 1)
 				cardLeftNumber.setText(" +1card");
 			cardLeftNumber.setStyle("-fx-font-size:18;");

@@ -50,7 +50,7 @@ public class UserDeckPane extends GridPane implements Updatable {
 		if (!(GameLogic.getInstance().getCurrentPlayer() == owner)) {
 			this.setBorder(NORMAL_BORDER);
 		}
-		else if (GameLogic.getInstance().isPlayable()){
+		else if (owner.isPlayable()){
 			if (this.getBorder() == NORMAL_BORDER) {
 				this.setBorder(GREEN_BORDER);
 			}

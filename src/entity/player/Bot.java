@@ -1,44 +1,97 @@
 package entity.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
-import entity.card.EffectCard;
 import entity.card.UnitCard;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.util.Duration;
-import logic.GameAction;
+import javafx.scene.paint.Color;
 import logic.GameLogic;
-import logic.UpdatableHolder;
 
 public class Bot extends Player {
 
 	public Bot(String name) {
 		super(name);
 	}
-	
-	private void takeItSlowly() {
-//		
+
+	@Override
+	public void play() {
+		System.out.println(name + "Turn");
+		setDrawableCardList();
+		if (drawableCardList.size() == 0) {
+			pick(1);
+			setDrawableCardList();
+			if (drawableCardList.size() > 0)
+				drawCard(wiseDraw(drawableCardList));
+		} else {
+			drawCard(wiseDraw(drawableCardList));
+		}
+	}
+
+	@Override
+	public void drawCard(UnitCard card) {
+		GameLogic.getInstance().botIsThinking();
+		super.drawCard(card);
+	}
+
+	@Override
+	public void pick(int n) {
+		GameLogic.getInstance().botIsThinking();
+		super.pick(n);
+	}
+
+	private UnitCard wiseDraw(ArrayList<UnitCard> drawableCardList) {
+		Collections.shuffle(drawableCardList);
+		return drawableCardList.get(0);
+	}
+
+	public Color chooseColor() {
+		int[] count = { 0, 0, 0, 0 };
+		for (UnitCard card : this.getCardList()) {
+			if (card.getColor() == Color.BLUE) {
+				count[0] += 1;
+			}
+			if (card.getColor() == Color.GREEN) {
+				count[1] += 1;
+			}
+			if (card.getColor() == Color.RED) {
+				count[2] += 1;
+			}
+			if (card.getColor() == Color.YELLOW) {
+				count[3] += 1;
+			}
+		}
+		Arrays.sort(count);
+		int largest = count[3];
+		ArrayList<Integer> ind = new ArrayList<Integer>();
+		for (int i = 0; i < 4; i++) {
+			if (count[i] == largest)
+				ind.add(i);
+		}
+		Collections.shuffle(ind);
+
+		if (ind.get(0) == 0) {
+			return Color.BLUE;
+		} else if (ind.get(0) == 1) {
+			return Color.GREEN;
+		} else if (ind.get(0) == 2) {
+			return Color.RED;
+		} else {
+			return Color.YELLOW;
+		}
+
+	}
+
+//		Do not need thread, already in new thread form main.	
+// 		Run pass :)
+
 //		Thread t = new Thread(() -> {
-//			Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
-//				@Override
-//				public void handle(ActionEvent actionEvent) {
-//					System.out.println("Bot is thinking hard...");
-//				}
-//			}), new KeyFrame(Duration.seconds(10)));
-//			timeline.setCycleCount(1);
-//			
-//			Platform.runLater(new Runnable() {
-//				@Override
-//				public void run() {
-//					timeline.play();
-//				}
-//			});
+//			try {
+//				TimeUnit.SECONDS.sleep(5);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //		});
 //		t.start();
 //		try {
@@ -47,45 +100,5 @@ public class Bot extends Player {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void play() {
-		drawableCardList = new ArrayList<UnitCard>();
-		for (UnitCard card : this.getCardList()) {
-			if (card.isDrawable())
-				this.getDrawableCardList().add(card);
-		}
-		if (this.getDrawableCardList().size() == 0) {
-			UnitCard newCard = this.pick(1).get(0);
-			if (newCard.isDrawable())
-				this.drawCard(newCard);
-		} else {
-			UnitCard cardToDraw = this.wiseDraw(this.getDrawableCardList());
-			this.drawCard(cardToDraw);
-		}
-	}
-
-	@Override
-	public void drawCard(UnitCard card) {
-		takeItSlowly();
-		super.drawCard(card);
-	}
-
-	@Override
-	public ArrayList<UnitCard> pick(int n) {
-		takeItSlowly();
-		return super.pick(n);
-	}
-
-	private UnitCard wiseDraw(ArrayList<UnitCard> drawableCardList) {
-		return drawableCardList.get(0);
-	}
 
 }

@@ -6,11 +6,9 @@ import gui.BotDeckPane;
 import gui.StatusPane;
 import gui.Updatable;
 import gui.UserDeckPane;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,6 +22,10 @@ import logic.GameLogic;
 import logic.UpdatableHolder;
 
 public class Main2 extends Application {
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -77,7 +79,6 @@ public class Main2 extends Application {
 		BorderPane.setAlignment(botVandaPane, Pos.CENTER);
 
 		// create UpdatableHolder
-//		 userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane
 		Updatable[] updatableArray = { userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane };
 		UpdatableHolder.createInstance(updatableArray);
 		// set scene
@@ -96,30 +97,31 @@ public class Main2 extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 
-//		while (!GameLogic.getInstance().isGameEnd()) {
-//			if (GameLogic.getInstance().isPlayable()) {
-//				GameLogic.getInstance().getCurrentPlayer().play();
-//			} else {
-//				GameLogic.getInstance().setPlayable(true);
-//			}
-//			GameLogic.getInstance().setUpForNewTurn();
-//		}
-
 		Thread t = new Thread(() -> {
 
 			while (!GameLogic.getInstance().isGameEnd()) {
-				if (GameLogic.getInstance().isPlayable()) {
+				if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
+					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
+					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
 					GameLogic.getInstance().getCurrentPlayer().play();
+
 				} else {
-					GameLogic.getInstance().setPlayable(true);
+					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
+					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
+					GameLogic.getInstance().botIsThinking();
+					GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
+
 				}
 				GameLogic.getInstance().setUpForNewTurn();
+				GameLogic.getInstance().processing();
 			}
 
 		});
 		t.start();
 
+//		try to run UpdatableHolder.getInstance().updateScreen() at times
 
+//		with thread is also working 
 //		Thread t = new Thread(() -> {
 //			Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
 //				@Override
@@ -138,6 +140,7 @@ public class Main2 extends Application {
 //		});
 //		t.start();
 
+//		Too fast
 //		AnimationTimer animation = new AnimationTimer() {
 //			public void handle(long now) {
 //				UpdatableHolder.getInstance().updateScreen();
@@ -145,6 +148,7 @@ public class Main2 extends Application {
 //		};
 //		animation.start();
 
+// 		not working
 //		Thread showTurn = new Thread(() -> {
 //			try {
 //				while (true) {
@@ -156,7 +160,6 @@ public class Main2 extends Application {
 //						}
 //					});
 //				}
-//	
 //			}
 //			catch (InterruptedException e) {
 //				// TODO Auto-generated catch block
@@ -168,10 +171,17 @@ public class Main2 extends Application {
 //		Thread.sleep(20000);
 //		showTurn.interrupt();
 
-	}
+//		stopping main crack!
 
-	public static void main(String[] args) {
-		launch(args);
+//		while (!GameLogic.getInstance().isGameEnd()) {
+//		if (GameLogic.getInstance().isPlayable()) {
+//			GameLogic.getInstance().getCurrentPlayer().play();
+//		} else {
+//			GameLogic.getInstance().setPlayable(true);
+//		}
+//		GameLogic.getInstance().setUpForNewTurn();
+//	}
+
 	}
 
 }

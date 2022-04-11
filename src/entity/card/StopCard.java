@@ -21,7 +21,8 @@ public class StopCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		GameLogic.getInstance().setPlayable(false);
+		GameLogic.getInstance().processing();
+		GameLogic.getInstance().getNextPlayer().setPlayable(false);;
 	}
 
 	@Override

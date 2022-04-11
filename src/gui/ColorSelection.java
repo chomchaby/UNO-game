@@ -53,7 +53,6 @@ public class ColorSelection extends HBox {
 			@Override
 			public void handle(ActionEvent event) {
 				GameLogic.getInstance().setColorState(Color.RED);
-				System.out.println("REDDD");
 				GameLogic.getInstance().setColorSelectionState(false);
 			}
 		});

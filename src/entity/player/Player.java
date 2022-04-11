@@ -12,14 +12,17 @@ public abstract class Player {
 	protected String name;
 	protected ArrayList<UnitCard> cardList;
 	protected ArrayList<UnitCard> drawableCardList;
+	protected boolean isPlayable;
 
 	public Player() {
 		cardList = new ArrayList<UnitCard>();
+		setPlayable(true);
 	}
 
 	public Player(String name) {
 		this.name = name;
 		cardList = new ArrayList<UnitCard>();
+		setPlayable(true);
 	}
 
 	public abstract void play();
@@ -34,16 +37,12 @@ public abstract class Player {
 		}
 	}
 
-	public ArrayList<UnitCard> pick(int n) {
-		ArrayList<UnitCard> pickedCard = new ArrayList<UnitCard>();
+	public void pick(int n) {
 		for (int i = 0; i < n; i++) {
 			UnitCard newCard = GameLogic.getInstance().getCardPile().get(0);
-			pickedCard.add(newCard);
 			this.getCardList().add(newCard);
 			GameLogic.getInstance().getCardPile().remove(newCard);
-
 		}
-		return pickedCard;
 	}
 
 	public boolean isWin() {
@@ -70,8 +69,20 @@ public abstract class Player {
 		return drawableCardList;
 	}
 
-	public void setDrawableCardList(ArrayList<UnitCard> drawableCardList) {
-		this.drawableCardList = drawableCardList;
+	public void setDrawableCardList() {
+		drawableCardList = new ArrayList<UnitCard>();
+		for (UnitCard card : this.getCardList()) {
+			if (card.isDrawable())
+				this.getDrawableCardList().add(card);
+		}
+	}
+	
+	public boolean isPlayable() {
+		return isPlayable;
+	}
+
+	public void setPlayable(boolean isPlayable) {
+		this.isPlayable = isPlayable;
 	}
 
 }

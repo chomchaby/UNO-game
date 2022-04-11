@@ -1,7 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
-
+import java.util.concurrent.TimeUnit;
 import java.util.Collections;
 import java.util.Random;
 
@@ -24,7 +24,6 @@ public class GameLogic {
 	private int numberState;
 	private Color colorState;
 	private boolean isClockwise;
-	private boolean playable;
 	private boolean colorSelectionState;
 
 	private Player beforePlayer;
@@ -82,8 +81,7 @@ public class GameLogic {
 		setNumberState(cardOnTable.getNumber());
 		setColorState(cardOnTable.getColor());
 		setClockwise(true);
-		setPlayable(true);
-		setColorSelectionState(true);
+		setColorSelectionState(false);
 		setBeforePlayer();
 		setNextPlayer();
 		setGameEnd(false);
@@ -116,23 +114,15 @@ public class GameLogic {
 	}
 
 	public void setUpForNewTurn() {
-		move();
+
 		setNumberState(cardOnTable.getNumber());
-		if (cardOnTable.getNumber() != -1)
+		if ((cardOnTable.getAction() != GameAction.CHANGECOLOR) && (cardOnTable.getAction() != GameAction.CHALLENGE))
 			setColorState(cardOnTable.getColor());
+		move();
 		setCurrentPlayer();
 		setBeforePlayer();
 		setNextPlayer();
 		System.out.println("New Turn");
-	}
-
-	public void runTurn() {
-		if (playable) {
-			currentPlayer.play();
-		} else {
-			setPlayable(true);
-		}
-		move();
 	}
 
 	private void move() {
@@ -140,6 +130,24 @@ public class GameLogic {
 			playerTurn += 1;
 		else
 			playerTurn -= 1;
+	}
+
+	public void botIsThinking() {
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void processing() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// setter and getter
@@ -211,14 +219,6 @@ public class GameLogic {
 		this.isClockwise = isClockwise;
 	}
 
-	public boolean isPlayable() {
-		return playable;
-	}
-
-	public void setPlayable(boolean playable) {
-		this.playable = playable;
-	}
-
 	public boolean isColorSelectionState() {
 		return colorSelectionState;
 	}
@@ -272,31 +272,15 @@ public class GameLogic {
 			}
 		} else {
 			if (playerTurn % 4 == 0) {
-				beforePlayer = botVanda;
+				nextPlayer = botVanda;
 			} else if (playerTurn % 4 == 1) {
-				beforePlayer = user;
+				nextPlayer = user;
 			} else if (playerTurn % 4 == 2) {
-				beforePlayer = botJesica;
+				nextPlayer = botJesica;
 			} else {
-				beforePlayer = botMagaret;
+				nextPlayer = botMagaret;
 			}
 		}
-	}
-
-	public boolean isGameEnd() {
-		return isGameEnd;
-	}
-
-	public void setGameEnd(boolean isGameEnd) {
-		this.isGameEnd = isGameEnd;
-	}
-
-	public boolean isGameWin() {
-		return isGameWin;
-	}
-
-	public void setGameWin(boolean isGameWin) {
-		this.isGameWin = isGameWin;
 	}
 
 	public Player getUser() {
@@ -313,6 +297,22 @@ public class GameLogic {
 
 	public Player getBotVanda() {
 		return botVanda;
+	}
+
+	public boolean isGameEnd() {
+		return isGameEnd;
+	}
+
+	public void setGameEnd(boolean isGameEnd) {
+		this.isGameEnd = isGameEnd;
+	}
+
+	public boolean isGameWin() {
+		return isGameWin;
+	}
+
+	public void setGameWin(boolean isGameWin) {
+		this.isGameWin = isGameWin;
 	}
 
 }

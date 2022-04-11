@@ -1,5 +1,6 @@
 package gui;
 
+import entity.player.User;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -32,7 +33,7 @@ public class TablePane extends HBox implements Updatable {
 		this.cardPilePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				cardPilePaneOnClickHandler();
+				onClickHandler();
 			}
 		});
 		this.getChildren().add(cardPilePane);
@@ -42,7 +43,7 @@ public class TablePane extends HBox implements Updatable {
 		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
 		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
 
-		setRotationImage();
+		setStateImage();
 
 	}
 
@@ -51,8 +52,7 @@ public class TablePane extends HBox implements Updatable {
 		this.getChildren().remove(1);
 		this.getChildren().remove(1);
 		setCardOnTablePane();
-		color = GameLogic.getInstance().getColorState();
-		setRotationImage();
+		setStateImage();
 	}
 
 	private void setCardOnTablePane() {
@@ -60,7 +60,7 @@ public class TablePane extends HBox implements Updatable {
 		this.getChildren().add(cardOnTablePane);
 	}
 
-	private void setRotationImage() {
+	private void setStateImage() {
 
 		// setting color bar
 		color = GameLogic.getInstance().getColorState();
@@ -89,12 +89,13 @@ public class TablePane extends HBox implements Updatable {
 
 	}
 
-	private void cardPilePaneOnClickHandler() {
-		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser())
-			return;
-		else {
-			GameLogic.getInstance().getUser().pick(1);
+	private void onClickHandler() {
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
+			if (((User) GameLogic.getInstance().getUser()).isPicked() == false) {
+				GameLogic.getInstance().getUser().pick(1);
+			}
 		}
+
 	}
 
 }

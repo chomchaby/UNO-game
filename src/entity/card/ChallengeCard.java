@@ -1,5 +1,6 @@
 package entity.card;
 
+import entity.player.Bot;
 import javafx.scene.paint.Color;
 import logic.GameAction;
 import logic.GameLogic;
@@ -7,7 +8,7 @@ import logic.GameLogic;
 public class ChallengeCard extends EffectCard {
 
 	public ChallengeCard() {
-		super(-1, Color.WHITE);
+		super(15, Color.BLACK);
 		this.gameAction = GameAction.CHALLENGE;
 	}
 
@@ -18,9 +19,16 @@ public class ChallengeCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		GameLogic.getInstance().setColorSelectionState(true);
-		GameLogic.getInstance().setNumberState(-1);
 		
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+			GameLogic.getInstance().processing();
+			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
+			GameLogic.getInstance().setColorState(bot.chooseColor());
+		} 
+		else {
+			GameLogic.getInstance().setColorSelectionState(true);
+		}
+
 	}
 
 	@Override

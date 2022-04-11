@@ -21,6 +21,7 @@ public class RotateCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
+		GameLogic.getInstance().processing();
 		GameLogic.getInstance().setClockwise(!GameLogic.getInstance().isClockwise());
 	}
 
