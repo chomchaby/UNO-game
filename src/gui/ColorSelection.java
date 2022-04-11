@@ -54,6 +54,7 @@ public class ColorSelection extends HBox {
 			public void handle(ActionEvent event) {
 				GameLogic.getInstance().setColorState(Color.RED);
 				System.out.println("REDDD");
+				GameLogic.getInstance().setColorSelectionState(false);
 			}
 		});
 
@@ -76,6 +77,7 @@ public class ColorSelection extends HBox {
 			@Override
 			public void handle(ActionEvent event) {
 				GameLogic.getInstance().setColorState(Color.YELLOW);
+				GameLogic.getInstance().setColorSelectionState(false);
 			}
 		});
 		yellowBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -97,6 +99,7 @@ public class ColorSelection extends HBox {
 			@Override
 			public void handle(ActionEvent event) {
 				GameLogic.getInstance().setColorState(Color.BLUE);
+				GameLogic.getInstance().setColorSelectionState(false);
 			}
 		});
 		blueBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -119,6 +122,7 @@ public class ColorSelection extends HBox {
 			@Override
 			public void handle(ActionEvent event) {
 				GameLogic.getInstance().setColorState(Color.GREEN);
+				GameLogic.getInstance().setColorSelectionState(false);
 			}
 		});
 		greenBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {

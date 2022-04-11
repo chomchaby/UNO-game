@@ -24,6 +24,5 @@ public class UpdatableHolder {
 		for (Updatable item : entities) {
 			item.update();
 		}
-		System.out.println("Updating");
 	}
 }

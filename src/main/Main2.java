@@ -7,14 +7,19 @@ import gui.StatusPane;
 import gui.Updatable;
 import gui.UserDeckPane;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logic.GameLogic;
 import logic.UpdatableHolder;
 
@@ -72,24 +77,74 @@ public class Main2 extends Application {
 		BorderPane.setAlignment(botVandaPane, Pos.CENTER);
 
 		// create UpdatableHolder
-		//userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane 
-//		Updatable[] updatableArray = {botJesicaPane, botMagaretPane, botVandaPane};
-//		UpdatableHolder.createInstance(updatableArray);
-
+//		 userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane
+		Updatable[] updatableArray = { userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane };
+		UpdatableHolder.createInstance(updatableArray);
 		// set scene
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("I just wanna pen fan you dai bor?");
 		primaryStage.show();
-		
+
+		Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				UpdatableHolder.getInstance().updateScreen();
+
+			}
+		}), new KeyFrame(Duration.seconds(0.5)));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
+
+//		while (!GameLogic.getInstance().isGameEnd()) {
+//			if (GameLogic.getInstance().isPlayable()) {
+//				GameLogic.getInstance().getCurrentPlayer().play();
+//			} else {
+//				GameLogic.getInstance().setPlayable(true);
+//			}
+//			GameLogic.getInstance().setUpForNewTurn();
+//		}
+
+		Thread t = new Thread(() -> {
+
+			while (!GameLogic.getInstance().isGameEnd()) {
+				if (GameLogic.getInstance().isPlayable()) {
+					GameLogic.getInstance().getCurrentPlayer().play();
+				} else {
+					GameLogic.getInstance().setPlayable(true);
+				}
+				GameLogic.getInstance().setUpForNewTurn();
+			}
+
+		});
+		t.start();
+
+
+//		Thread t = new Thread(() -> {
+//			Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
+//				@Override
+//				public void handle(ActionEvent actionEvent) {
+//					UpdatableHolder.getInstance().updateScreen();
+//
+//				}
+//			}), new KeyFrame(Duration.seconds(0.5)));
+//			timeline.setCycleCount(Timeline.INDEFINITE);
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					timeline.play();
+//				}
+//			});
+//		});
+//		t.start();
+
 //		AnimationTimer animation = new AnimationTimer() {
 //			public void handle(long now) {
-//				botJesicaPane.update();
-//				statusPane.update();
+//				UpdatableHolder.getInstance().updateScreen();
 //			}
 //		};
 //		animation.start();
-		
+
 //		Thread showTurn = new Thread(() -> {
 //			try {
 //				while (true) {
@@ -112,17 +167,6 @@ public class Main2 extends Application {
 //		showTurn.start();
 //		Thread.sleep(20000);
 //		showTurn.interrupt();
-		
-//		Thread.sleep(1000);
-//		UpdatableHolder.getInstance().updateScreen();
-//		GameLogic.getInstance().getBotVanda().pick(1);
-//		Thread.sleep(1000);
-//		UpdatableHolder.getInstance().updateScreen();
-//		GameLogic.getInstance().getBotVanda().pick(1);
-//		Thread.sleep(1000);
-//		UpdatableHolder.getInstance().updateScreen();
-
-
 
 	}
 

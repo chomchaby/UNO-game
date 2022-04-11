@@ -77,12 +77,15 @@ public class GameLogic {
 		// set parameters
 		Random rand = new Random();
 		setPlayerTurn(rand.nextInt(4));
+
 		setCurrentPlayer();
 		setNumberState(cardOnTable.getNumber());
 		setColorState(cardOnTable.getColor());
 		setClockwise(true);
 		setPlayable(true);
 		setColorSelectionState(true);
+		setBeforePlayer();
+		setNextPlayer();
 		setGameEnd(false);
 
 	}
@@ -97,10 +100,10 @@ public class GameLogic {
 	private void dealCard() {
 		// create all players, then deal 5 cards to each player randomly
 		// draw cardOnTable
-		user = new Player();
-		botJesica = new Player("Jesica");
-		botMagaret = new Player("Magaret");
-		botVanda = new Player("Vanda");
+		user = new User();
+		botJesica = new Bot("Jesica");
+		botMagaret = new Bot("Magaret");
+		botVanda = new Bot("Vanda");
 
 		Collections.shuffle(cardPile);
 		for (int i = 0; i < 4; i++) {
@@ -110,6 +113,17 @@ public class GameLogic {
 			botVanda.getCardList().add(cardPile.remove(0));
 		}
 		cardOnTable = cardPile.remove(0);
+	}
+
+	public void setUpForNewTurn() {
+		move();
+		setNumberState(cardOnTable.getNumber());
+		if (cardOnTable.getNumber() != -1)
+			setColorState(cardOnTable.getColor());
+		setCurrentPlayer();
+		setBeforePlayer();
+		setNextPlayer();
+		System.out.println("New Turn");
 	}
 
 	public void runTurn() {
@@ -217,16 +231,56 @@ public class GameLogic {
 		return beforePlayer;
 	}
 
-	public void setBeforePlayer(Player beforePlayer) {
-		this.beforePlayer = beforePlayer;
+	public void setBeforePlayer() {
+		if (isClockwise) {
+			if (playerTurn % 4 == 0) {
+				beforePlayer = botVanda;
+			} else if (playerTurn % 4 == 1) {
+				beforePlayer = user;
+			} else if (playerTurn % 4 == 2) {
+				beforePlayer = botJesica;
+			} else {
+				beforePlayer = botMagaret;
+			}
+		} else {
+			if (playerTurn % 4 == 0) {
+				beforePlayer = botJesica;
+			} else if (playerTurn % 4 == 1) {
+				beforePlayer = botMagaret;
+			} else if (playerTurn % 4 == 2) {
+				beforePlayer = botVanda;
+			} else {
+				beforePlayer = user;
+			}
+		}
 	}
 
 	public Player getNextPlayer() {
 		return nextPlayer;
 	}
 
-	public void setNextPlayer(Player nextPlayer) {
-		this.nextPlayer = nextPlayer;
+	public void setNextPlayer() {
+		if (isClockwise) {
+			if (playerTurn % 4 == 0) {
+				nextPlayer = botJesica;
+			} else if (playerTurn % 4 == 1) {
+				nextPlayer = botMagaret;
+			} else if (playerTurn % 4 == 2) {
+				nextPlayer = botVanda;
+			} else {
+				nextPlayer = user;
+			}
+		} else {
+			if (playerTurn % 4 == 0) {
+				beforePlayer = botVanda;
+			} else if (playerTurn % 4 == 1) {
+				beforePlayer = user;
+			} else if (playerTurn % 4 == 2) {
+				beforePlayer = botJesica;
+			} else {
+				beforePlayer = botMagaret;
+			}
+		}
 	}
 
 	public boolean isGameEnd() {

@@ -7,7 +7,7 @@ import logic.GameLogic;
 public class ChallengeCard extends EffectCard {
 
 	public ChallengeCard() {
-		super(14, Color.WHITE);
+		super(-1, Color.WHITE);
 		this.gameAction = GameAction.CHALLENGE;
 	}
 

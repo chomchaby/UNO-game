@@ -46,13 +46,6 @@ public class BotDeckPane extends GridPane implements Updatable {
 	@Override
 	public void update() {
 		// update border
-		try {
-			Thread.sleep(2000);
-		}
-		catch (InterruptedException e) {
-			System.out.println(bot.getName() + "is interrupted");
-		}
-
 		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
 			this.setBorder(NORMAL_BORDER);
 		} else if (GameLogic.getInstance().isPlayable()) {

@@ -31,26 +31,34 @@ public class FontCardPane extends StackPane {
 	}
 
 	private void onClickHandler() {
-		if (card != GameLogic.getInstance().getCardOnTable())
-			System.out.println("Sexy game");
-			GameLogic.getInstance().getUser().pick(1);
+		if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getUser()) {
+			if (card != GameLogic.getInstance().getCardOnTable()) {
+				GameLogic.getInstance().getUser().drawCard(card);
+			} else {
+				GameLogic.getInstance().getUser().pick(1);
+			}
+		}
 	}
 
 	private void draw() {
-		
+
 		BackgroundFill bgFill = new BackgroundFill(Color.BLACK, new CornerRadii(9), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
-		
+
 		Rectangle shape = new Rectangle(70, 100, card.getColor());
 		shape.setArcWidth(8);
 		shape.setArcHeight(8);
 		this.getChildren().add(shape);
-		
+
 		Text cardText = new Text(Integer.toString(card.getNumber()));
 		cardText.setStyle("-fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 50; -fx-font-color: yellow");
 		this.getChildren().add(cardText);
 
 	}
 
+// to checkk
+	public UnitCard getCard() {
+		return card;
+	}
 }

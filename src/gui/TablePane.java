@@ -37,10 +37,30 @@ public class TablePane extends HBox implements Updatable {
 		});
 		this.getChildren().add(cardPilePane);
 
-		// setting card on table
+		setCardOnTablePane();
+
+		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
+		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
+
+		setRotationImage();
+
+	}
+
+	@Override
+	public void update() {
+		this.getChildren().remove(1);
+		this.getChildren().remove(1);
+		setCardOnTablePane();
+		color = GameLogic.getInstance().getColorState();
+		setRotationImage();
+	}
+
+	private void setCardOnTablePane() {
 		this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
-		this.cardOnTablePane.setMaxHeight(110);
 		this.getChildren().add(cardOnTablePane);
+	}
+
+	private void setRotationImage() {
 
 		// setting color bar
 		color = GameLogic.getInstance().getColorState();
@@ -49,9 +69,11 @@ public class TablePane extends HBox implements Updatable {
 		colorRec.setArcHeight(15);
 
 		// setting rotation sign
-		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
-		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
-		rotationPNG = new Image(clockwiseURL);
+		if (GameLogic.getInstance().isClockwise())
+			rotationPNG = new Image(clockwiseURL);
+		else
+			rotationPNG = new Image(counterClockwiseURL);
+
 		ImageView imageView = new ImageView(rotationPNG);
 		imageView.setFitHeight(50);
 		imageView.setFitWidth(50);
@@ -65,25 +87,6 @@ public class TablePane extends HBox implements Updatable {
 
 		this.getChildren().add(imagePane);
 
-	}
-
-	@Override
-	public void update() {
-		setCardOnTablePane();
-		color = GameLogic.getInstance().getColorState();
-		setRotationImage();
-	}
-
-	private void setCardOnTablePane() {
-		this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
-		this.cardOnTablePane.setMaxHeight(110);
-	}
-
-	private void setRotationImage() {
-		if (GameLogic.getInstance().isClockwise())
-			rotationPNG = new Image(clockwiseURL);
-		else
-			rotationPNG = new Image(counterClockwiseURL);
 	}
 
 	private void cardPilePaneOnClickHandler() {

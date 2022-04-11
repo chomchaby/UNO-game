@@ -9,7 +9,7 @@ import logic.GameLogic;
 public class ColorCard extends EffectCard {
 
 	public ColorCard() {
-		super(13, Color.WHITE);
+		super(-1, Color.WHITE);
 		this.gameAction = GameAction.CHANGECOLOR;
 	}
 

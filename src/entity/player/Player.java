@@ -8,43 +8,30 @@ import entity.card.EffectCard;
 import logic.GameAction;
 import logic.GameLogic;
 
-public class Player {
-	private String name;
-	private ArrayList<UnitCard> cardList;
-	private ArrayList<UnitCard> drawableCardList;
+public abstract class Player {
+	protected String name;
+	protected ArrayList<UnitCard> cardList;
+	protected ArrayList<UnitCard> drawableCardList;
 
 	public Player() {
 		cardList = new ArrayList<UnitCard>();
 	}
+
 	public Player(String name) {
 		this.name = name;
 		cardList = new ArrayList<UnitCard>();
 	}
 
-	public void play() {
-		drawableCardList = new ArrayList<UnitCard>();
-		for (UnitCard card : this.getCardList()) {
-			if (card.isDrawable())
-				this.getDrawableCardList().add(card);
-		}
-		if (this.getDrawableCardList().size() == 0) {
-			UnitCard newCard = this.pick(1).get(0);
-			if (newCard.isDrawable())
-				this.drawCard(newCard);
-		} else {
-			UnitCard cardToDraw = this.wiseDraw(this.getDrawableCardList());
-			this.drawCard(cardToDraw);
-			if (cardToDraw.getAction() != GameAction.NONE)
-				((EffectCard) cardToDraw).takeAction();
-		}
-	}
+	public abstract void play();
 
 	public void drawCard(UnitCard card) {
 		this.getCardList().remove(card);
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
 		GameLogic.getInstance().setCardOnTable(card);
-		
+		if (card.getAction() != GameAction.NONE) {
+			((EffectCard) card).takeAction();
+		}
 	}
 
 	public ArrayList<UnitCard> pick(int n) {
@@ -54,23 +41,19 @@ public class Player {
 			pickedCard.add(newCard);
 			this.getCardList().add(newCard);
 			GameLogic.getInstance().getCardPile().remove(newCard);
-			
+
 		}
 		return pickedCard;
-	}
-
-	// -- To be edit --
-	private UnitCard wiseDraw(ArrayList<UnitCard> drawableCardList) {
-		return drawableCardList.get(0);
 	}
 
 	public boolean isWin() {
 		return this.getCardList().size() == 0;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getName() {
 		return this.name;
 	}
