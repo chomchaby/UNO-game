@@ -13,9 +13,14 @@ public class NormalCard extends UnitCard {
 
 	@Override
 	public boolean isDrawable() {
-		if (GameLogic.getInstance().getColorState() == this.getColor()
-				|| GameLogic.getInstance().getNumberState() == this.getNumber())
+
+		if (GameLogic.getInstance().getCardOnTable().getColor() == Color.BLACK) {
 			return true;
+		}
+		else if (GameLogic.getInstance().getColorState() == this.getColor()
+				|| GameLogic.getInstance().getNumberState() == this.getNumber()) {
+			return true;
+		}
 		return false;
 	}
 

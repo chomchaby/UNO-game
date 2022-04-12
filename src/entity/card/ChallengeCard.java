@@ -21,7 +21,7 @@ public class ChallengeCard extends EffectCard {
 	public void takeAction() {
 		
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			GameLogic.getInstance().processing();
+			GameLogic.getInstance().shortProcessing();
 			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
 			GameLogic.getInstance().setColorState(bot.chooseColor());
 		} 

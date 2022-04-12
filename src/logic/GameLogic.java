@@ -132,7 +132,7 @@ public class GameLogic {
 			playerTurn -= 1;
 	}
 
-	public void botIsThinking() {
+	public void longProcessing() {
 		try {
 			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e) {
@@ -141,7 +141,7 @@ public class GameLogic {
 		}
 	}
 
-	public void processing() {
+	public void shortProcessing() {
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
@@ -283,20 +283,20 @@ public class GameLogic {
 		}
 	}
 
-	public Player getUser() {
-		return user;
+	public User getUser() {
+		return (User)user;
 	}
 
-	public Player getBotJesica() {
-		return botJesica;
+	public Bot getBotJesica() {
+		return (Bot)botJesica;
 	}
 
-	public Player getBotMagaret() {
-		return botMagaret;
+	public Bot getBotMagaret() {
+		return (Bot)botMagaret;
 	}
 
-	public Player getBotVanda() {
-		return botVanda;
+	public Bot getBotVanda() {
+		return (Bot)botVanda;
 	}
 
 	public boolean isGameEnd() {

@@ -91,7 +91,7 @@ public class TablePane extends HBox implements Updatable {
 
 	private void onClickHandler() {
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
-			if (((User) GameLogic.getInstance().getUser()).isPicked() == false) {
+			if (GameLogic.getInstance().getUser().isPicked() == false) {
 				GameLogic.getInstance().getUser().pick(1);
 			}
 		}

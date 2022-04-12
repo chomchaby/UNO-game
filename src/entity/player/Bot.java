@@ -30,13 +30,13 @@ public class Bot extends Player {
 
 	@Override
 	public void drawCard(UnitCard card) {
-		GameLogic.getInstance().botIsThinking();
+		GameLogic.getInstance().longProcessing();
 		super.drawCard(card);
 	}
 
 	@Override
 	public void pick(int n) {
-		GameLogic.getInstance().botIsThinking();
+		GameLogic.getInstance().longProcessing();
 		super.pick(n);
 	}
 

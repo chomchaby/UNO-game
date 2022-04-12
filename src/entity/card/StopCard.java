@@ -13,15 +13,19 @@ public class StopCard extends EffectCard {
 
 	@Override
 	public boolean isDrawable() {
-		if (GameLogic.getInstance().getColorState() == this.getColor()
-				|| GameLogic.getInstance().getNumberState() == this.getNumber())
+		if (GameLogic.getInstance().getCardOnTable().getColor() == Color.BLACK) {
 			return true;
+		}
+		else if (GameLogic.getInstance().getColorState() == this.getColor()
+				|| GameLogic.getInstance().getNumberState() == this.getNumber()) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public void takeAction() {
-		GameLogic.getInstance().processing();
+		GameLogic.getInstance().shortProcessing();
 		GameLogic.getInstance().getNextPlayer().setPlayable(false);;
 	}
 

@@ -2,6 +2,7 @@ package main;
 
 import java.util.Scanner;
 
+import entity.player.*;
 import gui.BotDeckPane;
 import gui.StatusPane;
 import gui.Updatable;
@@ -101,19 +102,19 @@ public class Main2 extends Application {
 
 			while (!GameLogic.getInstance().isGameEnd()) {
 				if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
-					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
-					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
+					
 					GameLogic.getInstance().getCurrentPlayer().play();
 
-				} else {
-					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
-					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
-					GameLogic.getInstance().botIsThinking();
+				} 
+				else {
+//					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
+//					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
+					GameLogic.getInstance().longProcessing();
 					GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
 
 				}
 				GameLogic.getInstance().setUpForNewTurn();
-				GameLogic.getInstance().processing();
+				GameLogic.getInstance().shortProcessing();
 			}
 
 		});

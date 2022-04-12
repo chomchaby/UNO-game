@@ -62,7 +62,8 @@ public class StatusPane extends VBox implements Updatable {
 			hasColorSelectionText = true;
 		} else if (!(GameLogic.getInstance().isColorSelectionState()) && hasColorSelectionText) {
 			this.getChildren().remove(colorSelectionText);
-			((User)GameLogic.getInstance().getUser()).setDrawn(true);
+			hasColorSelectionText = false;
+			GameLogic.getInstance().getUser().setDrawn(true);
 		}
 	}
 
