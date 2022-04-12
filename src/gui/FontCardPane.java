@@ -46,19 +46,41 @@ public class FontCardPane extends StackPane {
 				onClickHandler();
 			}
 		});
+		this.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseEnteredHandler();
+			}
+		});
+		this.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseExitedHandler();
+			}
+		});
 
 	}
 
 	private void onClickHandler() {
+		// draw card
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
 			if (GameLogic.getInstance().getUser().isDrawn() == false) {
 				if (GameLogic.getInstance().getUser().getDrawableCardList().contains(card)) {
-					System.out.println("Draw : " + card.getNumber());
 					GameLogic.getInstance().getUser().drawCard(card);
 				}
 
 			}
 		}
+	}
+
+	private void onMouseEnteredHandler() {
+		if (this.card != GameLogic.getInstance().getCardOnTable()) {
+//			this.setPrefWidth(90);
+		}
+	}
+
+	private void onMouseExitedHandler() {
+
 	}
 
 	private void draw() {

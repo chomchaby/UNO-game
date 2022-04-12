@@ -13,8 +13,8 @@ public class NormalCard extends UnitCard {
 
 	@Override
 	public boolean isDrawable() {
-
-		if (GameLogic.getInstance().getCardOnTable().getColor() == Color.BLACK) {
+		// in case at the beginning cardOnTable is black card 
+		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
 		}
 		else if (GameLogic.getInstance().getColorState() == this.getColor()
@@ -26,6 +26,7 @@ public class NormalCard extends UnitCard {
 
 	@Override
 	public String toString() {
-		return Integer.toString(getNumber()) + "(" + getColor() + ")";
+
+		return Integer.toString(getNumber()) + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
 	}
 }

@@ -13,7 +13,8 @@ public class RotateCard extends EffectCard {
 
 	@Override
 	public boolean isDrawable() {
-		if (GameLogic.getInstance().getCardOnTable().getColor() == Color.BLACK) {
+		// same as NormalCard
+		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
 		}
 		else if (GameLogic.getInstance().getColorState() == this.getColor()
@@ -25,12 +26,14 @@ public class RotateCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
+		// for User, the animation might stop for one second, for me it's fine 555
 		GameLogic.getInstance().shortProcessing();
 		GameLogic.getInstance().setClockwise(!GameLogic.getInstance().isClockwise());
 	}
 
 	@Override
 	public String toString() {
-		return "Rotate" + "(" + getColor().toString() + ")";
+
+		return "Rotate Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
 	}
 }

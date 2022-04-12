@@ -14,7 +14,7 @@ public abstract class UnitCard {
 	}
 
 	public abstract boolean isDrawable();
-	
+
 	public abstract String toString();
 
 	public int getNumber() {
@@ -28,7 +28,5 @@ public abstract class UnitCard {
 	public GameAction getAction() {
 		return this.gameAction;
 	}
-
-
 
 }

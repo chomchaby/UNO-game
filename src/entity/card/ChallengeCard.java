@@ -1,6 +1,7 @@
 package entity.card;
 
 import entity.player.Bot;
+import entity.player.User;
 import javafx.scene.paint.Color;
 import logic.GameAction;
 import logic.GameLogic;
@@ -19,20 +20,23 @@ public class ChallengeCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		
+
+		// for Bot, only challenge result is shown
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			GameLogic.getInstance().shortProcessing();
-			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
-			GameLogic.getInstance().setColorState(bot.chooseColor());
-		} 
+			GameLogic.getInstance().getCurrentPlayer().challenge();
+
+		}
+		// for User, create ColorSelection pane (interface) in status pane
+		// also challenge result after finishing the color selection
 		else {
 			GameLogic.getInstance().setColorSelectionState(true);
+			GameLogic.getInstance().setChallengeState(true);
 		}
 
 	}
 
 	@Override
 	public String toString() {
-		return "Challenge" + "(" + getColor().toString() + ")";
+		return "Challenge Card";
 	}
 }

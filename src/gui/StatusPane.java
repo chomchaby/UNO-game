@@ -1,6 +1,5 @@
 package gui;
 
-import entity.player.User;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,8 +12,12 @@ public class StatusPane extends VBox implements Updatable {
 	private final String logoURL;
 	private TablePane tablePane;
 	private Text currentPlayerText;
+
 	private boolean hasColorSelectionText;
 	private ColorSelection colorSelectionText;
+
+	private boolean hasChallegeResultText;
+	private Text challengeResultText;
 
 	public StatusPane() {
 		this.setSpacing(20);
@@ -23,8 +26,8 @@ public class StatusPane extends VBox implements Updatable {
 		logoURL = ClassLoader.getSystemResource("java.png").toString();
 		Image logoPNG = new Image(logoURL);
 		ImageView imageView = new ImageView(logoPNG);
-		imageView.setFitHeight(60);
-		imageView.setFitWidth(60);
+		imageView.setFitHeight(50);
+		imageView.setFitWidth(80);
 
 		// create tablePane
 		tablePane = new TablePane();
@@ -34,9 +37,10 @@ public class StatusPane extends VBox implements Updatable {
 		setCurrentPlayerText();
 		this.getChildren().addAll(imageView, tablePane, currentPlayerText);
 
-		// set colorSelectionText
+		// set colorSelectionText & challengeResultText
 		hasColorSelectionText = false;
-		setColorSelectionText();
+		hasChallegeResultText = false;
+
 	}
 
 	@Override
@@ -49,21 +53,55 @@ public class StatusPane extends VBox implements Updatable {
 	private void setCurrentPlayerText() {
 		if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
 			currentPlayerText.setText("Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName());
-		}
-		else {
-			currentPlayerText.setText("Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName() + "  (blocked)");
+		} else {
+			currentPlayerText
+					.setText("Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName() + "  (Blocked)");
 		}
 
 	}
+
 	private void setColorSelectionText() {
+		// set ColorSelection Pane
 		if (GameLogic.getInstance().isColorSelectionState() && !(hasColorSelectionText)) {
 			colorSelectionText = new ColorSelection();
 			this.getChildren().add(colorSelectionText);
 			hasColorSelectionText = true;
-		} else if (!(GameLogic.getInstance().isColorSelectionState()) && hasColorSelectionText) {
-			this.getChildren().remove(colorSelectionText);
-			hasColorSelectionText = false;
-			GameLogic.getInstance().getUser().setDrawn(true);
+
+		// remove ColorSelection pane 
+		} else if (!GameLogic.getInstance().isColorSelectionState()) {
+
+			if (hasColorSelectionText) {
+				this.getChildren().remove(colorSelectionText);
+				hasColorSelectionText = false;
+			// create challenge result text
+			} else if (GameLogic.getInstance().isChallengeState() && !hasChallegeResultText) {
+				String result = "";
+				if (GameLogic.getInstance().isChallengeWin()) {
+					result = "Congrats! " + GameLogic.getInstance().getCurrentPlayer().getName()
+							+ "'s guess is correct. " + "\n" + GameLogic.getInstance().getNextPlayer().getName()
+							+ " has no "
+							+ GameLogic.getInstance().myColorToString(GameLogic.getInstance().getChallengeColor())
+							+ " card." + "\n" + GameLogic.getInstance().getNextPlayer().getName()
+							+ ", please pick 4 cards.";
+
+				} else {
+					result = "Oops... " + GameLogic.getInstance().getCurrentPlayer().getName()
+							+ "'s guess is not correct. " + "\n" + GameLogic.getInstance().getNextPlayer().getName()
+							+ " has some "
+							+ GameLogic.getInstance().myColorToString(GameLogic.getInstance().getChallengeColor())
+							+ " cards." + "\n" + GameLogic.getInstance().getCurrentPlayer().getName()
+							+ ", please pick 2 cards.";
+					;
+				}
+				challengeResultText = new Text(result);
+				this.getChildren().add(challengeResultText);
+				hasChallegeResultText = true;
+			
+			// remove challenge result text
+			} else if (!GameLogic.getInstance().isChallengeState() && hasChallegeResultText) {
+				this.getChildren().remove(challengeResultText);
+				hasChallegeResultText = false;
+			}
 		}
 	}
 

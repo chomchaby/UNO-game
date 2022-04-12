@@ -64,9 +64,9 @@ public class TablePane extends HBox implements Updatable {
 
 		// setting color bar
 		color = GameLogic.getInstance().getColorState();
-		Rectangle colorRec = new Rectangle(25, 25, color);
-		colorRec.setArcWidth(15);
-		colorRec.setArcHeight(15);
+		Rectangle colorRec = new Rectangle(30, 30, color);
+		colorRec.setArcWidth(20);
+		colorRec.setArcHeight(20);
 
 		// setting rotation sign
 		if (GameLogic.getInstance().isClockwise())
@@ -90,8 +90,9 @@ public class TablePane extends HBox implements Updatable {
 	}
 
 	private void onClickHandler() {
+		// pick a card from card pile
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
-			if (GameLogic.getInstance().getUser().isPicked() == false) {
+			if (!(GameLogic.getInstance().getUser().isPicked() || GameLogic.getInstance().isColorSelectionState())) {
 				GameLogic.getInstance().getUser().pick(1);
 			}
 		}

@@ -2,7 +2,6 @@ package main;
 
 import java.util.Scanner;
 
-import entity.player.*;
 import gui.BotDeckPane;
 import gui.StatusPane;
 import gui.Updatable;
@@ -34,7 +33,7 @@ public class Main2 extends Application {
 		Scanner kb = new Scanner(System.in);
 		System.out.println("Enter your name: ");
 		String userName = kb.nextLine();
-		System.out.println("Username is: " + userName);
+		System.out.println("Let's get started");
 
 		// create game
 		GameLogic.getInstance().setUserName(userName);
@@ -94,21 +93,27 @@ public class Main2 extends Application {
 				UpdatableHolder.getInstance().updateScreen();
 
 			}
-		}), new KeyFrame(Duration.seconds(0.5)));
+		}), new KeyFrame(Duration.seconds(0.4)));
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 
 		Thread t = new Thread(() -> {
 
 			while (!GameLogic.getInstance().isGameEnd()) {
+				System.err.println("---- NEW TURN ----");
+				System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
+//				System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
+//				System.out.println("Playble : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
+//				System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
+//				System.out.println("Current Player: " + GameLogic.getInstance().getCurrentPlayer().getName());
+//				System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
 				if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
 					
 					GameLogic.getInstance().getCurrentPlayer().play();
 
 				} 
 				else {
-//					System.out.println("current " + GameLogic.getInstance().getCurrentPlayer().getName());
-//					System.out.println("next " + GameLogic.getInstance().getNextPlayer().getName());
+					System.out.println(" - Blocked - ");
 					GameLogic.getInstance().longProcessing();
 					GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
 

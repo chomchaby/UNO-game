@@ -20,11 +20,11 @@ public class UserDeckPane extends GridPane implements Updatable {
 	private Player owner;
 	
 	private static final Border NORMAL_BORDER = new Border(
-			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(10)));
 	private static final Border GREEN_BORDER = new Border(
-			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(9)));
+			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(10)));
 	private static final Border RED_BORDER = new Border(
-			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(9)));
+			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(10)));
 
 	public UserDeckPane(Player owner) {
 		this.owner = owner;
@@ -36,7 +36,7 @@ public class UserDeckPane extends GridPane implements Updatable {
 		this.setBorder(NORMAL_BORDER);
 		this.setAlignment(Pos.CENTER);
 
-		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, CornerRadii.EMPTY, Insets.EMPTY);
+		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, new CornerRadii(8), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
 		update();

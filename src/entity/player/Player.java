@@ -28,22 +28,29 @@ public abstract class Player {
 	public abstract void play();
 
 	public void drawCard(UnitCard card) {
+		
+		System.out.println(name + " draws a card... >> " + card.toString());
 		this.getCardList().remove(card);
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
 		GameLogic.getInstance().setCardOnTable(card);
 		if (card.getAction() != GameAction.NONE) {
+			System.out.println("The card is taking some effect...");
 			((EffectCard) card).takeAction();
 		}
 	}
 
 	public void pick(int n) {
+		
+		System.out.println(name + " picks some cards...");
 		for (int i = 0; i < n; i++) {
 			UnitCard newCard = GameLogic.getInstance().getCardPile().get(0);
 			this.getCardList().add(newCard);
 			GameLogic.getInstance().getCardPile().remove(newCard);
 		}
 	}
+	
+	public abstract void challenge();
 
 	public boolean isWin() {
 		return this.getCardList().size() == 0;

@@ -15,7 +15,9 @@ import javafx.scene.text.Text;
 import logic.GameLogic;
 
 public class ColorSelection extends HBox {
-
+	
+	// This is UI for User only
+	
 	public ColorSelection() {
 		this.setSpacing(10);
 		this.setAlignment(Pos.CENTER);
@@ -52,8 +54,7 @@ public class ColorSelection extends HBox {
 		redBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				GameLogic.getInstance().setColorState(Color.RED);
-				GameLogic.getInstance().setColorSelectionState(false);
+				handleClicked(Color.RED);
 			}
 		});
 
@@ -75,8 +76,7 @@ public class ColorSelection extends HBox {
 		yellowBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				GameLogic.getInstance().setColorState(Color.YELLOW);
-				GameLogic.getInstance().setColorSelectionState(false);
+				handleClicked(Color.YELLOW);
 			}
 		});
 		yellowBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -97,8 +97,7 @@ public class ColorSelection extends HBox {
 		blueBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				GameLogic.getInstance().setColorState(Color.BLUE);
-				GameLogic.getInstance().setColorSelectionState(false);
+				handleClicked(Color.BLUE);
 			}
 		});
 		blueBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -120,8 +119,7 @@ public class ColorSelection extends HBox {
 		greenBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				GameLogic.getInstance().setColorState(Color.GREEN);
-				GameLogic.getInstance().setColorSelectionState(false);
+				handleClicked(Color.GREEN);
 			}
 		});
 		greenBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -138,6 +136,31 @@ public class ColorSelection extends HBox {
 				greenBtn.setPrefHeight(25);
 			}
 		});
+		
+	}
+	
+	private void handleClicked(Color color) {
+
+		// for challenge 
+		if (GameLogic.getInstance().isChallengeState()) {
+			// collect data
+			GameLogic.getInstance().setChallengeColor(color);
+			GameLogic.getInstance().setColorState(color);
+			// to close ColorSection Pane, and create result text
+			GameLogic.getInstance().setColorSelectionState(false);
+			// challenging...
+			GameLogic.getInstance().getUser().challenge();
+
+		}
+		// for color change
+		else {
+			// collect data
+			GameLogic.getInstance().setColorState(color);
+			// to close ColorSection Pane
+			GameLogic.getInstance().setColorSelectionState(false);
+			// the action of color card ends.
+			GameLogic.getInstance().getUser().setDrawn(true);
+		}
 		
 	}
 }

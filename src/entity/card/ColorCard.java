@@ -19,12 +19,13 @@ public class ColorCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-
+		// for Bot, just change colorReg in status pane
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
 			GameLogic.getInstance().shortProcessing();
 			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
 			GameLogic.getInstance().setColorState(bot.chooseColor());
 		} 
+		// for User, create ColorSelection pane (interface) in status pane
 		else {
 			GameLogic.getInstance().setColorSelectionState(true);	
 		}
@@ -32,6 +33,6 @@ public class ColorCard extends EffectCard {
 
 	@Override
 	public String toString() {
-		return "Color" + "(" + getColor().toString() + ")";
+		return "Color Card";
 	}
 }

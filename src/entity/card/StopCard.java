@@ -13,7 +13,7 @@ public class StopCard extends EffectCard {
 
 	@Override
 	public boolean isDrawable() {
-		if (GameLogic.getInstance().getCardOnTable().getColor() == Color.BLACK) {
+		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
 		}
 		else if (GameLogic.getInstance().getColorState() == this.getColor()
@@ -25,13 +25,15 @@ public class StopCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
+		// for User, the animation might stop for one second, for me it's fine 555
 		GameLogic.getInstance().shortProcessing();
 		GameLogic.getInstance().getNextPlayer().setPlayable(false);;
 	}
 
 	@Override
 	public String toString() {
-		return "Stop" + "(" + getColor().toString() + ")";
+
+		return "Stop Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
 	}
 
 }

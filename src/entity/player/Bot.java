@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import entity.card.ChallengeCard;
 import entity.card.UnitCard;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
@@ -16,7 +17,6 @@ public class Bot extends Player {
 
 	@Override
 	public void play() {
-		System.out.println(name + "Turn");
 		setDrawableCardList();
 		if (drawableCardList.size() == 0) {
 			pick(1);
@@ -30,22 +30,43 @@ public class Bot extends Player {
 
 	@Override
 	public void drawCard(UnitCard card) {
+		// act like bot is thinking...
 		GameLogic.getInstance().longProcessing();
 		super.drawCard(card);
 	}
 
 	@Override
 	public void pick(int n) {
+		// act like bot is thinking...
 		GameLogic.getInstance().longProcessing();
 		super.pick(n);
 	}
 
+	@Override
+	public void challenge() {
+
+		// act like bot is thinking
+		GameLogic.getInstance().longProcessing();
+		// bot choose color to challenge
+		Color colorToChallenge = this.chooseColor();
+		GameLogic.getInstance().setChallengeColor(colorToChallenge);
+		GameLogic.getInstance().setColorState(colorToChallenge);
+		// to create result text
+		GameLogic.getInstance().setChallengeState(true);
+		GameLogic.getInstance().punishChallenge();
+		// to close result text
+		GameLogic.getInstance().setChallengeState(false);
+
+	}
+
 	private UnitCard wiseDraw(ArrayList<UnitCard> drawableCardList) {
+		// the cleverest :)
 		Collections.shuffle(drawableCardList);
 		return drawableCardList.get(0);
 	}
 
 	public Color chooseColor() {
+		// choose the color that has the most cards in list.
 		int[] count = { 0, 0, 0, 0 };
 		for (UnitCard card : this.getCardList()) {
 			if (card.getColor() == Color.BLUE) {
