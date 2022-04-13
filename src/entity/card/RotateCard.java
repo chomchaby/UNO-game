@@ -1,5 +1,6 @@
 package entity.card;
 
+import entity.player.Bot;
 import javafx.scene.paint.Color;
 import logic.GameAction;
 import logic.GameLogic;
@@ -26,8 +27,9 @@ public class RotateCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		// for User, the animation might stop for one second, for me it's fine 555
-		GameLogic.getInstance().shortProcessing();
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+			GameLogic.getInstance().shortProcessing();
+		}
 		GameLogic.getInstance().setClockwise(!GameLogic.getInstance().isClockwise());
 	}
 

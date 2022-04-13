@@ -10,17 +10,22 @@ import java.util.Set;
 import entity.card.*;
 
 import entity.player.*;
-
+import gui.BotDeckPane;
+import gui.StatusPane;
+import gui.Updatable;
+import gui.UserDeckPane;
+import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 public class GameLogic {
 
 	private static GameLogic instance = null;
 	private static final Color[] colorArray = { Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW };
 
-	private boolean isGameEnd;
-	private boolean isGameWin;
-
+	private UnitCard cardOnTable;
+	private ArrayList<UnitCard> cardPile;
 	private int playerTurn;
 	private Player currentPlayer;
 	private Player nextPlayer;
@@ -32,48 +37,30 @@ public class GameLogic {
 	private Color challengeColor;
 //	private Player beforePlayer;
 
-	private UnitCard cardOnTable;
-	private ArrayList<UnitCard> cardPile;
-
 	private Player user;
 	private Player botJesica;
 	private Player botMagaret;
 	private Player botVanda;
+	private ArrayList<Updatable> updatableArray;
+	private boolean isGameEnd;
 
 	private GameLogic() {
+		user = new User();
+		botJesica = new Bot("Jesica");
+		botMagaret = new Bot("Magaret");
+		botVanda = new Bot("Vanda");
 		this.newGame();
 	}
 
 	public void newGame() {
-
-		// create all cards, put in cardPiles
 		cardPile = new ArrayList<UnitCard>();
-		for (Color color : colorArray) {
-			for (int i = 0; i < 10; i++) {
-				UnitCard card = new NormalCard(i, color);
-				cardPile.add(card);
-			}
-			for (int i = 0; i < 2; i++) {
-				UnitCard card = new StopCard(color);
-				cardPile.add(card);
-			}
-			for (int i = 0; i < 2; i++) {
-				UnitCard card = new RotateCard(color);
-				cardPile.add(card);
-			}
-			for (int i = 0; i < 2; i++) {
-				UnitCard card = new PickCard(color);
-				cardPile.add(card);
-			}
-		}
-		for (int i = 0; i < 4; i++) {
-			UnitCard card = new ColorCard();
-			cardPile.add(card);
-		}
-		for (int i = 0; i < 12; i++) {
-			UnitCard card = new ChallengeCard();
-			cardPile.add(card);
-		}
+		user.setCardList(new ArrayList<UnitCard>());
+		botJesica.setCardList(new ArrayList<UnitCard>());
+		botMagaret.setCardList(new ArrayList<UnitCard>());
+		botVanda.setCardList(new ArrayList<UnitCard>());
+		
+		// create all cards, put them in cardPile, and then deal cards
+		initilizeCardPile();
 		dealCard();
 
 		// set parameters
@@ -98,16 +85,38 @@ public class GameLogic {
 		return instance;
 	}
 
-	private void dealCard() {
-		// create all players, then deal 5 cards to each player randomly
-		// draw cardOnTable
-		user = new User();
-		botJesica = new Bot("Jesica");
-		botMagaret = new Bot("Magaret");
-		botVanda = new Bot("Vanda");
-
-		Collections.shuffle(cardPile);
+	private void initilizeCardPile() {
+		for (Color color : colorArray) {
+			for (int i = 0; i < 10; i++) {
+				UnitCard card = new NormalCard(i, color);
+				cardPile.add(card);
+			}
+			for (int i = 0; i < 2; i++) {
+				UnitCard card = new StopCard(color);
+				cardPile.add(card);
+			}
+			for (int i = 0; i < 2; i++) {
+				UnitCard card = new RotateCard(color);
+				cardPile.add(card);
+			}
+			for (int i = 0; i < 2; i++) {
+				UnitCard card = new PickCard(color);
+				cardPile.add(card);
+			}
+		}
 		for (int i = 0; i < 4; i++) {
+			UnitCard card = new ColorCard();
+			cardPile.add(card);
+		}
+		for (int i = 0; i < 6; i++) {
+			UnitCard card = new ChallengeCard();
+			cardPile.add(card);
+		}
+	}
+
+	private void dealCard() {
+		Collections.shuffle(cardPile);
+		for (int i = 0; i < 1; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));
@@ -152,7 +161,7 @@ public class GameLogic {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean isChallengeWin() {
 		Set<Color> colorSet = new HashSet<Color>();
 		for (UnitCard card : getNextPlayer().getCardList()) {
@@ -163,9 +172,9 @@ public class GameLogic {
 		}
 		return true;
 	}
-	
+
 	public void punishChallenge() {
-		
+
 		// sleep for seconds to read challenge result
 		GameLogic.getInstance().longProcessing();
 		// pick cards
@@ -182,20 +191,17 @@ public class GameLogic {
 		}
 		// more time to read
 		GameLogic.getInstance().longProcessing();
-		
+
 	}
-	
+
 	public String myColorToString(Color color) {
 		if (color == Color.BLUE) {
 			return "BLUE";
-		}
-		else if (color == Color.RED) {
+		} else if (color == Color.RED) {
 			return "RED";
-		}
-		else if (color == Color.YELLOW) {
+		} else if (color == Color.YELLOW) {
 			return "YELLOW";
-		}
-		else if (color == Color.GREEN) {
+		} else if (color == Color.GREEN) {
 			return "GREEN";
 		}
 		return "BLACK";
@@ -338,20 +344,16 @@ public class GameLogic {
 		return (Bot) botVanda;
 	}
 
+	public ArrayList<Updatable> getUpdatableArray() {
+		return updatableArray;
+	}
+
 	public boolean isGameEnd() {
 		return isGameEnd;
 	}
 
 	public void setGameEnd(boolean isGameEnd) {
 		this.isGameEnd = isGameEnd;
-	}
-
-	public boolean isGameWin() {
-		return isGameWin;
-	}
-
-	public void setGameWin(boolean isGameWin) {
-		this.isGameWin = isGameWin;
 	}
 
 //	public Player getBeforePlayer() {

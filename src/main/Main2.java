@@ -118,6 +118,10 @@ public class Main2 extends Application {
 					GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
 
 				}
+				if (GameLogic.getInstance().getCurrentPlayer().isWin()) {
+					GameLogic.getInstance().setGameEnd(true);
+					break;
+				}
 				GameLogic.getInstance().setUpForNewTurn();
 				GameLogic.getInstance().shortProcessing();
 			}

@@ -63,13 +63,18 @@ public class FontCardPane extends StackPane {
 
 	private void onClickHandler() {
 		// draw card
-		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
-			if (GameLogic.getInstance().getUser().isDrawn() == false) {
-				if (GameLogic.getInstance().getUser().getDrawableCardList().contains(card)) {
-					GameLogic.getInstance().getUser().drawCard(card);
-				}
-
-			}
+		if (GameLogic.getInstance().isGameEnd()) {
+			return;
+		} 
+		else if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
+			return;
+		} 
+		else if (GameLogic.getInstance().getUser().isDrawn() == true) {
+			return;
+		}
+		
+		if (GameLogic.getInstance().getUser().getDrawableCardList().contains(card)) {
+			GameLogic.getInstance().getUser().drawCard(card);
 		}
 	}
 

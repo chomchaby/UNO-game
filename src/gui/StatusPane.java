@@ -1,6 +1,10 @@
 package gui;
 
+import entity.player.Bot;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -18,6 +22,8 @@ public class StatusPane extends VBox implements Updatable {
 
 	private boolean hasChallegeResultText;
 	private Text challengeResultText;
+	
+	private boolean hasGameEndText;
 
 	public StatusPane() {
 		this.setSpacing(20);
@@ -46,8 +52,14 @@ public class StatusPane extends VBox implements Updatable {
 	@Override
 	public void update() {
 		tablePane.update();
+		// game is over
+		if (GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().clear();
+			initializeGameEndText();
+			initializeNewGameButton();
+		}
 		setCurrentPlayerText();
-		setColorSelectionText();
+		initializeColorSelectionText();
 	}
 
 	private void setCurrentPlayerText() {
@@ -60,20 +72,20 @@ public class StatusPane extends VBox implements Updatable {
 
 	}
 
-	private void setColorSelectionText() {
+	private void initializeColorSelectionText() {
 		// set ColorSelection Pane
 		if (GameLogic.getInstance().isColorSelectionState() && !(hasColorSelectionText)) {
 			colorSelectionText = new ColorSelection();
 			this.getChildren().add(colorSelectionText);
 			hasColorSelectionText = true;
 
-		// remove ColorSelection pane 
+			// remove ColorSelection pane
 		} else if (!GameLogic.getInstance().isColorSelectionState()) {
 
 			if (hasColorSelectionText) {
 				this.getChildren().remove(colorSelectionText);
 				hasColorSelectionText = false;
-			// create challenge result text
+				// create challenge result text
 			} else if (GameLogic.getInstance().isChallengeState() && !hasChallegeResultText) {
 				String result = "";
 				if (GameLogic.getInstance().isChallengeWin()) {
@@ -96,13 +108,47 @@ public class StatusPane extends VBox implements Updatable {
 				challengeResultText = new Text(result);
 				this.getChildren().add(challengeResultText);
 				hasChallegeResultText = true;
-			
-			// remove challenge result text
+
+				// remove challenge result text
 			} else if (!GameLogic.getInstance().isChallengeState() && hasChallegeResultText) {
 				this.getChildren().remove(challengeResultText);
 				hasChallegeResultText = false;
 			}
 		}
+	}
+
+	private void initializeGameEndText() {
+		String endPicURL;
+		String gameResult;
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+			endPicURL = ClassLoader.getSystemResource("lose.png").toString();
+			gameResult = "lose";
+		} else {
+			endPicURL = ClassLoader.getSystemResource("win.jpg").toString();
+			gameResult = "win";
+		}
+		this.getChildren().add(new Text("You " + gameResult + "!"));
+
+		ImageView imageView = new ImageView(new Image(endPicURL));
+		imageView.setFitWidth(200);
+		imageView.setPreserveRatio(true);
+		this.getChildren().add(imageView);
+		
+		this.getChildren().add(new Text("The winner is " + GameLogic.getInstance().getCurrentPlayer().getName()));
+
+	}
+
+	private void initializeNewGameButton() {
+		Button newGameButton = new Button("New Game");
+		newGameButton.setPrefWidth(100);
+		newGameButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GameLogic.getInstance().setGameEnd(false);
+				GameLogic.getInstance().newGame();
+			}
+		});
+		this.getChildren().add(newGameButton);
 	}
 
 }
