@@ -98,35 +98,36 @@ public class Main2 extends Application {
 		timeline.play();
 
 		Thread t = new Thread(() -> {
-
-			while (!GameLogic.getInstance().isGameEnd()) {
-				System.err.println("---- NEW TURN ----");
-				System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
-//				System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
-//				System.out.println("Playble : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
-//				System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
-//				System.out.println("Current Player: " + GameLogic.getInstance().getCurrentPlayer().getName());
-//				System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
-				if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
-					
-					GameLogic.getInstance().getCurrentPlayer().play();
-
-				} 
-				else {
-					System.out.println(" - Blocked - ");
-					GameLogic.getInstance().longProcessing();
-					GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
-
-				}
-				if (GameLogic.getInstance().getCurrentPlayer().isWin()) {
-					GameLogic.getInstance().setGameEnd(true);
-					break;
-				}
-				GameLogic.getInstance().setUpForNewTurn();
+			while (true) {
 				GameLogic.getInstance().shortProcessing();
-			}
+				while (!GameLogic.getInstance().isGameEnd()) {
+					System.err.println("---- NEW TURN ----");
+					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
+//					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
+//					System.out.println("Playble : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
+//					System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
+//					System.out.println("Current Player: " + GameLogic.getInstance().getCurrentPlayer().getName());
+//					System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
+					if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
 
+						GameLogic.getInstance().getCurrentPlayer().play();
+
+					} else {
+						System.out.println(" - Blocked - ");
+						GameLogic.getInstance().longProcessing();
+						GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
+
+					}
+					if (GameLogic.getInstance().getCurrentPlayer().isWin()) {
+						GameLogic.getInstance().setGameEnd(true);
+						break;
+					}
+					GameLogic.getInstance().setUpForNewTurn();
+					GameLogic.getInstance().shortProcessing();
+				}
+			}
 		});
+
 		t.start();
 
 //		try to run UpdatableHolder.getInstance().updateScreen() at times

@@ -16,8 +16,10 @@ public class TablePane extends HBox implements Updatable {
 
 	private BackCardPane cardPilePane;
 	private FontCardPane cardOnTablePane;
-	private Color color;
-	private Image rotationPNG;
+	private VBox currentColorPane;
+
+	private boolean hasCardPilePane;
+
 	private final String clockwiseURL;
 	private final String counterClockwiseURL;
 
@@ -36,59 +38,20 @@ public class TablePane extends HBox implements Updatable {
 				onClickHandler();
 			}
 		});
-		this.getChildren().add(cardPilePane);
-
-		setCardOnTablePane();
 
 		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
 		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
 
-		setStateImage();
+		update();
 
 	}
 
 	@Override
 	public void update() {
-		this.getChildren().remove(1);
-		this.getChildren().remove(1);
-		setCardOnTablePane();
-		setStateImage();
+		initializeCardOnTablePane();
+		initializeCurrentColorPane();
 	}
-
-	private void setCardOnTablePane() {
-		this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
-		this.getChildren().add(cardOnTablePane);
-	}
-
-	private void setStateImage() {
-
-		// setting color bar
-		color = GameLogic.getInstance().getColorState();
-		Rectangle colorRec = new Rectangle(30, 30, color);
-		colorRec.setArcWidth(20);
-		colorRec.setArcHeight(20);
-
-		// setting rotation sign
-		if (GameLogic.getInstance().isClockwise())
-			rotationPNG = new Image(clockwiseURL);
-		else
-			rotationPNG = new Image(counterClockwiseURL);
-
-		ImageView imageView = new ImageView(rotationPNG);
-		imageView.setFitHeight(50);
-		imageView.setFitWidth(50);
-
-		// combine color bar and rotation sign
-		VBox imagePane = new VBox();
-		imagePane.setAlignment(Pos.CENTER);
-		imagePane.setSpacing(15);
-		imagePane.getChildren().add(colorRec);
-		imagePane.getChildren().add(imageView);
-
-		this.getChildren().add(imagePane);
-
-	}
-
+	
 	private void onClickHandler() {
 		// pick a card from card pile
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
@@ -98,5 +61,93 @@ public class TablePane extends HBox implements Updatable {
 		}
 
 	}
+
+	private void initializeCardOnTablePane() {
+		if (GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().remove(cardPilePane);
+			this.getChildren().remove(cardOnTablePane);
+			hasCardPilePane = false;
+
+		} else {
+			if (!hasCardPilePane) {
+				this.getChildren().add(cardPilePane);
+				hasCardPilePane = true;
+			}
+			this.getChildren().remove(cardOnTablePane);
+			this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
+			this.getChildren().add(cardOnTablePane);
+		}
+
+	}
+
+	private void initializeCurrentColorPane() {
+
+		if (GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().remove(currentColorPane);
+
+		} else {
+
+			this.getChildren().remove(currentColorPane);
+			// setting color bar
+			Color color = GameLogic.getInstance().getColorState();
+			Rectangle colorRec = new Rectangle(30, 30, color);
+			colorRec.setArcWidth(20);
+			colorRec.setArcHeight(20);
+
+			// setting rotation sign
+			Image rotationPNG;
+			if (GameLogic.getInstance().isClockwise())
+				rotationPNG = new Image(clockwiseURL);
+			else
+				rotationPNG = new Image(counterClockwiseURL);
+
+			ImageView imageView = new ImageView(rotationPNG);
+			imageView.setFitHeight(50);
+			imageView.setFitWidth(50);
+
+			// combine color bar and rotation sign
+			currentColorPane = new VBox();
+			currentColorPane.setAlignment(Pos.CENTER);
+			currentColorPane.setSpacing(15);
+			currentColorPane.getChildren().add(colorRec);
+			currentColorPane.getChildren().add(imageView);
+
+			this.getChildren().add(currentColorPane);
+
+		}
+
+	}
+	
+//	private void initializeGameEndText() {
+//
+//		if (GameLogic.getInstance().isGameEnd() && !hasGameEndText) {
+//		
+//
+//			String endPicURL;
+//			String gameResult;
+//
+//			if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+//				endPicURL = ClassLoader.getSystemResource("lose.png").toString();
+//				gameResult = "lose";
+//			} else {
+//				endPicURL = ClassLoader.getSystemResource("win.jpg").toString();
+//				gameResult = "win";
+//			}
+//			this.getChildren().add(new Text("You " + gameResult + "!"));
+//
+//			ImageView imageView = new ImageView(new Image(endPicURL));
+//			imageView.setFitWidth(200);
+//			imageView.setPreserveRatio(true);
+//			this.getChildren().add(imageView);
+//
+//			this.getChildren().add(new Text("The winner is " + GameLogic.getInstance().getCurrentPlayer().getName()));
+//			hasGameEndText = true;
+//
+//		} else if (!GameLogic.getInstance().isGameEnd() && hasGameEndText) {
+//			this.getChildren().clear();
+//			hasGameEndText = false;
+//			hasCardPilePane = false;
+//		}
+//	}
 
 }

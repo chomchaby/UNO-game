@@ -15,17 +15,20 @@ public class StatusPane extends VBox implements Updatable {
 
 	private final String logoURL;
 	private TablePane tablePane;
+
 	private Text currentPlayerText;
+	private boolean hasCurrentPlayerText;
 
-	private boolean hasColorSelectionText;
 	private ColorSelection colorSelectionText;
-
-	private boolean hasChallegeResultText;
+	private boolean hasColorSelectionText;
 	private Text challengeResultText;
-	
+	private boolean hasChallegeResultText;
+
+	private VBox gameEndText;
 	private boolean hasGameEndText;
 
 	public StatusPane() {
+
 		this.setSpacing(20);
 		this.setAlignment(Pos.CENTER);
 		// setting logo
@@ -38,43 +41,51 @@ public class StatusPane extends VBox implements Updatable {
 		// create tablePane
 		tablePane = new TablePane();
 
-		// setting currentPlayerText
-		currentPlayerText = new Text();
-		setCurrentPlayerText();
-		this.getChildren().addAll(imageView, tablePane, currentPlayerText);
-
-		// set colorSelectionText & challengeResultText
-		hasColorSelectionText = false;
-		hasChallegeResultText = false;
+		this.getChildren().addAll(imageView, tablePane);
+		update();
 
 	}
 
 	@Override
 	public void update() {
 		tablePane.update();
-		// game is over
-		if (GameLogic.getInstance().isGameEnd()) {
-			this.getChildren().clear();
-			initializeGameEndText();
-			initializeNewGameButton();
-		}
-		setCurrentPlayerText();
+		initializeCurrentPlayerText();
 		initializeColorSelectionText();
+		initializeGameEndText();
 	}
 
-	private void setCurrentPlayerText() {
+	private void initializeCurrentPlayerText() {
+		// set text to be added
+		String text;
 		if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
-			currentPlayerText.setText("Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName());
+			text = "Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName();
 		} else {
-			currentPlayerText
-					.setText("Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName() + "  (Blocked)");
+			text = "Player Turn : " + GameLogic.getInstance().getCurrentPlayer().getName() + " (Blocked)";
 		}
 
+		if (GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().remove(currentPlayerText);
+			hasCurrentPlayerText = false;
+		} else if (!GameLogic.getInstance().isGameEnd()) {
+			if (!hasCurrentPlayerText) {
+				currentPlayerText = new Text();
+				currentPlayerText.setText(text);
+				this.getChildren().add(currentPlayerText);
+				hasCurrentPlayerText = true;
+			} else {
+				currentPlayerText.setText(text);
+			}
+		}
 	}
 
 	private void initializeColorSelectionText() {
+		// remove if the game is over
+		if (GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().remove(colorSelectionText);
+			this.getChildren().remove(challengeResultText);
+		}
 		// set ColorSelection Pane
-		if (GameLogic.getInstance().isColorSelectionState() && !(hasColorSelectionText)) {
+		else if (GameLogic.getInstance().isColorSelectionState() && !(hasColorSelectionText)) {
 			colorSelectionText = new ColorSelection();
 			this.getChildren().add(colorSelectionText);
 			hasColorSelectionText = true;
@@ -118,37 +129,75 @@ public class StatusPane extends VBox implements Updatable {
 	}
 
 	private void initializeGameEndText() {
-		String endPicURL;
-		String gameResult;
-		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			endPicURL = ClassLoader.getSystemResource("lose.png").toString();
-			gameResult = "lose";
-		} else {
-			endPicURL = ClassLoader.getSystemResource("win.jpg").toString();
-			gameResult = "win";
-		}
-		this.getChildren().add(new Text("You " + gameResult + "!"));
 
-		ImageView imageView = new ImageView(new Image(endPicURL));
-		imageView.setFitWidth(200);
-		imageView.setPreserveRatio(true);
-		this.getChildren().add(imageView);
-		
-		this.getChildren().add(new Text("The winner is " + GameLogic.getInstance().getCurrentPlayer().getName()));
+		if (GameLogic.getInstance().isGameEnd()) {
 
-	}
+			this.getChildren().remove(gameEndText);
 
-	private void initializeNewGameButton() {
-		Button newGameButton = new Button("New Game");
-		newGameButton.setPrefWidth(100);
-		newGameButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				GameLogic.getInstance().setGameEnd(false);
-				GameLogic.getInstance().newGame();
+			gameEndText = new VBox();
+			gameEndText.setSpacing(10);
+			gameEndText.setAlignment(Pos.CENTER);
+
+			String endPicURL;
+			String gameResult;
+
+			if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+				endPicURL = ClassLoader.getSystemResource("lose.png").toString();
+				gameResult = "LOSE";
+			} else {
+				endPicURL = ClassLoader.getSystemResource("win.jpg").toString();
+				gameResult = "WIN";
 			}
-		});
-		this.getChildren().add(newGameButton);
+			gameEndText.getChildren().add(new Text("   ---" + "YOU " + gameResult + "   ---"));
+
+			ImageView imageView = new ImageView(new Image(endPicURL));
+			imageView.setFitHeight(120);
+			imageView.setPreserveRatio(true);
+			gameEndText.getChildren().add(imageView);
+
+			gameEndText.getChildren()
+					.add(new Text("The winner is " + GameLogic.getInstance().getCurrentPlayer().getName()));
+
+			Button newGameButton = new Button("New Game");
+			newGameButton.setPrefWidth(100);
+			newGameButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					GameLogic.getInstance().setGameEnd(false);
+					GameLogic.getInstance().newGame();
+				}
+			});
+			gameEndText.getChildren().add(newGameButton);
+
+			this.getChildren().add(gameEndText);
+			hasGameEndText = true;
+
+		} else if (!GameLogic.getInstance().isGameEnd()) {
+			this.getChildren().remove(gameEndText);
+		}
+
 	}
+//	private void initializeNewGameButton() {
+//		
+//		
+//		if (GameLogic.getInstance().isGameEnd() && !hasNewGameButton) {
+//			newGameButton = new Button("New Game");
+//			newGameButton.setPrefWidth(100);
+//			newGameButton.setOnAction(new EventHandler<ActionEvent>() {
+//				@Override
+//				public void handle(ActionEvent event) {
+//					GameLogic.getInstance().setGameEnd(false);
+//					GameLogic.getInstance().newGame();
+//				}
+//			});
+//			this.getChildren().add(newGameButton);
+//			hasNewGameButton = true;
+//			
+//		} else if (!GameLogic.getInstance().isGameEnd()) {
+//			this.getChildren().remove(newGameButton);
+//			hasNewGameButton = false;
+//		}
+//
+//	}
 
 }

@@ -10,14 +10,8 @@ import java.util.Set;
 import entity.card.*;
 
 import entity.player.*;
-import gui.BotDeckPane;
-import gui.StatusPane;
 import gui.Updatable;
-import gui.UserDeckPane;
-import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 
 public class GameLogic {
 
@@ -108,7 +102,7 @@ public class GameLogic {
 			UnitCard card = new ColorCard();
 			cardPile.add(card);
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 20; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
 		}
