@@ -102,7 +102,7 @@ public class GameLogic {
 			UnitCard card = new ColorCard();
 			cardPile.add(card);
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 6; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
 		}
@@ -110,7 +110,7 @@ public class GameLogic {
 
 	private void dealCard() {
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 5; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));

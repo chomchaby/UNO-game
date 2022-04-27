@@ -1,6 +1,5 @@
 package entity.player;
 
-import entity.card.ChallengeCard;
 import entity.card.UnitCard;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
