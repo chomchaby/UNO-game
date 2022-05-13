@@ -104,7 +104,7 @@ public class Main extends Application {
 					System.err.println("---- NEW TURN ----");
 					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
 //					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
-//					System.out.println("Playble : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
+//					System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
 //					System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
 //					System.out.println("Current Player: " + GameLogic.getInstance().getCurrentPlayer().getName());
 //					System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());

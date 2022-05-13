@@ -14,8 +14,14 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.AudioClip;
+import logic.GameLogic;
+import main.Main2;
 
 public class StartSceneController implements Initializable{
+	
+//	private static AudioClip clickSound1 = new AudioClip(ClassLoader.getSystemResource("audio/Mouse_Click1.mp3").toString());
+	
 	@FXML
 	private BorderPane startPane;
 	@FXML
@@ -39,9 +45,10 @@ public class StartSceneController implements Initializable{
 		dialog.setContentText("Enter your name: ");
 		dialog.getDialogPane().setPrefWidth(360);
 		dialog.getDialogPane().setPrefHeight(120);
-		Optional<String> result = dialog.showAndWait();
-		if(result.isPresent()) {
-			System.out.println("name: " + result.get());
+		Optional<String> name = dialog.showAndWait();
+		if(name.isPresent()) {
+//			GameLogic.getInstance().setUserName(name.get());
+			Main2.setGamePlayScene();
 		}
 	}
 	public void showHowToPlay(ActionEvent event) {
@@ -55,8 +62,8 @@ public class StartSceneController implements Initializable{
 	}
 	
 	public void enterPlayButtonHandler(MouseEvent event) {
-		playButton.setPrefWidth(220);
-		playButton.setPrefHeight(70);
+		playButton.setPrefWidth(230);
+		playButton.setPrefHeight(75);
 	}
 	public void resetPlayButton(MouseEvent event) {
 		playButton.setPrefWidth(210);
@@ -64,8 +71,8 @@ public class StartSceneController implements Initializable{
 	}
 	
 	public void enterHowToPlayButtonHandler(MouseEvent event) {
-		howToPlayButton.setPrefWidth(220);
-		howToPlayButton.setPrefHeight(70);
+		howToPlayButton.setPrefWidth(230);
+		howToPlayButton.setPrefHeight(75);
 	}
 	public void resetHowToPlayButton(MouseEvent event) {
 		howToPlayButton.setPrefWidth(210);
@@ -73,8 +80,8 @@ public class StartSceneController implements Initializable{
 	}
 	
 	public void enterQuitButtonHandler(MouseEvent event) {
-		quitButton.setPrefWidth(220);
-		quitButton.setPrefHeight(70);
+		quitButton.setPrefWidth(230);
+		quitButton.setPrefHeight(75);
 	}
 	public void resetQuitButton(MouseEvent event) {
 		quitButton.setPrefWidth(210);

@@ -32,7 +32,7 @@ public class StatusPane extends VBox implements Updatable {
 		this.setSpacing(20);
 		this.setAlignment(Pos.CENTER);
 		// setting logo
-		logoURL = ClassLoader.getSystemResource("java.png").toString();
+		logoURL = ClassLoader.getSystemResource("image/java.png").toString();
 		Image logoPNG = new Image(logoURL);
 		ImageView imageView = new ImageView(logoPNG);
 		imageView.setFitHeight(50);
@@ -142,10 +142,10 @@ public class StatusPane extends VBox implements Updatable {
 			String gameResult;
 
 			if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-				endPicURL = ClassLoader.getSystemResource("lose.png").toString();
+				endPicURL = ClassLoader.getSystemResource("image/lose.png").toString();
 				gameResult = "LOSE";
 			} else {
-				endPicURL = ClassLoader.getSystemResource("win.jpg").toString();
+				endPicURL = ClassLoader.getSystemResource("image/win.jpg").toString();
 				gameResult = "WIN";
 			}
 			gameEndText.getChildren().add(new Text("   ---" + "YOU " + gameResult + "   ---"));

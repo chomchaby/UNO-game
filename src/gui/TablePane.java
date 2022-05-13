@@ -39,8 +39,8 @@ public class TablePane extends HBox implements Updatable {
 			}
 		});
 
-		clockwiseURL = ClassLoader.getSystemResource("clockwise.png").toString();
-		counterClockwiseURL = ClassLoader.getSystemResource("counterclockwise.png").toString();
+		clockwiseURL = ClassLoader.getSystemResource("image/clockwise.png").toString();
+		counterClockwiseURL = ClassLoader.getSystemResource("image/counterclockwise.png").toString();
 
 		update();
 

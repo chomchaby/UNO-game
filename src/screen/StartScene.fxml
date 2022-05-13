@@ -11,7 +11,7 @@
 		<Insets bottom="45.0" left="45.0" right="45.0" top="45.0" />
 	</padding>
 	<bottom>
-		<HBox fx:id="menuPane" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0" BorderPane.alignment="CENTER">
+		<HBox fx:id="menuPane" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
 			<children>
 				<Button fx:id="howToPlayButton" mnemonicParsing="false" onAction="#showHowToPlay" onMouseEntered="#enterHowToPlayButtonHandler" onMouseExited="#resetHowToPlayButton" prefHeight="65.0" prefWidth="210.0" text="HOW TO PLAY">
 					<font>

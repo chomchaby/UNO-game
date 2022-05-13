@@ -20,20 +20,20 @@ import logic.GameLogic;
 public class FontCardPane extends StackPane {
 	private UnitCard card;
 
-	private static final String colorCardURL = "color.png";
-	private static final String challengeCardURL = "challenge.png";
-	private static final String stopRedCardURL = "stop_red.png";
-	private static final String stopYellowCardURL = "stop_yellow.png";
-	private static final String stopGreenCardURL = "stop_green.png";
-	private static final String stopBlueCardURL = "stop_blue.png";
-	private static final String rotateRedCardURL = "rotate_red.png";
-	private static final String rotateYellowCardURL = "rotate_yellow.png";
-	private static final String rotateGreenCardURL = "rotate_green.png";
-	private static final String rotateBlueCardURL = "rotate_blue.png";
-	private static final String pickRedCardURL = "plus_red.png";
-	private static final String pickYellowCardURL = "plus_yellow.png";
-	private static final String pickGreenCardURL = "plus_green.png";
-	private static final String pickBlueCardURL = "plus_blue.png";
+	private static final String colorCardURL = ClassLoader.getSystemResource("image/color.png").toString();
+	private static final String challengeCardURL = ClassLoader.getSystemResource("image/challenge.png").toString();
+	private static final String stopRedCardURL = ClassLoader.getSystemResource("image/stop_red.png").toString();
+	private static final String stopYellowCardURL = ClassLoader.getSystemResource("image/stop_yellow.png").toString();
+	private static final String stopGreenCardURL = ClassLoader.getSystemResource("image/stop_green.png").toString();
+	private static final String stopBlueCardURL = ClassLoader.getSystemResource("image/stop_blue.png").toString();
+	private static final String rotateRedCardURL = ClassLoader.getSystemResource("image/rotate_red.png").toString();
+	private static final String rotateYellowCardURL = ClassLoader.getSystemResource("image/rotate_yellow.png").toString();
+	private static final String rotateGreenCardURL = ClassLoader.getSystemResource("image/rotate_green.png").toString();
+	private static final String rotateBlueCardURL = ClassLoader.getSystemResource("image/rotate_blue.png").toString();
+	private static final String pickRedCardURL = ClassLoader.getSystemResource("image/plus_red.png").toString();
+	private static final String pickYellowCardURL = ClassLoader.getSystemResource("image/plus_yellow.png").toString();
+	private static final String pickGreenCardURL = ClassLoader.getSystemResource("image/plus_green.png").toString();
+	private static final String pickBlueCardURL = ClassLoader.getSystemResource("image/plus_blue.png").toString();
 
 	public FontCardPane(UnitCard card) {
 		this.card = card;
