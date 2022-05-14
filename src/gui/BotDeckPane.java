@@ -64,14 +64,19 @@ public class BotDeckPane extends GridPane implements Updatable {
 		// update cards
 		this.getChildren().clear();
 		int amount = bot.getCardList().size();
-		for (int i = 0; i < Math.min(4, amount); i++) {
-			BackCardPane backCardPane = new BackCardPane();
-			this.add(backCardPane, i, 0);
+		if (amount <= 5) {
+			for (int i = 0; i < Math.min(5, amount); i++) {
+				BackCardPane backCardPane = new BackCardPane();
+				this.add(backCardPane, i, 0);
+			}
 		}
-		if (amount > 4) {
+
+		else {
+			for (int i = 0; i < Math.min(4, amount); i++) {
+				BackCardPane backCardPane = new BackCardPane();
+				this.add(backCardPane, i, 0);
+			}
 			Text cardLeftNumber = new Text(" +" + Integer.toString(amount - 4) + " cards");
-			if (amount - 4 == 1)
-				cardLeftNumber.setText(" +1card");
 			cardLeftNumber.setStyle("-fx-font-size:18;");
 			this.add(cardLeftNumber, 4, 0);
 		}

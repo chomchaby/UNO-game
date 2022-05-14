@@ -5,7 +5,7 @@ import gui.Updatable;
 public class UpdatableHolder {
 
 	private static UpdatableHolder instance = null;
-	Updatable[] entities;
+	private Updatable[] entities;
 
 	public UpdatableHolder(Updatable[] entities) {
 		this.entities = entities;
