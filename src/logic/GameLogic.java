@@ -12,31 +12,40 @@ import entity.card.*;
 import entity.player.*;
 import gui.Updatable;
 import javafx.scene.paint.Color;
+import sharedObject.ColorLoader;
 
 public class GameLogic {
 
 	private static GameLogic instance = null;
-	private static final Color[] colorArray = { Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW };
+	private static final Color[] colorArray = { ColorLoader.BLUE, ColorLoader.GREEN, ColorLoader.RED,
+			ColorLoader.YELLOW };
 
+	// all cards
 	private UnitCard cardOnTable;
 	private ArrayList<UnitCard> cardPile;
+
+	// player to play
 	private int playerTurn;
 	private Player currentPlayer;
 	private Player nextPlayer;
+//	private Player beforePlayer;
+
+	// general parameters
 	private int numberState;
 	private Color colorState;
 	private boolean isClockwise;
+	private boolean isGameEnd;
+
+	// special parameters
 	private boolean colorSelectionState;
 	private boolean challengeState;
 	private Color challengeColor;
-//	private Player beforePlayer;
 
+	// all players
 	private Player user;
 	private Player botJesica;
 	private Player botMagaret;
 	private Player botVanda;
-	private ArrayList<Updatable> updatableArray;
-	private boolean isGameEnd;
 
 	private GameLogic() {
 		user = new User();
@@ -52,23 +61,26 @@ public class GameLogic {
 		botJesica.setCardList(new ArrayList<UnitCard>());
 		botMagaret.setCardList(new ArrayList<UnitCard>());
 		botVanda.setCardList(new ArrayList<UnitCard>());
-		
+
 		// create all cards, put them in cardPile, and then deal cards
 		initilizeCardPile();
 		dealCard();
 
 		// set parameters
+		// player to play
 		Random rand = new Random();
 		setPlayerTurn(rand.nextInt(4) + 1000);
 		setCurrentPlayer();
+		setNextPlayer();
+//		setBeforePlayer();
+		// general parameters
 		setNumberState(cardOnTable.getNumber());
 		setColorState(cardOnTable.getColor());
 		setClockwise(true);
+		setGameEnd(false);
+		// special parameters
 		setColorSelectionState(false);
 		setChallengeState(false);
-		setNextPlayer();
-		setGameEnd(false);
-//		setBeforePlayer();
 
 	}
 
@@ -189,13 +201,13 @@ public class GameLogic {
 	}
 
 	public String myColorToString(Color color) {
-		if (color == Color.BLUE) {
+		if (color == ColorLoader.BLUE) {
 			return "BLUE";
-		} else if (color == Color.RED) {
+		} else if (color == ColorLoader.RED) {
 			return "RED";
-		} else if (color == Color.YELLOW) {
+		} else if (color == ColorLoader.YELLOW) {
 			return "YELLOW";
-		} else if (color == Color.GREEN) {
+		} else if (color == ColorLoader.GREEN) {
 			return "GREEN";
 		}
 		return "BLACK";
@@ -298,6 +310,14 @@ public class GameLogic {
 		this.isClockwise = isClockwise;
 	}
 
+	public boolean isGameEnd() {
+		return isGameEnd;
+	}
+
+	public void setGameEnd(boolean isGameEnd) {
+		this.isGameEnd = isGameEnd;
+	}
+
 	public boolean isColorSelectionState() {
 		return colorSelectionState;
 	}
@@ -338,17 +358,6 @@ public class GameLogic {
 		return (Bot) botVanda;
 	}
 
-	public ArrayList<Updatable> getUpdatableArray() {
-		return updatableArray;
-	}
-
-	public boolean isGameEnd() {
-		return isGameEnd;
-	}
-
-	public void setGameEnd(boolean isGameEnd) {
-		this.isGameEnd = isGameEnd;
-	}
 
 //	public Player getBeforePlayer() {
 //		return beforePlayer;

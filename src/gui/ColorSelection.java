@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import sharedObject.ColorLoader;
 
 public class ColorSelection extends HBox {
 	
@@ -27,26 +28,26 @@ public class ColorSelection extends HBox {
 		Button redBtn = new Button();
 		redBtn.setPrefWidth(25);
 		redBtn.setPrefHeight(25);
-		BackgroundFill bgFill = new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY);
+		BackgroundFill bgFill = new BackgroundFill(ColorLoader.RED, CornerRadii.EMPTY, Insets.EMPTY);
 		BackgroundFill[] bgFillRedA = { bgFill };
 		redBtn.setBackground(new Background(bgFillRedA));
 
 		Button yellowBtn = new Button();
 		yellowBtn.setPrefWidth(25);
 		yellowBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillYellowA = { new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillYellowA = { new BackgroundFill(ColorLoader.YELLOW, CornerRadii.EMPTY, Insets.EMPTY) };
 		yellowBtn.setBackground(new Background(bgFillYellowA));
 
 		Button blueBtn = new Button();
 		blueBtn.setPrefWidth(25);
 		blueBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillBlueA = { new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillBlueA = { new BackgroundFill(ColorLoader.BLUE, CornerRadii.EMPTY, Insets.EMPTY) };
 		blueBtn.setBackground(new Background(bgFillBlueA));
 
 		Button greenBtn = new Button();
 		greenBtn.setPrefWidth(25);
 		greenBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillGreenA = { new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillGreenA = { new BackgroundFill(ColorLoader.GREEN, CornerRadii.EMPTY, Insets.EMPTY) };
 		greenBtn.setBackground(new Background(bgFillGreenA));
 
 		this.getChildren().addAll(text, redBtn, yellowBtn, blueBtn, greenBtn);
@@ -54,7 +55,7 @@ public class ColorSelection extends HBox {
 		redBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(Color.RED);
+				handleClicked(ColorLoader.RED);
 			}
 		});
 
@@ -76,7 +77,7 @@ public class ColorSelection extends HBox {
 		yellowBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(Color.YELLOW);
+				handleClicked(ColorLoader.YELLOW);
 			}
 		});
 		yellowBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -97,7 +98,7 @@ public class ColorSelection extends HBox {
 		blueBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(Color.BLUE);
+				handleClicked(ColorLoader.BLUE);
 			}
 		});
 		blueBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -119,7 +120,7 @@ public class ColorSelection extends HBox {
 		greenBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(Color.GREEN);
+				handleClicked(ColorLoader.GREEN);
 			}
 		});
 		greenBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {

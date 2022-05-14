@@ -10,30 +10,19 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import logic.GameAction;
 import logic.GameLogic;
+import sharedObject.AudioLoader;
+import sharedObject.ColorLoader;
+import sharedObject.ImageLoader;
 
 public class FontCardPane extends StackPane {
 	private UnitCard card;
-
-	private static final String colorCardURL = ClassLoader.getSystemResource("image/color.png").toString();
-	private static final String challengeCardURL = ClassLoader.getSystemResource("image/challenge.png").toString();
-	private static final String stopRedCardURL = ClassLoader.getSystemResource("image/stop_red.png").toString();
-	private static final String stopYellowCardURL = ClassLoader.getSystemResource("image/stop_yellow.png").toString();
-	private static final String stopGreenCardURL = ClassLoader.getSystemResource("image/stop_green.png").toString();
-	private static final String stopBlueCardURL = ClassLoader.getSystemResource("image/stop_blue.png").toString();
-	private static final String rotateRedCardURL = ClassLoader.getSystemResource("image/rotate_red.png").toString();
-	private static final String rotateYellowCardURL = ClassLoader.getSystemResource("image/rotate_yellow.png").toString();
-	private static final String rotateGreenCardURL = ClassLoader.getSystemResource("image/rotate_green.png").toString();
-	private static final String rotateBlueCardURL = ClassLoader.getSystemResource("image/rotate_blue.png").toString();
-	private static final String pickRedCardURL = ClassLoader.getSystemResource("image/plus_red.png").toString();
-	private static final String pickYellowCardURL = ClassLoader.getSystemResource("image/plus_yellow.png").toString();
-	private static final String pickGreenCardURL = ClassLoader.getSystemResource("image/plus_green.png").toString();
-	private static final String pickBlueCardURL = ClassLoader.getSystemResource("image/plus_blue.png").toString();
 
 	public FontCardPane(UnitCard card) {
 		this.card = card;
@@ -66,26 +55,52 @@ public class FontCardPane extends StackPane {
 		if (GameLogic.getInstance().isGameEnd()) {
 			return;
 		} 
-		else if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
+		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
 			return;
 		} 
-		else if (GameLogic.getInstance().getUser().isDrawn() == true) {
+		if (GameLogic.getInstance().getUser().isDrawn() == true) {
 			return;
 		}
-		
+		if (GameLogic.getInstance().isColorSelectionState()) {
+			return;
+		}
+		if (GameLogic.getInstance().isChallengeState()) {
+			return;
+		}
+		// handler
 		if (GameLogic.getInstance().getUser().getDrawableCardList().contains(card)) {
+			AudioLoader.mouseClick1Sound.play();
 			GameLogic.getInstance().getUser().drawCard(card);
+		}
+		else {
+			AudioLoader.nopeSound.play();
 		}
 	}
 
 	private void onMouseEnteredHandler() {
+		if (GameLogic.getInstance().isGameEnd()) {
+			return;
+		} 
+		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
+			return;
+		} 
+		if (GameLogic.getInstance().getUser().isDrawn() == true) {
+			return;
+		}
+		if (GameLogic.getInstance().isColorSelectionState()) {
+			return;
+		}
+		if (GameLogic.getInstance().isChallengeState()) {
+			return;
+		}
+		// handler
 		if (this.card != GameLogic.getInstance().getCardOnTable()) {
-//			this.setPrefWidth(90);
+			this.setStyle("-fx-cursor: hand;");
 		}
 	}
 
 	private void onMouseExitedHandler() {
-
+		this.setStyle("-fx-cursor: default;");
 	}
 
 	private void draw() {
@@ -109,53 +124,53 @@ public class FontCardPane extends StackPane {
 
 		else {
 			if (card.getAction() == GameAction.CHANGECOLOR) {
-				shape.setFill(new ImagePattern(new Image(colorCardURL)));
+				shape.setFill(new ImagePattern(new Image(ImageLoader.colorCardURL)));
 				this.getChildren().add(shape);
 
 			} else if (card.getAction() == GameAction.CHALLENGE) {
-				shape.setFill(new ImagePattern(new Image(challengeCardURL)));
+				shape.setFill(new ImagePattern(new Image(ImageLoader.challengeCardURL)));
 				this.getChildren().add(shape);
 
 			} else if (card.getAction() == GameAction.STOP) {
-				if (card.getColor() == Color.RED) {
-					shape.setFill(new ImagePattern(new Image(stopRedCardURL)));
+				if (card.getColor() == ColorLoader.RED) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.stopRedCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.YELLOW) {
-					shape.setFill(new ImagePattern(new Image(stopYellowCardURL)));
+				} else if (card.getColor() == ColorLoader.YELLOW) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.stopYellowCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.GREEN) {
-					shape.setFill(new ImagePattern(new Image(stopGreenCardURL)));
+				} else if (card.getColor() == ColorLoader.GREEN) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.stopGreenCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.BLUE) {
-					shape.setFill(new ImagePattern(new Image(stopBlueCardURL)));
+				} else if (card.getColor() == ColorLoader.BLUE) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.stopBlueCardURL)));
 					this.getChildren().add(shape);
 				}
 			} else if (card.getAction() == GameAction.ROTATE) {
-				if (card.getColor() == Color.RED) {
-					shape.setFill(new ImagePattern(new Image(rotateRedCardURL)));
+				if (card.getColor() == ColorLoader.RED) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateRedCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.YELLOW) {
-					shape.setFill(new ImagePattern(new Image(rotateYellowCardURL)));
+				} else if (card.getColor() == ColorLoader.YELLOW) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateYellowCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.GREEN) {
-					shape.setFill(new ImagePattern(new Image(rotateGreenCardURL)));
+				} else if (card.getColor() == ColorLoader.GREEN) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateGreenCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.BLUE) {
-					shape.setFill(new ImagePattern(new Image(rotateBlueCardURL)));
+				} else if (card.getColor() == ColorLoader.BLUE) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateBlueCardURL)));
 					this.getChildren().add(shape);
 				}
 			} else if (card.getAction() == GameAction.PICK) {
-				if (card.getColor() == Color.RED) {
-					shape.setFill(new ImagePattern(new Image(pickRedCardURL)));
+				if (card.getColor() == ColorLoader.RED) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.pickRedCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.YELLOW) {
-					shape.setFill(new ImagePattern(new Image(pickYellowCardURL)));
+				} else if (card.getColor() == ColorLoader.YELLOW) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.pickYellowCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.GREEN) {
-					shape.setFill(new ImagePattern(new Image(pickGreenCardURL)));
+				} else if (card.getColor() == ColorLoader.GREEN) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.pickGreenCardURL)));
 					this.getChildren().add(shape);
-				} else if (card.getColor() == Color.BLUE) {
-					shape.setFill(new ImagePattern(new Image(pickBlueCardURL)));
+				} else if (card.getColor() == ColorLoader.BLUE) {
+					shape.setFill(new ImagePattern(new Image(ImageLoader.pickBlueCardURL)));
 					this.getChildren().add(shape);
 				}
 			}

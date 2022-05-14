@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameLogic;
+import sharedObject.ImageLoader;
 
 public class TablePane extends HBox implements Updatable {
 
@@ -19,9 +20,6 @@ public class TablePane extends HBox implements Updatable {
 	private VBox currentColorPane;
 
 	private boolean hasCardPilePane;
-
-	private final String clockwiseURL;
-	private final String counterClockwiseURL;
 
 	public TablePane() {
 		// setting pane
@@ -38,9 +36,6 @@ public class TablePane extends HBox implements Updatable {
 				onClickHandler();
 			}
 		});
-
-		clockwiseURL = ClassLoader.getSystemResource("image/clockwise.png").toString();
-		counterClockwiseURL = ClassLoader.getSystemResource("image/counterclockwise.png").toString();
 
 		update();
 
@@ -97,9 +92,9 @@ public class TablePane extends HBox implements Updatable {
 			// setting rotation sign
 			Image rotationPNG;
 			if (GameLogic.getInstance().isClockwise())
-				rotationPNG = new Image(clockwiseURL);
+				rotationPNG = new Image(ImageLoader.clockwiseURL);
 			else
-				rotationPNG = new Image(counterClockwiseURL);
+				rotationPNG = new Image(ImageLoader.counterClockwiseURL);
 
 			ImageView imageView = new ImageView(rotationPNG);
 			imageView.setFitHeight(50);

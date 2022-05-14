@@ -8,6 +8,7 @@ import entity.card.ChallengeCard;
 import entity.card.UnitCard;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
+import sharedObject.ColorLoader;
 
 public class Bot extends Player {
 
@@ -69,16 +70,16 @@ public class Bot extends Player {
 		// choose the color that has the most cards in list.
 		int[] count = { 0, 0, 0, 0 };
 		for (UnitCard card : this.getCardList()) {
-			if (card.getColor() == Color.BLUE) {
+			if (card.getColor() == ColorLoader.BLUE) {
 				count[0] += 1;
 			}
-			if (card.getColor() == Color.GREEN) {
+			if (card.getColor() == ColorLoader.GREEN) {
 				count[1] += 1;
 			}
-			if (card.getColor() == Color.RED) {
+			if (card.getColor() == ColorLoader.RED) {
 				count[2] += 1;
 			}
-			if (card.getColor() == Color.YELLOW) {
+			if (card.getColor() == ColorLoader.YELLOW) {
 				count[3] += 1;
 			}
 		}
@@ -92,13 +93,13 @@ public class Bot extends Player {
 		Collections.shuffle(ind);
 
 		if (ind.get(0) == 0) {
-			return Color.BLUE;
+			return ColorLoader.BLUE;
 		} else if (ind.get(0) == 1) {
-			return Color.GREEN;
+			return ColorLoader.GREEN;
 		} else if (ind.get(0) == 2) {
-			return Color.RED;
+			return ColorLoader.RED;
 		} else {
-			return Color.YELLOW;
+			return ColorLoader.YELLOW;
 		}
 
 	}

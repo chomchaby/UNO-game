@@ -13,13 +13,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.GameLogic;
 import screen.GamePlayScene;
+import sharedObject.AudioLoader;
 import javafx.scene.Parent;
 
 public class Main2 extends Application {
 
 	private static Stage primaryStage;
-	private static AudioClip startBGSound;
-	private static AudioClip gamePlayBGSound;
 	private static Parent startScene;
 	private static GamePlayScene gamePlayScene;
 
@@ -31,6 +30,7 @@ public class Main2 extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		Main2.primaryStage = primaryStage;
+		
 		// create startScene
 		try {
 			startScene = FXMLLoader.load(getClass().getClassLoader().getResource("screen/StartScene.fxml"));
@@ -39,12 +39,12 @@ public class Main2 extends Application {
 		}
 		// create gamePlayScene
 		gamePlayScene = new GamePlayScene();
-		// create bgSound
-		startBGSound = new AudioClip(ClassLoader.getSystemResource("audio/Funky_Bass.mp3").toString());
-		startBGSound.setCycleCount(Timeline.INDEFINITE);
-		gamePlayBGSound = new AudioClip(ClassLoader.getSystemResource("audio/Soft_Piano.mp3").toString());
-		gamePlayBGSound.setCycleCount(Timeline.INDEFINITE);
-		gamePlayBGSound.setVolume(0.5);
+		
+		// set up bgSound
+		AudioLoader.startBGSound.setCycleCount(Timeline.INDEFINITE);
+		AudioLoader.startBGSound.setVolume(0.9);
+		AudioLoader.gamePlayBGSound.setCycleCount(Timeline.INDEFINITE);
+		AudioLoader.gamePlayBGSound.setVolume(0.5);
 
 		initializeStartScene();
 	}
@@ -55,20 +55,20 @@ public class Main2 extends Application {
 		primaryStage.setTitle("Uno Unoo");
 		primaryStage.setResizable(false);
 		primaryStage.show();
-		// set bgSound
-		gamePlayBGSound.stop();
-		startBGSound.play();
-		startBGSound.setCycleCount(Timeline.INDEFINITE);
+		// play bgSound
+		AudioLoader.gamePlayBGSound.stop();
+		AudioLoader.startBGSound.play();
+
 	}
 
-	public static void initializeGamePlayScene(String name) {
+	public static void initializeGamePlayScene() {
 
 		primaryStage.setScene(new Scene(gamePlayScene));
 		primaryStage.setTitle("I just wanna pen fan you dai bor?");
 		primaryStage.show();
-		// set bgSound
-		startBGSound.stop();
-		gamePlayBGSound.play();
+		// play bgSound
+		AudioLoader.startBGSound.stop();
+		AudioLoader.gamePlayBGSound.play();
 
 		Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
 			@Override
