@@ -55,7 +55,7 @@ public class ColorSelection extends HBox {
 		redBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(ColorLoader.RED);
+				selectColor(ColorLoader.RED);
 			}
 		});
 
@@ -77,7 +77,7 @@ public class ColorSelection extends HBox {
 		yellowBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(ColorLoader.YELLOW);
+				selectColor(ColorLoader.YELLOW);
 			}
 		});
 		yellowBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -98,7 +98,7 @@ public class ColorSelection extends HBox {
 		blueBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(ColorLoader.BLUE);
+				selectColor(ColorLoader.BLUE);
 			}
 		});
 		blueBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -120,7 +120,7 @@ public class ColorSelection extends HBox {
 		greenBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				handleClicked(ColorLoader.GREEN);
+				selectColor(ColorLoader.GREEN);
 			}
 		});
 		greenBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -140,7 +140,7 @@ public class ColorSelection extends HBox {
 		
 	}
 	
-	private void handleClicked(Color color) {
+	private void selectColor(Color color) {
 
 		// for challenge 
 		if (GameLogic.getInstance().isChallengeState()) {
@@ -160,7 +160,7 @@ public class ColorSelection extends HBox {
 			// to close ColorSection Pane
 			GameLogic.getInstance().setColorSelectionState(false);
 			// the action of color card ends.
-			GameLogic.getInstance().getUser().setDrawn(true);
+			GameLogic.getInstance().getUser().setPlaced(true);
 		}
 		
 	}

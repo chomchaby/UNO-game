@@ -6,24 +6,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="startPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1250.0" style="-fx-background-size: cover;" styleClass="startPane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.StartSceneController">
+<BorderPane fx:id="startPane" maxHeight="-Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefHeight="750.0" prefWidth="1250.0"
+	style="-fx-background-size: cover;" styleClass="startPane"
+	stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/18"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="screen.StartSceneController">
 	<padding>
 		<Insets bottom="45.0" left="45.0" right="45.0" top="45.0" />
 	</padding>
 	<bottom>
-		<HBox fx:id="menuPane" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+		<HBox fx:id="menuPane" alignment="CENTER" prefHeight="100.0"
+			prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
 			<children>
-				<Button fx:id="howToPlayButton" mnemonicParsing="false" onAction="#showHowToPlay" onMouseEntered="#enterHowToPlayButtonHandler" onMouseExited="#resetHowToPlayButton" prefHeight="65.0" prefWidth="210.0" text="HOW TO PLAY">
+				<Button fx:id="howToPlayButton" mnemonicParsing="false"
+					onAction="#showHowToPlay"
+					onMouseEntered="#enterHowToPlayButtonHandler"
+					onMouseExited="#resetHowToPlayButton" prefHeight="65.0"
+					prefWidth="210.0" text="HOW TO PLAY">
 					<font>
 						<Font name="System Bold" size="20.0" />
 					</font>
 				</Button>
-				<Button fx:id="playButton" mnemonicParsing="false" onAction="#playGame" onMouseEntered="#enterPlayButtonHandler" onMouseExited="#resetPlayButton" prefHeight="65.0" prefWidth="210.0" text="PLAY">
+				<Button fx:id="playButton" mnemonicParsing="false"
+					onAction="#playGame" onMouseEntered="#enterPlayButtonHandler"
+					onMouseExited="#resetPlayButton" prefHeight="65.0"
+					prefWidth="210.0" text="PLAY">
 					<font>
 						<Font name="System Bold" size="25.0" />
 					</font>
 				</Button>
-				<Button fx:id="quitButton" mnemonicParsing="false" onAction="#quitGame" onMouseEntered="#enterQuitButtonHandler" onMouseExited="#resetQuitButton" prefHeight="65.0" prefWidth="210.0" text="QUIT">
+				<Button fx:id="quitButton" mnemonicParsing="false"
+					onAction="#quitGame" onMouseEntered="#enterQuitButtonHandler"
+					onMouseExited="#resetQuitButton" prefHeight="65.0"
+					prefWidth="210.0" text="QUIT">
 					<font>
 						<Font name="System Bold" size="25.0" />
 					</font>

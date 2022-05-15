@@ -21,8 +21,6 @@ import sharedObject.AudioLoader;
 
 public class StartSceneController implements Initializable {
 
-//	private static AudioClip clickSound1 = new AudioClip(ClassLoader.getSystemResource("audio/Mouse_Click1.mp3").toString());
-
 	@FXML
 	private BorderPane startPane;
 	@FXML
@@ -69,42 +67,39 @@ public class StartSceneController implements Initializable {
 	}
 
 	public void enterPlayButtonHandler(MouseEvent event) {
-		AudioLoader.mouseEnterSound.play();
-		playButton.setPrefWidth(230);
-		playButton.setPrefHeight(75);
-		playButton.setStyle("-fx-cursor: hand;");
+		enterButtonHandler(playButton);
 	}
 
 	public void resetPlayButton(MouseEvent event) {
-		playButton.setPrefWidth(210);
-		playButton.setPrefHeight(65);
-		playButton.setStyle("-fx-cursor: default;");
+		resetButtonHandler(playButton);
 	}
 
 	public void enterHowToPlayButtonHandler(MouseEvent event) {
-		AudioLoader.mouseEnterSound.play();
-		howToPlayButton.setPrefWidth(230);
-		howToPlayButton.setPrefHeight(75);
-		howToPlayButton.setStyle("-fx-cursor: hand;");
+		enterButtonHandler(howToPlayButton);
 	}
 
 	public void resetHowToPlayButton(MouseEvent event) {
-		howToPlayButton.setPrefWidth(210);
-		howToPlayButton.setPrefHeight(65);
-		howToPlayButton.setStyle("-fx-cursor: default;");
+		resetButtonHandler(howToPlayButton);
 	}
 
 	public void enterQuitButtonHandler(MouseEvent event) {
-		AudioLoader.mouseEnterSound.play();
-		quitButton.setPrefWidth(230);
-		quitButton.setPrefHeight(75);
-		quitButton.setStyle("-fx-cursor: hand;");
+		enterButtonHandler(quitButton);
 	}
 
 	public void resetQuitButton(MouseEvent event) {
-		quitButton.setPrefWidth(210);
-		quitButton.setPrefHeight(65);
-		quitButton.setStyle("-fx-cursor: default;");
+		resetButtonHandler(quitButton);
+	}
+	
+	private void enterButtonHandler(Button button) {
+		AudioLoader.mouseEnterSound.play();
+		button.setPrefWidth(230);
+		button.setPrefHeight(75);
+		button.setStyle("-fx-cursor: hand;");
+	}
+	
+	private void resetButtonHandler(Button button) {
+		button.setPrefWidth(210);
+		button.setPrefHeight(65);
 	}
 
 }

@@ -26,8 +26,8 @@ public class FontCardPane extends StackPane {
 
 	public FontCardPane(UnitCard card) {
 		this.card = card;
-		this.setPrefHeight(110);
-		this.setPrefWidth(80);
+		this.setPrefHeight(100);
+		this.setPrefWidth(72);
 		this.draw();
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -51,26 +51,28 @@ public class FontCardPane extends StackPane {
 	}
 
 	private void onClickHandler() {
-		// draw card
+		// place card
+		// not user turn
 		if (GameLogic.getInstance().isGameEnd()) {
 			return;
 		} 
 		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
 			return;
 		} 
-		if (GameLogic.getInstance().getUser().isDrawn() == true) {
+		// not a card in userDeckPane
+		if (GameLogic.getInstance().getCardOnTable() == card) {
+			return;
+		} 
+		// user turn, but is not time to place
+		if (GameLogic.getInstance().getUser().isPlaced() || GameLogic.getInstance().isColorSelectionState() || GameLogic.getInstance().isChallengeState()) {
+			AudioLoader.nopeSound.play();
 			return;
 		}
-		if (GameLogic.getInstance().isColorSelectionState()) {
-			return;
-		}
-		if (GameLogic.getInstance().isChallengeState()) {
-			return;
-		}
-		// handler
-		if (GameLogic.getInstance().getUser().getDrawableCardList().contains(card)) {
+
+		// handler for placing card
+		if (GameLogic.getInstance().getUser().getPlaceableCardList().contains(card)) {
 			AudioLoader.mouseClick1Sound.play();
-			GameLogic.getInstance().getUser().drawCard(card);
+			GameLogic.getInstance().getUser().placeCard(card);
 		}
 		else {
 			AudioLoader.nopeSound.play();
@@ -84,7 +86,7 @@ public class FontCardPane extends StackPane {
 		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
 			return;
 		} 
-		if (GameLogic.getInstance().getUser().isDrawn() == true) {
+		if (GameLogic.getInstance().getUser().isPlaced() == true) {
 			return;
 		}
 		if (GameLogic.getInstance().isColorSelectionState()) {
@@ -109,9 +111,9 @@ public class FontCardPane extends StackPane {
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
 
-		Rectangle shape = new Rectangle(64, 94);
-		shape.setArcWidth(8);
-		shape.setArcHeight(8);
+		Rectangle shape = new Rectangle(58, 86);
+		shape.setArcWidth(9);
+		shape.setArcHeight(9);
 
 		if (card.getAction() == GameAction.NONE) {
 			shape.setFill(card.getColor());

@@ -12,7 +12,7 @@ public class NormalCard extends UnitCard {
 	}
 
 	@Override
-	public boolean isDrawable() {
+	public boolean isPlaceable() {
 		// in case at the beginning cardOnTable is black card 
 		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;

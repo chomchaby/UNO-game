@@ -18,29 +18,27 @@ public class Bot extends Player {
 
 	@Override
 	public void play() {
-		setDrawableCardList();
-		if (drawableCardList.size() == 0) {
-			pick(1);
-			setDrawableCardList();
-			if (drawableCardList.size() > 0)
-				drawCard(wiseDraw(drawableCardList));
+		setPlaceableCardList();
+		if (placeableCardList.size() == 0) {
+			drawCard(1);
+			setPlaceableCardList();
+			if (placeableCardList.size() > 0)
+				placeCard(wisePlace(placeableCardList));
 		} else {
-			drawCard(wiseDraw(drawableCardList));
+			placeCard(wisePlace(placeableCardList));
 		}
 	}
 
 	@Override
-	public void drawCard(UnitCard card) {
+	public void placeCard(UnitCard card) {
 		// act like bot is thinking...
 		GameLogic.getInstance().longProcessing();
-		super.drawCard(card);
+		super.placeCard(card);
 	}
 
 	@Override
-	public void pick(int n) {
-		// act like bot is thinking...
-		GameLogic.getInstance().longProcessing();
-		super.pick(n);
+	public void drawCard(int n) {
+		super.drawCard(n);
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class Bot extends Player {
 
 	}
 
-	private UnitCard wiseDraw(ArrayList<UnitCard> drawableCardList) {
+	private UnitCard wisePlace(ArrayList<UnitCard> drawableCardList) {
 		// the cleverest :)
 		Collections.shuffle(drawableCardList);
 		return drawableCardList.get(0);

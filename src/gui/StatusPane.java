@@ -13,7 +13,6 @@ import logic.GameLogic;
 
 public class StatusPane extends VBox implements Updatable {
 
-	private final String logoURL;
 	private TablePane tablePane;
 
 	private Text currentPlayerText;
@@ -31,17 +30,11 @@ public class StatusPane extends VBox implements Updatable {
 
 		this.setSpacing(20);
 		this.setAlignment(Pos.CENTER);
-		// setting logo
-		logoURL = ClassLoader.getSystemResource("image/java.png").toString();
-		Image logoPNG = new Image(logoURL);
-		ImageView imageView = new ImageView(logoPNG);
-		imageView.setFitHeight(50);
-		imageView.setFitWidth(80);
 
 		// create tablePane
 		tablePane = new TablePane();
 
-		this.getChildren().addAll(imageView, tablePane);
+		this.getChildren().addAll(tablePane);
 		update();
 
 	}

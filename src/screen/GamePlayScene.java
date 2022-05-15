@@ -2,10 +2,10 @@ package screen;
 
 import java.util.ArrayList;
 
-import gui.BotDeckPane;
+import gui.BotPane;
 import gui.StatusPane;
 import gui.Updatable;
-import gui.UserDeckPane;
+import gui.UserPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -21,40 +21,58 @@ public class GamePlayScene extends BorderPane{
 		this.setPadding(new Insets(10));
 		this.setPrefHeight(750);
 		this.setPrefWidth(1250);
+		
+		// create bot pane
+		BotPane botJesicaPane = new BotPane(GameLogic.getInstance().getBotJesica());
+		BotPane botMagaretPane = new BotPane(GameLogic.getInstance().getBotMagaret());
+		BotPane botVandaPane = new BotPane(GameLogic.getInstance().getBotVanda());
 
-		// set other player pane & status pane
-		UserDeckPane userPane = new UserDeckPane(GameLogic.getInstance().getUser());
-		BotDeckPane botJesicaPane = new BotDeckPane(GameLogic.getInstance().getBotJesica());
-		Rotate rotation90 = new Rotate(90, Rotate.Z_AXIS);
-		rotation90.setPivotX(195);
-		rotation90.setPivotY(50);
-		botJesicaPane.getTransforms().add(rotation90);
-
-		BotDeckPane botMagaretPane = new BotDeckPane(GameLogic.getInstance().getBotMagaret());
-		Rotate rotation180 = new Rotate(180, Rotate.Z_AXIS);
-		rotation180.setPivotX(180);
-		rotation180.setPivotY(60);
-		botMagaretPane.getTransforms().add(rotation180);
-
-		BotDeckPane botVandaPane = new BotDeckPane(GameLogic.getInstance().getBotVanda());
-		Rotate rotation270 = new Rotate(270, Rotate.Z_AXIS);
-		rotation270.setPivotX(165);
-		rotation270.setPivotY(50);
-		botVandaPane.getTransforms().add(rotation270);
-
-		StatusPane statusPane = new StatusPane();
-
-		// set Pane in root
-		this.setCenter(statusPane);
-		BorderPane.setAlignment(statusPane, Pos.CENTER);
-		this.setBottom(userPane);
-		BorderPane.setAlignment(userPane, Pos.CENTER);
+		// put bot pane into gamePlayScene
 		this.setLeft(botJesicaPane);
 		BorderPane.setAlignment(botJesicaPane, Pos.CENTER);
 		this.setTop(botMagaretPane);
 		BorderPane.setAlignment(botMagaretPane, Pos.CENTER);
 		this.setRight(botVandaPane);
 		BorderPane.setAlignment(botVandaPane, Pos.CENTER);
+		
+		// set rotation
+		botJesicaPane.setRotate(90);
+		botMagaretPane.setRotate(180);
+		botVandaPane.setRotate(270);
+		
+		// set translation
+		botJesicaPane.setTranslateX(-45);
+		botVandaPane.setTranslateX(45);
+		
+//		Rotate rotation90 = new Rotate(90, Rotate.Z_AXIS);
+//		rotation90.setPivotX(195);
+//		rotation90.setPivotY(50);
+//		botJesicaPane.getTransforms().add(rotation90);		
+		
+//		Rotate rotation180 = new Rotate(180, Rotate.Z_AXIS);
+//		rotation180.setPivotX(180);
+//		rotation180.setPivotY(60);
+//		botMagaretPane.getTransforms().add(rotation180);
+
+//		Rotate rotation270 = new Rotate(270, Rotate.Z_AXIS);
+//		rotation270.setPivotX(165);
+//		rotation270.setPivotY(50);
+//		botVandaPane.getTransforms().add(rotation270);
+
+
+
+		StatusPane statusPane = new StatusPane();
+
+		// set other player pane & status pane
+		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
+		
+		
+		// set Pane in root
+		this.setCenter(statusPane);
+		BorderPane.setAlignment(statusPane, Pos.CENTER);
+		this.setBottom(userPane);
+		BorderPane.setAlignment(userPane, Pos.CENTER);
+		
 
 		// set up updatableItems
 		updatableItems = new ArrayList<Updatable>();

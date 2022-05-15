@@ -6,7 +6,7 @@ import logic.GameLogic;
 
 public class User extends Player {
 
-	private boolean drawn, picked, turnEnd;
+	private boolean isPlaced, isDrawn, turnEnd;
 
 	public User() {
 		super();
@@ -14,15 +14,15 @@ public class User extends Player {
 
 	@Override
 	public void play() {
-		setDrawableCardList();
+		setPlaceableCardList();
 		while (!turnEnd) {
 			// have to do something... whyyyy
 			// System.out.print("");
 			doSomething();
-			if (isDrawn()) {
+			if (isPlaced()) {
 				turnEnd = true;
-			} else if (isPicked()) {
-				if (drawableCardList.size() == 0) {
+			} else if (isDrawn()) {
+				if (placeableCardList.size() == 0) {
 					turnEnd = true;
 				}
 // 				java.util.ConcurrentModificationException...
@@ -44,27 +44,27 @@ public class User extends Player {
 		}
 //		System.out.println("Drawn: " + isDrawn());
 //		System.out.println("Picked: " + isPicked());
+		setPlaced(false);
 		setDrawn(false);
-		setPicked(false);
 		turnEnd = false;
 		GameLogic.getInstance().shortProcessing();
 	}
 
 	@Override
-	public void drawCard(UnitCard card) {
-		super.drawCard(card);
+	public void placeCard(UnitCard card) {
+		super.placeCard(card);
 		// it's not the end of BLACK card, 
 		// player must choose color and challenge if necessary
 		if (card.getColor() != Color.BLACK)
-			setDrawn(true);
+			setPlaced(true);
 	}
 
 	@Override
-	public void pick(int n) {
-		super.pick(n);
+	public void drawCard(int n) {
+		super.drawCard(n);
 		if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getUser()) {
-			setDrawableCardList();
-			setPicked(true);
+			setPlaceableCardList();
+			setDrawn(true);
 		}
 	}
 
@@ -78,27 +78,27 @@ public class User extends Player {
 			// to close result text
 			GameLogic.getInstance().setChallengeState(false);
 			// the action of challenge card ends.
-			GameLogic.getInstance().getUser().setDrawn(true);
+			GameLogic.getInstance().getUser().setPlaced(true);
 
 		});
 		t.start();
 
 	}
 
+	public boolean isPlaced() {
+		return isPlaced;
+	}
+
+	public void setPlaced(boolean isPlaced) {
+		this.isPlaced = isPlaced;
+	}
+
 	public boolean isDrawn() {
-		return drawn;
+		return isDrawn;
 	}
 
-	public void setDrawn(boolean drawn) {
-		this.drawn = drawn;
-	}
-
-	public boolean isPicked() {
-		return picked;
-	}
-
-	public void setPicked(boolean picked) {
-		this.picked = picked;
+	public void setDrawn(boolean isDrawn) {
+		this.isDrawn = isDrawn;
 	}
 
 	private void doSomething() {

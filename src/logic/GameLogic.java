@@ -93,7 +93,7 @@ public class GameLogic {
 
 	private void initilizeCardPile() {
 		for (Color color : colorArray) {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 20; i++) {
 				UnitCard card = new NormalCard(i, color);
 				cardPile.add(card);
 			}
@@ -106,7 +106,7 @@ public class GameLogic {
 				cardPile.add(card);
 			}
 			for (int i = 0; i < 2; i++) {
-				UnitCard card = new PickCard(color);
+				UnitCard card = new DrawCard(color);
 				cardPile.add(card);
 			}
 		}
@@ -122,7 +122,7 @@ public class GameLogic {
 
 	private void dealCard() {
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 14; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));
@@ -188,12 +188,12 @@ public class GameLogic {
 			if (GameLogic.getInstance().getNextPlayer() instanceof User) {
 				GameLogic.getInstance().longProcessing();
 			}
-			GameLogic.getInstance().getNextPlayer().pick(4);
+			GameLogic.getInstance().getNextPlayer().drawCard(4);
 		} else {
 			if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
 				GameLogic.getInstance().longProcessing();
 			}
-			GameLogic.getInstance().getCurrentPlayer().pick(2);
+			GameLogic.getInstance().getCurrentPlayer().drawCard(2);
 		}
 		// more time to read
 		GameLogic.getInstance().longProcessing();

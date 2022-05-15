@@ -13,7 +13,7 @@ public abstract class UnitCard {
 		this.color = color;
 	}
 
-	public abstract boolean isDrawable();
+	public abstract boolean isPlaceable();
 
 	public abstract String toString();
 

@@ -13,7 +13,7 @@ public class ColorCard extends EffectCard {
 	}
 
 	@Override
-	public boolean isDrawable() {
+	public boolean isPlaceable() {
 		return true;
 	}
 

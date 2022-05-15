@@ -14,7 +14,7 @@ public class ChallengeCard extends EffectCard {
 	}
 
 	@Override
-	public boolean isDrawable() {
+	public boolean isPlaceable() {
 		return true;
 	}
 

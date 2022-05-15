@@ -21,5 +21,8 @@ public class ImageLoader {
 	// rotation sign
 	public static String clockwiseURL = ClassLoader.getSystemResource("image/clockwise.png").toString();
 	public static String counterClockwiseURL = ClassLoader.getSystemResource("image/counterclockwise.png").toString();
+	
+	// UNO logo
+	public static String logoURL = ClassLoader.getSystemResource("image/UNO_Logo.png").toString();
 
 }

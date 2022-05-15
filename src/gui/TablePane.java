@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameLogic;
+import sharedObject.AudioLoader;
 import sharedObject.ImageLoader;
 
 public class TablePane extends HBox implements Updatable {
@@ -29,7 +30,9 @@ public class TablePane extends HBox implements Updatable {
 		// setting card pile
 		this.cardPilePane = new BackCardPane();
 		this.cardPilePane.setPrefWidth(80);
+		this.cardPilePane.setPrefHeight(110);
 		this.cardPilePane.setMaxHeight(110);
+		this.cardPilePane.draw();
 		this.cardPilePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -46,14 +49,26 @@ public class TablePane extends HBox implements Updatable {
 		initializeCardOnTablePane();
 		initializeCurrentColorPane();
 	}
-	
+
 	private void onClickHandler() {
-		// pick a card from card pile
-		if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
-			if (!(GameLogic.getInstance().getUser().isPicked() || GameLogic.getInstance().isColorSelectionState())) {
-				GameLogic.getInstance().getUser().pick(1);
-			}
+		// draw a card from card pile
+		// not user turn
+		if (GameLogic.getInstance().isGameEnd()) {
+			return;
 		}
+		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
+			return;
+		}
+		// user turn, but is not time to draw
+		if (GameLogic.getInstance().getUser().isDrawn() || GameLogic.getInstance().getUser().isPlaced()
+				|| GameLogic.getInstance().isColorSelectionState() || GameLogic.getInstance().isChallengeState()) {
+			AudioLoader.nopeSound.play();
+			return;
+		}
+
+		// handler for placing card
+		AudioLoader.mouseClick2Sound.play();
+		GameLogic.getInstance().getUser().drawCard(1);
 
 	}
 
@@ -112,7 +127,7 @@ public class TablePane extends HBox implements Updatable {
 		}
 
 	}
-	
+
 //	private void initializeGameEndText() {
 //
 //		if (GameLogic.getInstance().isGameEnd() && !hasGameEndText) {

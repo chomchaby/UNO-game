@@ -13,7 +13,7 @@ public class StopCard extends EffectCard {
 	}
 
 	@Override
-	public boolean isDrawable() {
+	public boolean isPlaceable() {
 		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
 		}

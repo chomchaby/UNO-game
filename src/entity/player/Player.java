@@ -11,12 +11,14 @@ import logic.GameLogic;
 public abstract class Player {
 	protected String name;
 	protected ArrayList<UnitCard> cardList;
-	protected ArrayList<UnitCard> drawableCardList;
+	protected ArrayList<UnitCard> placeableCardList;
 	protected boolean isPlayable;
+	protected int score;
 
 	public Player() {
 		cardList = new ArrayList<UnitCard>();
 		setPlayable(true);
+		setScore(0);
 	}
 
 	public Player(String name) {
@@ -27,9 +29,9 @@ public abstract class Player {
 
 	public abstract void play();
 
-	public void drawCard(UnitCard card) {
+	public void placeCard(UnitCard card) {
 		
-		System.out.println(name + " draws a card... >> " + card.toString());
+		System.out.println(name + " places a card... >> " + card.toString());
 		this.getCardList().remove(card);
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
@@ -40,9 +42,9 @@ public abstract class Player {
 		}
 	}
 
-	public void pick(int n) {
+	public void drawCard(int n) {
 		
-		System.out.println(name + " picks some cards...");
+		System.out.println(name + " draws some cards...");
 		for (int i = 0; i < n; i++) {
 			UnitCard newCard = GameLogic.getInstance().getCardPile().get(0);
 			this.getCardList().add(newCard);
@@ -72,15 +74,15 @@ public abstract class Player {
 		this.cardList = cardList;
 	}
 
-	public ArrayList<UnitCard> getDrawableCardList() {
-		return drawableCardList;
+	public ArrayList<UnitCard> getPlaceableCardList() {
+		return placeableCardList;
 	}
 
-	public void setDrawableCardList() {
-		drawableCardList = new ArrayList<UnitCard>();
+	public void setPlaceableCardList() {
+		placeableCardList = new ArrayList<UnitCard>();
 		for (UnitCard card : this.getCardList()) {
-			if (card.isDrawable())
-				this.getDrawableCardList().add(card);
+			if (card.isPlaceable())
+				this.getPlaceableCardList().add(card);
 		}
 	}
 	
@@ -92,4 +94,10 @@ public abstract class Player {
 		this.isPlayable = isPlayable;
 	}
 
+	public int getScore() {
+		return this.score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
 }

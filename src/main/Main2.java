@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.GameLogic;
@@ -39,6 +38,7 @@ public class Main2 extends Application {
 		}
 		// create gamePlayScene
 		gamePlayScene = new GamePlayScene();
+//		gamePlayScene = FXMLLoader.load(getClass().getClassLoader().getResource("screen/GamePlayScene2.fxml"));
 		
 		// set up bgSound
 		AudioLoader.startBGSound.setCycleCount(Timeline.INDEFINITE);
@@ -76,6 +76,8 @@ public class Main2 extends Application {
 				for (Updatable item : gamePlayScene.getUpdatableItems()) {
 					item.update();
 				}
+//				((BotDeckPane)GamePlaySceneController.botMagaretDeckPane).update();
+				
 			}
 		}), new KeyFrame(Duration.seconds(0.4)));
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -113,6 +115,10 @@ public class Main2 extends Application {
 		});
 
 		runGame.start();
+	}
+	
+	public static GamePlayScene getGamePlayScene() {
+		return gamePlayScene;
 	}
 
 }

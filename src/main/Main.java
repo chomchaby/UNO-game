@@ -2,10 +2,10 @@ package main;
 
 import java.util.Scanner;
 
-import gui.BotDeckPane;
+import gui.BotPane;
 import gui.StatusPane;
 import gui.Updatable;
-import gui.UserDeckPane;
+import gui.UserPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -45,20 +45,20 @@ public class Main extends Application {
 		root.setPrefWidth(1250);
 
 		// set other player pane & status pane
-		UserDeckPane userPane = new UserDeckPane(GameLogic.getInstance().getUser());
-		BotDeckPane botJesicaPane = new BotDeckPane(GameLogic.getInstance().getBotJesica());
+		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
+		BotPane botJesicaPane = new BotPane(GameLogic.getInstance().getBotJesica());
 		Rotate rotation90 = new Rotate(90, Rotate.Z_AXIS);
 		rotation90.setPivotX(195);
 		rotation90.setPivotY(50);
 		botJesicaPane.getTransforms().add(rotation90);
 
-		BotDeckPane botMagaretPane = new BotDeckPane(GameLogic.getInstance().getBotMagaret());
+		BotPane botMagaretPane = new BotPane(GameLogic.getInstance().getBotMagaret());
 		Rotate rotation180 = new Rotate(180, Rotate.Z_AXIS);
 		rotation180.setPivotX(180);
 		rotation180.setPivotY(60);
 		botMagaretPane.getTransforms().add(rotation180);
 
-		BotDeckPane botVandaPane = new BotDeckPane(GameLogic.getInstance().getBotVanda());
+		BotPane botVandaPane = new BotPane(GameLogic.getInstance().getBotVanda());
 		Rotate rotation270 = new Rotate(270, Rotate.Z_AXIS);
 		rotation270.setPivotX(165);
 		rotation270.setPivotY(50);

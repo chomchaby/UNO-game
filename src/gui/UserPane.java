@@ -12,13 +12,17 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import logic.GameLogic;
 
-public class UserDeckPane extends GridPane implements Updatable {
+public class UserPane extends VBox implements Updatable {
 
-	private Player owner;
+	private Player user;
 	private int cardListSize;
+	private GridPane cardPane;
+	private Text turnText;
 
 	private static final Border NORMAL_BORDER = new Border(
 			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(14), new BorderWidths(12)));
@@ -27,19 +31,39 @@ public class UserDeckPane extends GridPane implements Updatable {
 	private static final Border RED_BORDER = new Border(
 			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(14), new BorderWidths(12)));
 
-	public UserDeckPane(Player owner) {
-		this.owner = owner;
-		this.setVgap(8);
-		this.setMaxWidth(900);
-		this.setPrefHeight(270);
-		this.setPadding(new Insets(10));
-		this.setBorder(NORMAL_BORDER);
+	public UserPane(Player user) {
+		this.user = user;
+		
+		// set up UserPane
+		this.setMaxWidth(830);
+		this.setPrefWidth(830);
+		this.setMaxHeight(300);
+		this.setPrefHeight(300);
 		this.setAlignment(Pos.CENTER);
-
+		
+		// set up cardPane
+		cardPane = new GridPane();
+		this.cardPane.setVgap(8);
+		this.cardPane.setMaxWidth(830);
+		this.cardPane.setPrefHeight(260);
+		this.cardPane.setPadding(new Insets(10));
+		this.cardPane.setBorder(NORMAL_BORDER);
+		this.cardPane.setAlignment(Pos.CENTER);
 		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, new CornerRadii(8), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
-		this.setBackground(new Background(bgFillA));
-		updateCard();
+		this.cardPane.setBackground(new Background(bgFillA));
+		
+		// create and set up turnText
+		this.turnText = new Text("Player: " + user.getName());
+		this.turnText.maxHeight(40);
+		this.setAlignment(Pos.CENTER);
+		this.setVisible(true);
+		
+		// add all field into UserPane
+		this.getChildren().addAll(turnText,cardPane);
+		
+		// first time update to complete cardPane
+		update();
 
 	}
 
@@ -47,24 +71,24 @@ public class UserDeckPane extends GridPane implements Updatable {
 	public void update() {
 
 		// update border
-		if (!(GameLogic.getInstance().getCurrentPlayer() == owner)) {
-			this.setBorder(NORMAL_BORDER);
-		} else if (owner.isPlayable()) {
-			if (this.getBorder() == NORMAL_BORDER) {
-				this.setBorder(GREEN_BORDER);
+		if (!(GameLogic.getInstance().getCurrentPlayer() == user)) {
+			this.cardPane.setBorder(NORMAL_BORDER);
+		} else if (user.isPlayable()) {
+			if (this.cardPane.getBorder() == NORMAL_BORDER) {
+				this.cardPane.setBorder(GREEN_BORDER);
 			} else {
-				this.setBorder(NORMAL_BORDER);
+				this.cardPane.setBorder(NORMAL_BORDER);
 			}
 		} else {
-			if (this.getBorder() == NORMAL_BORDER) {
-				this.setBorder(RED_BORDER);
+			if (this.cardPane.getBorder() == NORMAL_BORDER) {
+				this.cardPane.setBorder(RED_BORDER);
 			} else {
-				this.setBorder(NORMAL_BORDER);
+				this.cardPane.setBorder(NORMAL_BORDER);
 			}
 		}
 
-		// update cards when they are changed
-		if (cardListSize != owner.getCardList().size()) {
+		// update only cards when they are changed
+		if (cardListSize != user.getCardList().size()) {
 			updateCard();
 		}
 
@@ -72,16 +96,16 @@ public class UserDeckPane extends GridPane implements Updatable {
 
 	private void updateCard() {
 
-		this.getChildren().clear();
-		cardListSize = owner.getCardList().size();
+		this.cardPane.getChildren().clear();
+		cardListSize = user.getCardList().size();
 
 		// horizontal gap
 		if (cardListSize < 9) {
-			this.setHgap(15);
+			this.cardPane.setHgap(15);
 		} else if (cardListSize <= 20) {
-			this.setHgap(9);
+			this.cardPane.setHgap(9);
 		} else {
-			this.setHgap(0);
+			this.cardPane.setHgap(0);
 		}
 
 		// set col, row
@@ -92,8 +116,8 @@ public class UserDeckPane extends GridPane implements Updatable {
 				for (int col = 0; col < Math.min(cardListSize, 9); col++) {
 					if (ind == cardListSize)
 						break;
-					UnitCard cardToAdd = owner.getCardList().get(ind);
-					this.add(new FontCardPane(cardToAdd), col, row);
+					UnitCard cardToAdd = user.getCardList().get(ind);
+					this.cardPane.add(new FontCardPane(cardToAdd), col, row);
 					ind++;
 				}
 			}
@@ -104,8 +128,8 @@ public class UserDeckPane extends GridPane implements Updatable {
 				for (int col = 0; col < column; col++) {
 					if (ind == cardListSize)
 						break;
-					UnitCard cardToAdd = owner.getCardList().get(ind);
-					this.add(new FontCardPane(cardToAdd), col, row);
+					UnitCard cardToAdd = user.getCardList().get(ind);
+					this.cardPane.add(new FontCardPane(cardToAdd), col, row);
 					ind++;
 				}
 			}

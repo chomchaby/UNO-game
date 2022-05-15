@@ -13,7 +13,7 @@ public class RotateCard extends EffectCard {
 	}
 
 	@Override
-	public boolean isDrawable() {
+	public boolean isPlaceable() {
 		// same as NormalCard
 		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
