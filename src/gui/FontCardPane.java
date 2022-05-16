@@ -1,5 +1,11 @@
 package gui;
 
+import entity.card.ChallengeCard;
+import entity.card.ColorCard;
+import entity.card.DrawCard;
+import entity.card.NormalCard;
+import entity.card.ReverseCard;
+import entity.card.SkipCard;
 import entity.card.UnitCard;
 import entity.player.User;
 import javafx.event.EventHandler;
@@ -15,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import logic.GameAction;
 import logic.GameLogic;
 import sharedObject.AudioLoader;
 import sharedObject.ColorLoader;
@@ -105,17 +110,17 @@ public class FontCardPane extends StackPane {
 		this.setStyle("-fx-cursor: default;");
 	}
 
-	private void draw() {
+	public void draw() {
 
-		BackgroundFill bgFill = new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(9), Insets.EMPTY);
+		BackgroundFill bgFill = new BackgroundFill(Color.WHITE, new CornerRadii(this.getPrefWidth()*0.125), Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
 
-		Rectangle shape = new Rectangle(58, 86);
-		shape.setArcWidth(9);
-		shape.setArcHeight(9);
+		Rectangle shape = new Rectangle(this.getPrefWidth()*0.8, this.getPrefHeight()*0.85);
+		shape.setArcWidth(this.getPrefWidth()*0.125);
+		shape.setArcHeight(this.getPrefWidth()*0.125);
 
-		if (card.getAction() == GameAction.NONE) {
+		if (card instanceof NormalCard) {
 			shape.setFill(card.getColor());
 			this.getChildren().add(shape);
 
@@ -125,15 +130,15 @@ public class FontCardPane extends StackPane {
 		}
 
 		else {
-			if (card.getAction() == GameAction.CHANGECOLOR) {
+			if (card instanceof ColorCard) {
 				shape.setFill(new ImagePattern(new Image(ImageLoader.colorCardURL)));
 				this.getChildren().add(shape);
 
-			} else if (card.getAction() == GameAction.CHALLENGE) {
+			} else if (card instanceof ChallengeCard) {
 				shape.setFill(new ImagePattern(new Image(ImageLoader.challengeCardURL)));
 				this.getChildren().add(shape);
 
-			} else if (card.getAction() == GameAction.STOP) {
+			} else if (card instanceof SkipCard) {
 				if (card.getColor() == ColorLoader.RED) {
 					shape.setFill(new ImagePattern(new Image(ImageLoader.stopRedCardURL)));
 					this.getChildren().add(shape);
@@ -147,7 +152,7 @@ public class FontCardPane extends StackPane {
 					shape.setFill(new ImagePattern(new Image(ImageLoader.stopBlueCardURL)));
 					this.getChildren().add(shape);
 				}
-			} else if (card.getAction() == GameAction.ROTATE) {
+			} else if (card instanceof ReverseCard) {
 				if (card.getColor() == ColorLoader.RED) {
 					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateRedCardURL)));
 					this.getChildren().add(shape);
@@ -161,7 +166,7 @@ public class FontCardPane extends StackPane {
 					shape.setFill(new ImagePattern(new Image(ImageLoader.rotateBlueCardURL)));
 					this.getChildren().add(shape);
 				}
-			} else if (card.getAction() == GameAction.PICK) {
+			} else if (card instanceof DrawCard) {
 				if (card.getColor() == ColorLoader.RED) {
 					shape.setFill(new ImagePattern(new Image(ImageLoader.pickRedCardURL)));
 					this.getChildren().add(shape);

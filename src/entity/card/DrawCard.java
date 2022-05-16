@@ -1,14 +1,12 @@
 package entity.card;
 
 import javafx.scene.paint.Color;
-import logic.GameAction;
 import logic.GameLogic;
 
 public class DrawCard extends EffectCard {
 
 	public DrawCard(Color color) {
 		super(12, color);
-		this.gameAction = GameAction.PICK;
 	}
 
 	@Override

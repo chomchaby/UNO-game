@@ -13,6 +13,7 @@ import javafx.util.Duration;
 import logic.GameLogic;
 import screen.GamePlayScene;
 import sharedObject.AudioLoader;
+import sharedObject.ImageLoader;
 import javafx.scene.Parent;
 
 public class Main2 extends Application {
@@ -36,15 +37,21 @@ public class Main2 extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// create gamePlayScene
-		gamePlayScene = new GamePlayScene();
-//		gamePlayScene = FXMLLoader.load(getClass().getClassLoader().getResource("screen/GamePlayScene2.fxml"));
 		
 		// set up bgSound
 		AudioLoader.startBGSound.setCycleCount(Timeline.INDEFINITE);
-		AudioLoader.startBGSound.setVolume(0.9);
+		AudioLoader.startBGSound.setVolume(0.8);
 		AudioLoader.gamePlayBGSound.setCycleCount(Timeline.INDEFINITE);
-		AudioLoader.gamePlayBGSound.setVolume(0.5);
+		AudioLoader.gamePlayBGSound.setVolume(0.6);
+		// set up other sound volume
+		AudioLoader.mouseEnterSound.setVolume(0.5);
+		AudioLoader.buttonClickSound.setVolume(0.5);
+		
+		// set up sound button image
+		ImageLoader.soundOffImg.setFitHeight(40);
+		ImageLoader.soundOffImg.setPreserveRatio(true);
+		ImageLoader.soundOnImg.setFitHeight(40);
+		ImageLoader.soundOnImg.setPreserveRatio(true);
 
 		initializeStartScene();
 	}
@@ -63,6 +70,9 @@ public class Main2 extends Application {
 
 	public static void initializeGamePlayScene() {
 
+		// create gamePlayScene
+		gamePlayScene = new GamePlayScene();
+		
 		primaryStage.setScene(new Scene(gamePlayScene));
 		primaryStage.setTitle("I just wanna pen fan you dai bor?");
 		primaryStage.show();
@@ -87,8 +97,8 @@ public class Main2 extends Application {
 			while (true) {
 				GameLogic.getInstance().shortProcessing();
 				while (!GameLogic.getInstance().isGameEnd()) {
-					System.err.println("---- NEW TURN ----");
-					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
+//					System.err.println("---- NEW TURN ----");
+//					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
 //					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
 //					System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
 //					System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());

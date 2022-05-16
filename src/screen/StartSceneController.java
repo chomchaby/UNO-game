@@ -14,30 +14,36 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.AudioClip;
+import javafx.scene.layout.StackPane;
 import logic.GameLogic;
 import main.Main2;
 import sharedObject.AudioLoader;
+import sharedObject.ImageLoader;
 
 public class StartSceneController implements Initializable {
 
+	@FXML
+	private StackPane stackPane;
 	@FXML
 	private BorderPane startPane;
 	@FXML
 	private HBox menuPane;
 	@FXML
-	private Button playButton;
+	private Button startButton;
 	@FXML
 	private Button howToPlayButton;
 	@FXML
 	private Button quitButton;
+	@FXML
+	private Button soundBtn;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		// set BGImg to sound toggle button
+		soundBtn.setGraphic(ImageLoader.soundOffImg);
 	}
 
-	public void playGame(ActionEvent event) {
+	public void startGame(ActionEvent event) {
 		AudioLoader.mouseClick1Sound.play();
 		TextInputDialog dialog = new TextInputDialog("");
 		dialog.setTitle("Let's play!");
@@ -48,7 +54,7 @@ public class StartSceneController implements Initializable {
 		Optional<String> name = dialog.showAndWait();
 		if (name.isPresent()) {
 			// set User name (create GameLogic Instance for the first time)
-			GameLogic.getInstance().setUserName(name.get());
+			GameLogic.getInstance().start(name.get());
 			// change to GamePlayScene
 			Main2.initializeGamePlayScene();
 		}
@@ -67,11 +73,11 @@ public class StartSceneController implements Initializable {
 	}
 
 	public void enterPlayButtonHandler(MouseEvent event) {
-		enterButtonHandler(playButton);
+		enterButtonHandler(startButton);
 	}
 
 	public void resetPlayButton(MouseEvent event) {
-		resetButtonHandler(playButton);
+		resetButtonHandler(startButton);
 	}
 
 	public void enterHowToPlayButtonHandler(MouseEvent event) {
@@ -94,12 +100,24 @@ public class StartSceneController implements Initializable {
 		AudioLoader.mouseEnterSound.play();
 		button.setPrefWidth(230);
 		button.setPrefHeight(75);
-		button.setStyle("-fx-cursor: hand;");
 	}
 	
 	private void resetButtonHandler(Button button) {
 		button.setPrefWidth(210);
 		button.setPrefHeight(65);
+	}
+	
+	public void toggleSound(ActionEvent event) {
+		// to stop background sound
+		if (AudioLoader.startBGSound.isPlaying()) {
+	        soundBtn.setGraphic(ImageLoader.soundOnImg);
+	        AudioLoader.startBGSound.stop();
+		}
+		// to play background sound
+		else {
+	        soundBtn.setGraphic(ImageLoader.soundOffImg);
+	        AudioLoader.startBGSound.play();
+		}
 	}
 
 }

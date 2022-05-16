@@ -1,12 +1,10 @@
 package entity.card;
 
 import javafx.scene.paint.Color;
-import logic.GameAction;
 
 public abstract class UnitCard {
 	private int number;
 	private Color color;
-	protected GameAction gameAction;
 
 	public UnitCard(int number, Color color) {
 		this.number = number;
@@ -23,10 +21,6 @@ public abstract class UnitCard {
 
 	public Color getColor() {
 		return this.color;
-	}
-
-	public GameAction getAction() {
-		return this.gameAction;
 	}
 
 }

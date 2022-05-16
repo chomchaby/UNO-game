@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -96,11 +97,19 @@ public class MenuPane extends VBox{
 		resetButtonHandler(homeBtn);
 		resetButtonHandler(quitBtn);
 		
+		// add all buttons to MenuPane
+		this.getChildren().add(scoreBtn);
+		this.getChildren().add(homeBtn);
+		this.getChildren().add(quitBtn);
+		
 	}
 	
 	
 	private void showScore() {
 		AudioLoader.mouseClick1Sound.play();
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("HOW TO PLAY THIS STUPID GAME");
+		alert.showAndWait();
 
 	}
 	private void returnToStartScene() {
@@ -130,12 +139,12 @@ public class MenuPane extends VBox{
 	private void enterButtonHandler(Button button) {
 		AudioLoader.mouseEnterSound.play();
 		button.setPrefWidth(120);
-		button.setPrefHeight(30);
+		button.setPrefHeight(40);
 		button.setStyle("-fx-cursor: hand;");
 	}
 	private void resetButtonHandler(Button button) {
 		button.setPrefWidth(80);
-		button.setPrefHeight(30);
+		button.setPrefHeight(40);
 	}
 	
 }

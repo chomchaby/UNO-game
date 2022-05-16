@@ -1,5 +1,8 @@
 package sharedObject;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class ImageLoader {
 	
 	// cards
@@ -18,11 +21,15 @@ public class ImageLoader {
 	public static String pickGreenCardURL = ClassLoader.getSystemResource("image/plus_green.png").toString();
 	public static String pickBlueCardURL = ClassLoader.getSystemResource("image/plus_blue.png").toString();
 	
-	// rotation sign
-	public static String clockwiseURL = ClassLoader.getSystemResource("image/clockwise.png").toString();
-	public static String counterClockwiseURL = ClassLoader.getSystemResource("image/counterclockwise.png").toString();
+	// reverse sign
+	public static Image clockwiseImg = new Image(ClassLoader.getSystemResource("image/clockwise.png").toString());
+	public static Image counterClockwiseImg = new Image(ClassLoader.getSystemResource("image/counterclockwise.png").toString());
 	
 	// UNO logo
-	public static String logoURL = ClassLoader.getSystemResource("image/UNO_Logo.png").toString();
+	public static Image logoImg = new Image(ClassLoader.getSystemResource("image/UNO_Logo.png").toString());
 
+	// sound setting sign
+	public static ImageView soundOnImg = new ImageView(new Image(ClassLoader.getSystemResource("image/SoundOn.jpg").toString()));
+	public static ImageView soundOffImg = new ImageView(new Image(ClassLoader.getSystemResource("image/SoundOff.jpg").toString()));
+	
 }

@@ -2,14 +2,12 @@ package entity.card;
 
 import entity.player.Bot;
 import javafx.scene.paint.Color;
-import logic.GameAction;
 import logic.GameLogic;
 
 public class ColorCard extends EffectCard {
 
 	public ColorCard() {
 		super(14, Color.BLACK);
-		this.gameAction = GameAction.CHANGECOLOR;
 	}
 
 	@Override

@@ -3,13 +3,13 @@ package screen;
 import java.util.ArrayList;
 
 import gui.BotPane;
-import gui.StatusPane;
+import gui.BottomGamePlayPane;
+import gui.CenterPane;
 import gui.Updatable;
 import gui.UserPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.transform.Rotate;
 import logic.GameLogic;
 
 public class GamePlayScene extends BorderPane{
@@ -59,19 +59,23 @@ public class GamePlayScene extends BorderPane{
 //		rotation270.setPivotY(50);
 //		botVandaPane.getTransforms().add(rotation270);
 
-
-
-		StatusPane statusPane = new StatusPane();
-
-		// set other player pane & status pane
+		// set up userPane 
 		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
+
+		// set up bottomGamePlayPane
+		BottomGamePlayPane bottomGamePlayPane = new BottomGamePlayPane(userPane);
+		this.setBottom(bottomGamePlayPane );
+		BorderPane.setAlignment(bottomGamePlayPane , Pos.CENTER);
+		
+		
+		
+		CenterPane centerPane = new CenterPane();
 		
 		
 		// set Pane in root
-		this.setCenter(statusPane);
-		BorderPane.setAlignment(statusPane, Pos.CENTER);
-		this.setBottom(userPane);
-		BorderPane.setAlignment(userPane, Pos.CENTER);
+		this.setCenter(centerPane);
+		BorderPane.setAlignment(centerPane, Pos.CENTER);
+
 		
 
 		// set up updatableItems
@@ -80,7 +84,7 @@ public class GamePlayScene extends BorderPane{
 		updatableItems.add(botJesicaPane);
 		updatableItems.add(botMagaretPane);
 		updatableItems.add(botVandaPane);
-		updatableItems.add(statusPane);
+		updatableItems.add(centerPane);
 
 	}
 

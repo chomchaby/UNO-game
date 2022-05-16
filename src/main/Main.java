@@ -3,7 +3,7 @@ package main;
 import java.util.Scanner;
 
 import gui.BotPane;
-import gui.StatusPane;
+import gui.CenterPane;
 import gui.Updatable;
 import gui.UserPane;
 import javafx.animation.KeyFrame;
@@ -36,7 +36,7 @@ public class Main extends Application {
 		System.out.println("Let's get started");
 
 		// create game
-		GameLogic.getInstance().setUserName(userName);
+		GameLogic.getInstance().start(userName);
 
 		// set root pane
 		BorderPane root = new BorderPane();
@@ -64,11 +64,11 @@ public class Main extends Application {
 		rotation270.setPivotY(50);
 		botVandaPane.getTransforms().add(rotation270);
 
-		StatusPane statusPane = new StatusPane();
+		CenterPane centerPane = new CenterPane();
 
 		// set Pane in root
-		root.setCenter(statusPane);
-		BorderPane.setAlignment(statusPane, Pos.CENTER);
+		root.setCenter(centerPane);
+		BorderPane.setAlignment(centerPane, Pos.CENTER);
 		root.setBottom(userPane);
 		BorderPane.setAlignment(userPane, Pos.CENTER);
 		root.setLeft(botJesicaPane);
@@ -79,7 +79,7 @@ public class Main extends Application {
 		BorderPane.setAlignment(botVandaPane, Pos.CENTER);
 
 		// create UpdatableHolder
-		Updatable[] updatableArray = { userPane, botJesicaPane, botMagaretPane, botVandaPane, statusPane };
+		Updatable[] updatableArray = { userPane, botJesicaPane, botMagaretPane, botVandaPane, centerPane };
 		UpdatableHolder.createInstance(updatableArray);
 		// set scene
 		Scene scene = new Scene(root);

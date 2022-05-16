@@ -13,41 +13,44 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import sharedObject.AudioLoader;
 import sharedObject.ColorLoader;
 
-public class ColorSelection extends HBox {
+public class ColorSelectionPane extends HBox {
 	
 	// This is UI for User only
 	
-	public ColorSelection() {
+	public ColorSelectionPane() {
 		this.setSpacing(10);
 		this.setAlignment(Pos.CENTER);
+		this.setMaxHeight(50);
+		
 		Text text = new Text("Select Color : ");
 //		text.setStyle("-fx-font-size:30;");
 
 		Button redBtn = new Button();
 		redBtn.setPrefWidth(25);
 		redBtn.setPrefHeight(25);
-		BackgroundFill bgFill = new BackgroundFill(ColorLoader.RED, CornerRadii.EMPTY, Insets.EMPTY);
+		BackgroundFill bgFill = new BackgroundFill(ColorLoader.RED, new CornerRadii(12), Insets.EMPTY);
 		BackgroundFill[] bgFillRedA = { bgFill };
 		redBtn.setBackground(new Background(bgFillRedA));
 
 		Button yellowBtn = new Button();
 		yellowBtn.setPrefWidth(25);
 		yellowBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillYellowA = { new BackgroundFill(ColorLoader.YELLOW, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillYellowA = { new BackgroundFill(ColorLoader.YELLOW, new CornerRadii(12), Insets.EMPTY) };
 		yellowBtn.setBackground(new Background(bgFillYellowA));
 
 		Button blueBtn = new Button();
 		blueBtn.setPrefWidth(25);
 		blueBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillBlueA = { new BackgroundFill(ColorLoader.BLUE, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillBlueA = { new BackgroundFill(ColorLoader.BLUE, new CornerRadii(12), Insets.EMPTY) };
 		blueBtn.setBackground(new Background(bgFillBlueA));
 
 		Button greenBtn = new Button();
 		greenBtn.setPrefWidth(25);
 		greenBtn.setPrefHeight(25);
-		BackgroundFill[] bgFillGreenA = { new BackgroundFill(ColorLoader.GREEN, CornerRadii.EMPTY, Insets.EMPTY) };
+		BackgroundFill[] bgFillGreenA = { new BackgroundFill(ColorLoader.GREEN, new CornerRadii(12), Insets.EMPTY) };
 		greenBtn.setBackground(new Background(bgFillGreenA));
 
 		this.getChildren().addAll(text, redBtn, yellowBtn, blueBtn, greenBtn);
@@ -55,6 +58,7 @@ public class ColorSelection extends HBox {
 		redBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				AudioLoader.buttonClickSound.play();
 				selectColor(ColorLoader.RED);
 			}
 		});
@@ -62,6 +66,7 @@ public class ColorSelection extends HBox {
 		redBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				AudioLoader.popSound.play();
 				redBtn.setPrefWidth(40);
 				redBtn.setPrefHeight(40);
 			}
@@ -77,12 +82,14 @@ public class ColorSelection extends HBox {
 		yellowBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				AudioLoader.buttonClickSound.play();
 				selectColor(ColorLoader.YELLOW);
 			}
 		});
 		yellowBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				AudioLoader.popSound.play();
 				yellowBtn.setPrefWidth(40);
 				yellowBtn.setPrefHeight(40);
 			}
@@ -98,12 +105,14 @@ public class ColorSelection extends HBox {
 		blueBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				AudioLoader.buttonClickSound.play();
 				selectColor(ColorLoader.BLUE);
 			}
 		});
 		blueBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				AudioLoader.popSound.play();
 				blueBtn.setPrefWidth(40);
 				blueBtn.setPrefHeight(40);
 			}
@@ -120,12 +129,14 @@ public class ColorSelection extends HBox {
 		greenBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				AudioLoader.buttonClickSound.play();
 				selectColor(ColorLoader.GREEN);
 			}
 		});
 		greenBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				AudioLoader.popSound.play();
 				greenBtn.setPrefWidth(40);
 				greenBtn.setPrefHeight(40);
 			}

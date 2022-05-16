@@ -1,16 +1,13 @@
 package entity.card;
 
 import entity.player.Bot;
-import entity.player.User;
 import javafx.scene.paint.Color;
-import logic.GameAction;
 import logic.GameLogic;
 
 public class ChallengeCard extends EffectCard {
 
 	public ChallengeCard() {
 		super(15, Color.BLACK);
-		this.gameAction = GameAction.CHALLENGE;
 	}
 
 	@Override

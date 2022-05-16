@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import entity.card.UnitCard;
 import entity.card.EffectCard;
-import logic.GameAction;
+import entity.card.NormalCard;
 import logic.GameLogic;
 
 public abstract class Player {
@@ -36,7 +36,7 @@ public abstract class Player {
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
 		GameLogic.getInstance().setCardOnTable(card);
-		if (card.getAction() != GameAction.NONE) {
+		if (card instanceof EffectCard) {
 			System.out.println("The card is taking some effect...");
 			((EffectCard) card).takeAction();
 		}

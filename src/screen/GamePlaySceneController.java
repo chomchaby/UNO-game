@@ -28,8 +28,6 @@ public class GamePlaySceneController implements Initializable {
 	// top
 	@FXML
 	private VBox botMagaretPane;
-	@FXML 
-	public static GridPane botMagaretDeckPane = new BotPane(GameLogic.getInstance().getBotMagaret());;
 	@FXML
 	private TextArea botMagaretTurnText;
 	// left

@@ -36,7 +36,7 @@ public class BackCardPane extends StackPane {
 		shape.setFill(Color.BLACK);
 		this.getChildren().add(shape);
 
-		ImageView imageView = new ImageView( new Image(ImageLoader.logoURL));
+		ImageView imageView = new ImageView(ImageLoader.logoImg);
 		imageView.setFitWidth(this.getPrefWidth()*0.75);
 		imageView.setPreserveRatio(true);
 		this.getChildren().add(imageView);

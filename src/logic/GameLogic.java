@@ -10,19 +10,18 @@ import java.util.Set;
 import entity.card.*;
 
 import entity.player.*;
-import gui.Updatable;
 import javafx.scene.paint.Color;
 import sharedObject.ColorLoader;
 
 public class GameLogic {
 
 	private static GameLogic instance = null;
-	private static final Color[] colorArray = { ColorLoader.BLUE, ColorLoader.GREEN, ColorLoader.RED,
+	private Color[] colorArray = { ColorLoader.BLUE, ColorLoader.GREEN, ColorLoader.RED,
 			ColorLoader.YELLOW };
-
-	// all cards
-	private UnitCard cardOnTable;
+	
+	// cards in game 
 	private ArrayList<UnitCard> cardPile;
+	private UnitCard cardOnTable;
 
 	// player to play
 	private int playerTurn;
@@ -46,13 +45,30 @@ public class GameLogic {
 	private Player botJesica;
 	private Player botMagaret;
 	private Player botVanda;
+	
+	public static GameLogic getInstance() {
+		if (instance == null) {
+			instance = new GameLogic();
+		}
+		return instance;
+	}
 
 	private GameLogic() {
+		// set all players only on first GameLogic call...
 		user = new User();
 		botJesica = new Bot("Jesica");
 		botMagaret = new Bot("Magaret");
 		botVanda = new Bot("Vanda");
-		this.newGame();
+	}
+	
+	public void start(String name) {
+		// new user start new game...
+		user.setName(name);
+		user.setScore(0);
+		botJesica.setScore(0);
+		botMagaret.setScore(0);
+		botVanda.setScore(0);
+		newGame();
 	}
 
 	public void newGame() {
@@ -67,42 +83,37 @@ public class GameLogic {
 		dealCard();
 
 		// set parameters
+		// general parameters
+		setNumberState(cardOnTable.getNumber());
+		setColorState(cardOnTable.getColor());
+		setClockwise(true);
+		setGameEnd(false);
 		// player to play
 		Random rand = new Random();
 		setPlayerTurn(rand.nextInt(4) + 1000);
 		setCurrentPlayer();
 		setNextPlayer();
 //		setBeforePlayer();
-		// general parameters
-		setNumberState(cardOnTable.getNumber());
-		setColorState(cardOnTable.getColor());
-		setClockwise(true);
-		setGameEnd(false);
 		// special parameters
 		setColorSelectionState(false);
 		setChallengeState(false);
 
 	}
 
-	public static GameLogic getInstance() {
-		if (instance == null) {
-			instance = new GameLogic();
-		}
-		return instance;
-	}
+
 
 	private void initilizeCardPile() {
 		for (Color color : colorArray) {
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 10; i++) {
 				UnitCard card = new NormalCard(i, color);
 				cardPile.add(card);
 			}
 			for (int i = 0; i < 2; i++) {
-				UnitCard card = new StopCard(color);
+				UnitCard card = new SkipCard(color);
 				cardPile.add(card);
 			}
 			for (int i = 0; i < 2; i++) {
-				UnitCard card = new RotateCard(color);
+				UnitCard card = new ReverseCard(color);
 				cardPile.add(card);
 			}
 			for (int i = 0; i < 2; i++) {
@@ -110,11 +121,11 @@ public class GameLogic {
 				cardPile.add(card);
 			}
 		}
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 20; i++) {
 			UnitCard card = new ColorCard();
 			cardPile.add(card);
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 20; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
 		}
@@ -122,7 +133,7 @@ public class GameLogic {
 
 	private void dealCard() {
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 14; i++) {
+		for (int i = 0; i < 5; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));
@@ -134,8 +145,9 @@ public class GameLogic {
 	public void setUpForNewTurn() {
 
 		setNumberState(cardOnTable.getNumber());
-		if ((cardOnTable.getAction() != GameAction.CHANGECOLOR) && (cardOnTable.getAction() != GameAction.CHALLENGE))
+		if (!cardOnTable.getColor().equals(Color.BLACK)) {
 			setColorState(cardOnTable.getColor());
+		}
 		move();
 		setCurrentPlayer();
 		setNextPlayer();
@@ -214,10 +226,6 @@ public class GameLogic {
 	}
 
 	// setter and getter
-	public void setUserName(String name) {
-		user.setName(name);
-	}
-
 	public ArrayList<UnitCard> getCardPile() {
 		return cardPile;
 	}

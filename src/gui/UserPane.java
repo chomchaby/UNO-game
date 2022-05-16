@@ -73,17 +73,22 @@ public class UserPane extends VBox implements Updatable {
 		// update border
 		if (!(GameLogic.getInstance().getCurrentPlayer() == user)) {
 			this.cardPane.setBorder(NORMAL_BORDER);
+			this.turnText.setVisible(true);
 		} else if (user.isPlayable()) {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(GREEN_BORDER);
+				this.turnText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
+				this.turnText.setVisible(false);
 			}
 		} else {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(RED_BORDER);
+				this.turnText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
+				this.turnText.setVisible(false);
 			}
 		}
 

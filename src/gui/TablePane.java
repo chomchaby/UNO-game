@@ -1,6 +1,5 @@
 package gui;
 
-import entity.player.User;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -18,7 +17,9 @@ public class TablePane extends HBox implements Updatable {
 
 	private BackCardPane cardPilePane;
 	private FontCardPane cardOnTablePane;
-	private VBox currentColorPane;
+	private VBox statusPane;
+	private boolean isClockwise;
+	private ImageView reverseImg;
 
 	private boolean hasCardPilePane;
 
@@ -26,12 +27,12 @@ public class TablePane extends HBox implements Updatable {
 		// setting pane
 		this.setSpacing(30);
 		this.setAlignment(Pos.CENTER);
+		this.setMaxHeight(120);
 
 		// setting card pile
 		this.cardPilePane = new BackCardPane();
-		this.cardPilePane.setPrefWidth(80);
-		this.cardPilePane.setPrefHeight(110);
-		this.cardPilePane.setMaxHeight(110);
+		this.cardPilePane.setPrefWidth(86);
+		this.cardPilePane.setPrefHeight(120);
 		this.cardPilePane.draw();
 		this.cardPilePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -39,15 +40,9 @@ public class TablePane extends HBox implements Updatable {
 				onClickHandler();
 			}
 		});
-
+		initializeReverseImg();
 		update();
 
-	}
-
-	@Override
-	public void update() {
-		initializeCardOnTablePane();
-		initializeCurrentColorPane();
 	}
 
 	private void onClickHandler() {
@@ -69,7 +64,24 @@ public class TablePane extends HBox implements Updatable {
 		// handler for placing card
 		AudioLoader.mouseClick2Sound.play();
 		GameLogic.getInstance().getUser().drawCard(1);
-
+	}
+	
+	private void initializeReverseImg() { 
+		isClockwise = GameLogic.getInstance().isClockwise();
+		if (isClockwise) {
+			reverseImg = new ImageView(ImageLoader.clockwiseImg);
+		}
+		else {
+			reverseImg = new ImageView(ImageLoader.counterClockwiseImg);
+		}
+		reverseImg.setFitHeight(50);
+		reverseImg.setFitWidth(50);
+	}
+	
+	@Override
+	public void update() {
+		initializeCardOnTablePane();
+		initializeStatusPane();
 	}
 
 	private void initializeCardOnTablePane() {
@@ -85,48 +97,55 @@ public class TablePane extends HBox implements Updatable {
 			}
 			this.getChildren().remove(cardOnTablePane);
 			this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
+			this.cardOnTablePane.setPrefWidth(86);
+			this.cardOnTablePane.setPrefHeight(120);
+			
+			this.cardOnTablePane.draw();
 			this.getChildren().add(cardOnTablePane);
 		}
 
 	}
-
-	private void initializeCurrentColorPane() {
+	
+	private void initializeStatusPane() {
 
 		if (GameLogic.getInstance().isGameEnd()) {
-			this.getChildren().remove(currentColorPane);
+			// clear
+			this.getChildren().remove(statusPane);
 
 		} else {
-
-			this.getChildren().remove(currentColorPane);
+			// clear
+			this.getChildren().remove(statusPane);
+			
 			// setting color bar
 			Color color = GameLogic.getInstance().getColorState();
 			Rectangle colorRec = new Rectangle(30, 30, color);
 			colorRec.setArcWidth(20);
 			colorRec.setArcHeight(20);
 
-			// setting rotation sign
-			Image rotationPNG;
-			if (GameLogic.getInstance().isClockwise())
-				rotationPNG = new Image(ImageLoader.clockwiseURL);
-			else
-				rotationPNG = new Image(ImageLoader.counterClockwiseURL);
-
-			ImageView imageView = new ImageView(rotationPNG);
-			imageView.setFitHeight(50);
-			imageView.setFitWidth(50);
+			// setting reverse sign
+			if (isClockwise != GameLogic.getInstance().isClockwise()) {
+				initializeReverseImg();
+			}
+			else {
+				if (isClockwise) {
+					reverseImg.setRotate(reverseImg.getRotate()+30);
+				}
+				else {
+					reverseImg.setRotate(reverseImg.getRotate()-30);
+				}
+				
+			}
 
 			// combine color bar and rotation sign
-			currentColorPane = new VBox();
-			currentColorPane.setAlignment(Pos.CENTER);
-			currentColorPane.setSpacing(15);
-			currentColorPane.getChildren().add(colorRec);
-			currentColorPane.getChildren().add(imageView);
+			statusPane = new VBox();
+			statusPane.setAlignment(Pos.CENTER);
+			statusPane.setSpacing(25);
+			statusPane.getChildren().addAll(colorRec,reverseImg);
 
-			this.getChildren().add(currentColorPane);
-
+			this.getChildren().add(statusPane);
 		}
-
 	}
+	
 
 //	private void initializeGameEndText() {
 //

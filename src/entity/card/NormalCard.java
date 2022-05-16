@@ -1,14 +1,12 @@
 package entity.card;
 
 import javafx.scene.paint.Color;
-import logic.GameAction;
 import logic.GameLogic;
 
 public class NormalCard extends UnitCard {
 
 	public NormalCard(int number, Color color) {
 		super(number, color);
-		this.gameAction = GameAction.NONE;
 	}
 
 	@Override

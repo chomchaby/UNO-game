@@ -2,18 +2,17 @@ package entity.card;
 
 import entity.player.Bot;
 import javafx.scene.paint.Color;
-import logic.GameAction;
 import logic.GameLogic;
 
-public class StopCard extends EffectCard {
+public class ReverseCard extends EffectCard {
 
-	public StopCard(Color color) {
-		super(10, color);
-		this.gameAction = GameAction.STOP;
+	public ReverseCard(Color color) {
+		super(11, color);
 	}
 
 	@Override
 	public boolean isPlaceable() {
+		// same as NormalCard
 		if (GameLogic.getInstance().getColorState() == Color.BLACK) {
 			return true;
 		}
@@ -29,13 +28,12 @@ public class StopCard extends EffectCard {
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
 			GameLogic.getInstance().shortProcessing();
 		}
-		GameLogic.getInstance().getNextPlayer().setPlayable(false);;
+		GameLogic.getInstance().setClockwise(!GameLogic.getInstance().isClockwise());
 	}
 
 	@Override
 	public String toString() {
 
-		return "Stop Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
+		return "Reverse Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
 	}
-
 }
