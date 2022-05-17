@@ -58,39 +58,39 @@ public class FontCardPane extends StackPane {
 	private void onClickHandler() {
 		// place card
 		// not user turn
-		if (GameLogic.getInstance().isGameEnd()) {
+		if (GameLogic.getInstance().isRoundEnd()) {
 			return;
-		} 
+		}
 		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
 			return;
-		} 
+		}
 		// not a card in userDeckPane
 		if (GameLogic.getInstance().getCardOnTable() == card) {
 			return;
-		} 
+		}
 		// user turn, but is not time to place
-		if (GameLogic.getInstance().getUser().isPlaced() || GameLogic.getInstance().isColorSelectionState() || GameLogic.getInstance().isChallengeState()) {
+		if (GameLogic.getInstance().getUser().isPlaced() || GameLogic.getInstance().isColorSelectionState()
+				|| GameLogic.getInstance().isChallengeState()) {
 			AudioLoader.nopeSound.play();
 			return;
 		}
 
 		// handler for placing card
 		if (GameLogic.getInstance().getUser().getPlaceableCardList().contains(card)) {
-			AudioLoader.mouseClick1Sound.play();
 			GameLogic.getInstance().getUser().placeCard(card);
-		}
-		else {
+			AudioLoader.mouseClick1Sound.play();
+		} else {
 			AudioLoader.nopeSound.play();
 		}
 	}
 
 	private void onMouseEnteredHandler() {
-		if (GameLogic.getInstance().isGameEnd()) {
+		if (GameLogic.getInstance().isRoundEnd()) {
 			return;
-		} 
+		}
 		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
 			return;
-		} 
+		}
 		if (GameLogic.getInstance().getUser().isPlaced() == true) {
 			return;
 		}
@@ -112,13 +112,14 @@ public class FontCardPane extends StackPane {
 
 	public void draw() {
 
-		BackgroundFill bgFill = new BackgroundFill(Color.WHITE, new CornerRadii(this.getPrefWidth()*0.125), Insets.EMPTY);
+		BackgroundFill bgFill = new BackgroundFill(Color.WHITE, new CornerRadii(this.getPrefWidth() * 0.125),
+				Insets.EMPTY);
 		BackgroundFill[] bgFillA = { bgFill };
 		this.setBackground(new Background(bgFillA));
 
-		Rectangle shape = new Rectangle(this.getPrefWidth()*0.8, this.getPrefHeight()*0.85);
-		shape.setArcWidth(this.getPrefWidth()*0.125);
-		shape.setArcHeight(this.getPrefWidth()*0.125);
+		Rectangle shape = new Rectangle(this.getPrefWidth() * 0.8, this.getPrefHeight() * 0.85);
+		shape.setArcWidth(this.getPrefWidth() * 0.125);
+		shape.setArcHeight(this.getPrefWidth() * 0.125);
 
 		if (card instanceof NormalCard) {
 			shape.setFill(card.getColor());

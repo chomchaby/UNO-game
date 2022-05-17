@@ -19,7 +19,7 @@ public class ColorCard extends EffectCard {
 	public void takeAction() {
 		// for Bot, just change colorReg in status pane
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			GameLogic.getInstance().shortProcessing();
+			GameLogic.getInstance().sleepOne();
 			Bot bot = (Bot) GameLogic.getInstance().getCurrentPlayer();
 			GameLogic.getInstance().setColorState(bot.chooseColor());
 		} 

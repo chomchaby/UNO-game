@@ -10,9 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import logic.GameRun;
 import sharedObject.AudioLoader;
 
 public class ScorePane extends StackPane {
+
+	private Text title;
 
 	private GridPane scoreTable;
 
@@ -31,15 +34,15 @@ public class ScorePane extends StackPane {
 	public ScorePane() {
 
 		// title
-		Text text = new Text("SCORE BOARD");
-		text.setStyle("-fx-font-weight: bold; -fx-font-size: 30;");
-		this.getChildren().add(text);
-		StackPane.setAlignment(text, Pos.TOP_CENTER);
+		title = new Text("SCORE BOARD");
+		title.setStyle("-fx-font-weight: bold; -fx-font-size: 30;");
+		this.getChildren().add(title);
+		StackPane.setAlignment(title, Pos.TOP_CENTER);
 
 		// score table
 		scoreTable = new GridPane();
 		scoreTable.setAlignment(Pos.CENTER);
-		scoreTable.setVgap(6);
+		scoreTable.setVgap(5);
 		scoreTable.setHgap(50);
 
 		// header
@@ -62,10 +65,10 @@ public class ScorePane extends StackPane {
 		jesicaPlus = new Text("");
 		magaretPlus = new Text("");
 		vandaPlus = new Text("");
-		userPlus.setStyle("-fx-font-size: 20;");
-		jesicaPlus.setStyle("-fx-font-size: 20;");
-		magaretPlus.setStyle("-fx-font-size: 20;");
-		vandaPlus.setStyle("-fx-font-size: 20;");
+		userPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
+		jesicaPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
+		magaretPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
+		vandaPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
 		// score column
 		userScore = new Text("0");
 		jesicaScore = new Text("0");
@@ -75,24 +78,6 @@ public class ScorePane extends StackPane {
 		jesicaScore.setStyle("-fx-font-size: 20;");
 		magaretScore.setStyle("-fx-font-size: 20;");
 		vandaScore.setStyle("-fx-font-size: 20;");
-		// button
-		btn = new Button("Continue");
-		btn.setStyle("-fx-font-size:15");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				AudioLoader.mouseClick1Sound.play();
-				GameLogic.getInstance().setGameEnd(false);
-				GameLogic.getInstance().newGame();
-			}
-		});
-		btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				AudioLoader.mouseEnterSound.play();
-				btn.setStyle("-fx-cursor: hand;");
-			}
-		});
 
 		// add fields
 		// name
@@ -117,44 +102,102 @@ public class ScorePane extends StackPane {
 		GridPane.setHalignment(jesicaScore, HPos.RIGHT);
 		GridPane.setHalignment(magaretScore, HPos.RIGHT);
 		GridPane.setHalignment(vandaScore, HPos.RIGHT);
-		scoreTable.add(btn, 2, 5);
-
 		this.getChildren().add(scoreTable);
 		StackPane.setAlignment(scoreTable, Pos.CENTER);
-		scoreTable.setTranslateY(25);
+		scoreTable.setTranslateY(10);
+
+		// button
+		// continueBtn
+		btn = new Button("Continue");
+		btn.setStyle("-fx-font-size:15");
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				AudioLoader.mouseClick1Sound.play();
+				if (GameLogic.getInstance().getWinner() != null) {
+					// the same user play new game
+					// set score of all players to zero
+					// reset cards in game
+					GameLogic.getInstance().start(GameLogic.getInstance().getUser().getName());
+					// create new GameRun thread
+					new GameRun().start();
+					// use the old gamePlayScene, reset scoreTable
+					resetScoreTable();
+				} else {
+					GameLogic.getInstance().newGame();
+					GameLogic.getInstance().setRoundEnd(false);
+				}
+			}
+		});
+		btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				AudioLoader.mouseEnterSound.play();
+				btn.setStyle("-fx-font-size:15; -fx-cursor: hand;");
+			}
+		});
+		this.getChildren().add(btn);
+		StackPane.setAlignment(btn, Pos.BOTTOM_CENTER);
 
 	}
 
 	public void setScore() {
 		int score = GameLogic.getInstance().getDeckSize() - (GameLogic.getInstance().getCardPile().size() + 1);
 		if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getUser()) {
-			userPlus.setText("+" + score);
+			userPlus.setText("(+" + score + ")");
 			jesicaPlus.setText("");
 			magaretPlus.setText("");
 			vandaPlus.setText("");
-			int newScore = Integer.parseInt(userScore.getText()) + score;
-			userScore.setText("" + newScore);
+			GameLogic.getInstance().getUser().setScore(GameLogic.getInstance().getUser().getScore() + score);
+			userScore.setText("" + GameLogic.getInstance().getUser().getScore());
 		} else if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getBotJesica()) {
-			jesicaPlus.setText("+" + score);
+			jesicaPlus.setText("(+" + score + ")");
 			userPlus.setText("");
 			magaretPlus.setText("");
 			vandaPlus.setText("");
-			int newScore = Integer.parseInt(jesicaScore.getText()) + score;
-			jesicaScore.setText("" + newScore);
+			GameLogic.getInstance().getBotJesica().setScore(GameLogic.getInstance().getBotJesica().getScore() + score);
+			jesicaScore.setText("" + GameLogic.getInstance().getBotJesica().getScore());
 		} else if (GameLogic.getInstance().getCurrentPlayer() == GameLogic.getInstance().getBotMagaret()) {
-			magaretPlus.setText("+" + score);
+			magaretPlus.setText("(+" + score + ")");
 			userPlus.setText("");
 			jesicaPlus.setText("");
 			vandaPlus.setText("");
-			int newScore = Integer.parseInt(magaretScore.getText()) + score;
-			magaretScore.setText("" + newScore);
+			GameLogic.getInstance().getBotMagaret()
+					.setScore(GameLogic.getInstance().getBotMagaret().getScore() + score);
+			magaretScore.setText("" + GameLogic.getInstance().getBotMagaret().getScore());
 		} else {
-			vandaPlus.setText("+" + score);
+			vandaPlus.setText("(+" + score + ")");
 			userPlus.setText("");
 			jesicaPlus.setText("");
 			magaretPlus.setText("");
-			int newScore = Integer.parseInt(vandaScore.getText()) + score;
-			vandaScore.setText("" + newScore);
+			GameLogic.getInstance().getBotVanda().setScore(GameLogic.getInstance().getBotVanda().getScore() + score);
+			vandaScore.setText("" + GameLogic.getInstance().getBotVanda().getScore());
 		}
+		System.err.println("***** " + GameLogic.getInstance().getCurrentPlayer().getName() + " Win this Round*****");
+		System.out.println("Score : " + GameLogic.getInstance().getCurrentPlayer().getScore());
+
+		// check if whether the game is end
+		if (GameLogic.getInstance().getWinner() != null) {
+			title.setText(GameLogic.getInstance().getWinner().getName() + " WIN !");
+			btn.setText("NEW GAME");
+			System.err.println("$$$$$ Final Winner : " + GameLogic.getInstance().getWinner().getName() + " $$$$$");
+		}
+	}
+
+	private void resetScoreTable() {
+		// title
+		title.setText("SCORE BOARD");
+		// plus column
+		userPlus.setText("");
+		jesicaPlus.setText("");
+		magaretPlus.setText("");
+		vandaPlus.setText("");
+		// score column
+		userScore.setText("0");
+		jesicaScore.setText("0");
+		magaretScore.setText("0");
+		vandaScore.setText("0");
+		// btn
+		btn.setText("CONTINUE");
 	}
 }

@@ -26,7 +26,8 @@ public class ReverseCard extends EffectCard {
 	@Override
 	public void takeAction() {
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			GameLogic.getInstance().shortProcessing();
+			// take time to show effect...
+			GameLogic.getInstance().sleepOne();
 		}
 		GameLogic.getInstance().setClockwise(!GameLogic.getInstance().isClockwise());
 	}
@@ -34,6 +35,6 @@ public class ReverseCard extends EffectCard {
 	@Override
 	public String toString() {
 
-		return "Reverse Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
+		return "Reverse Card" + " (" + UnitCard.myColorToString(getColor()) + ")";
 	}
 }

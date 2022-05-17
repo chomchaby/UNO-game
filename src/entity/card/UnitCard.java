@@ -1,6 +1,7 @@
 package entity.card;
 
 import javafx.scene.paint.Color;
+import sharedObject.ColorLoader;
 
 public abstract class UnitCard {
 	private int number;
@@ -21,6 +22,19 @@ public abstract class UnitCard {
 
 	public Color getColor() {
 		return this.color;
+	}
+
+	public static String myColorToString(Color color) {
+		if (color == ColorLoader.BLUE) {
+			return "BLUE";
+		} else if (color == ColorLoader.RED) {
+			return "RED";
+		} else if (color == ColorLoader.YELLOW) {
+			return "YELLOW";
+		} else if (color == ColorLoader.GREEN) {
+			return "GREEN";
+		}
+		return "BLACK";
 	}
 
 }

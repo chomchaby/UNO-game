@@ -1,5 +1,6 @@
 package entity.card;
 
+import entity.player.User;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
 
@@ -23,9 +24,8 @@ public class DrawCard extends EffectCard {
 
 	@Override
 	public void takeAction() {
-		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
-			// take time to show effect...
-			GameLogic.getInstance().longProcessing();
+		if (GameLogic.getInstance().getNextPlayer() instanceof User) {
+			GameLogic.getInstance().sleepTwo();
 		}
 		GameLogic.getInstance().getNextPlayer().drawCard(2);
 	}
@@ -33,6 +33,6 @@ public class DrawCard extends EffectCard {
 	@Override
 	public String toString() {
 
-		return "Draw Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
+		return "Draw Card" + " (" + UnitCard.myColorToString(getColor()) + ")";
 	}
 }

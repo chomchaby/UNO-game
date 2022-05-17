@@ -2,10 +2,8 @@ package entity.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import entity.card.UnitCard;
 import entity.card.EffectCard;
-import entity.card.NormalCard;
 import logic.GameLogic;
 
 public abstract class Player {
@@ -31,7 +29,7 @@ public abstract class Player {
 
 	public void placeCard(UnitCard card) {
 		
-		System.out.println(name + " places a card... >> " + card.toString());
+		System.out.println(name + " places a card. > " + card.toString());
 		this.getCardList().remove(card);
 		GameLogic.getInstance().getCardPile().add(GameLogic.getInstance().getCardOnTable());
 		Collections.shuffle(GameLogic.getInstance().getCardPile());
@@ -44,7 +42,7 @@ public abstract class Player {
 
 	public void drawCard(int n) {
 		
-		System.out.println(name + " draws some cards...");
+		System.out.println(name + " draws some cards.");
 		for (int i = 0; i < n; i++) {
 			UnitCard newCard = GameLogic.getInstance().getCardPile().get(0);
 			this.getCardList().add(newCard);

@@ -172,10 +172,10 @@ public class ColorSelectionPane extends HBox {
 		else {
 			// collect data
 			GameLogic.getInstance().setColorState(color);
-			// to close ColorSection Pane
-			GameLogic.getInstance().setColorSelectionState(false);
 			// the action of color card ends.
 			GameLogic.getInstance().getUser().setPlaced(true);
+			// to close ColorSection Pane
+			GameLogic.getInstance().setColorSelectionState(false);
 		}
 		
 	}

@@ -47,16 +47,16 @@ public class User extends Player {
 		setPlaced(false);
 		setDrawn(false);
 		turnEnd = false;
-		GameLogic.getInstance().shortProcessing();
+		GameLogic.getInstance().sleepOne();
 	}
 
 	@Override
 	public void placeCard(UnitCard card) {
 		super.placeCard(card);
-		// it's not the end of BLACK card, 
-		// player must choose color and challenge if necessary
 		if (card.getColor() != Color.BLACK)
 			setPlaced(true);
+		// it's not the end of BLACK card, 
+		// player must choose color and challenge if necessary
 	}
 
 	@Override

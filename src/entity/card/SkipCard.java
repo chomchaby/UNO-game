@@ -25,7 +25,8 @@ public class SkipCard extends EffectCard {
 	@Override
 	public void takeAction() {
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
-			GameLogic.getInstance().shortProcessing();
+			// take time to show effect...
+			GameLogic.getInstance().sleepOne();
 		}
 		GameLogic.getInstance().getNextPlayer().setPlayable(false);;
 	}
@@ -33,7 +34,7 @@ public class SkipCard extends EffectCard {
 	@Override
 	public String toString() {
 
-		return "Skip Card" + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
+		return "Skip Card" + " (" + UnitCard.myColorToString(getColor()) + ")";
 	}
 
 }

@@ -25,6 +25,6 @@ public class NormalCard extends UnitCard {
 	@Override
 	public String toString() {
 
-		return Integer.toString(getNumber()) + " (" + GameLogic.getInstance().myColorToString(getColor()) + ")";
+		return Integer.toString(getNumber()) + " (" + UnitCard.myColorToString(getColor()) + ")";
 	}
 }

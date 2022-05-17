@@ -1,15 +1,11 @@
 package gui;
 
-import entity.player.Bot;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import logic.GameLogic;
 
@@ -19,9 +15,6 @@ public class CenterPane extends StackPane implements Updatable {
 	private ColorSelectionPane colorSelectionPane;
 	private Text challengeResult;
 	private ScorePane scoreBoard;
-
-	private VBox gameEndText;
-	private boolean hasGameEndText;
 
 	public CenterPane() {
 
@@ -36,6 +29,7 @@ public class CenterPane extends StackPane implements Updatable {
 
 		// create challengeResult
 		challengeResult = new Text("challenge result");
+		challengeResult.setStyle("-fx-font-size:18");
 
 		// create scoreBoard
 		scoreBoard = new ScorePane();
@@ -48,7 +42,19 @@ public class CenterPane extends StackPane implements Updatable {
 		StackPane.setAlignment(challengeResult, Pos.BOTTOM_CENTER);
 		StackPane.setAlignment(scoreBoard, Pos.CENTER);
 		challengeResult.setTranslateY(-18);
-//		scoreBoard.setVisible(false);
+
+		// create celebration (video)
+		String path = ClassLoader.getSystemResource("video/OmaeWaMou.mp4").toString();
+		Media media = new Media(path);
+		MediaPlayer mediaPlayer = new MediaPlayer(media);
+		MediaView mediaView = new MediaView(mediaPlayer);
+		mediaView.setFitHeight(150);
+
+		this.getChildren().add(mediaView);
+		StackPane.setAlignment(mediaView, Pos.BOTTOM_RIGHT);
+		mediaView.setTranslateY(44);
+		mediaView.setTranslateX(60);
+//		mediaPlayer.setAutoPlay(true);
 
 		update();
 
@@ -57,26 +63,24 @@ public class CenterPane extends StackPane implements Updatable {
 	@Override
 	public void update() {
 		// score board
-		if (GameLogic.getInstance().isGameEnd() && tablePane.isVisible()) {
+		if (GameLogic.getInstance().isRoundEnd() && tablePane.isVisible()) {
 			// set score once after isGameEnd() becomes true
 			scoreBoard.setScore();
 			scoreBoard.setVisible(true);
 		}
-		if (!GameLogic.getInstance().isGameEnd()) {
+		if (!GameLogic.getInstance().isRoundEnd()) {
 			scoreBoard.setVisible(false);
 		}
-		
-		// tablePane 
+
+		// tablePane
 		tablePane.update();
-		if (GameLogic.getInstance().isGameEnd()) {
+		if (GameLogic.getInstance().isRoundEnd()) {
 			tablePane.setVisible(false);
-		}
-		else {
+		} else {
 			tablePane.setVisible(true);
 		}
 		// colorSelectionPane and challengeResult
 		setColorSelectionAndChallengeResult();
-		
 
 	}
 
@@ -89,10 +93,10 @@ public class CenterPane extends StackPane implements Updatable {
 			colorSelectionPane.setVisible(false);
 			if (GameLogic.getInstance().isChallengeWin()) {
 				challengeResult.setText("Challenge Result : WIN (" + GameLogic.getInstance().getNextPlayer().getName()
-						+ "draws 4 cards)");
+						+ " draws 4 cards)");
 			} else {
 				challengeResult.setText("Challenge Result : LOSS ("
-						+ GameLogic.getInstance().getCurrentPlayer().getName() + "draws 2 cards)");
+						+ GameLogic.getInstance().getCurrentPlayer().getName() + " draws 2 cards)");
 			}
 			challengeResult.setVisible(true);
 		} else {
@@ -100,7 +104,6 @@ public class CenterPane extends StackPane implements Updatable {
 			challengeResult.setVisible(false);
 		}
 	}
-
 
 //	private void setColorSelectionAndChallengeResult() {
 //		// remove if the game is over
@@ -198,28 +201,6 @@ public class CenterPane extends StackPane implements Updatable {
 //
 //		} else if (!GameLogic.getInstance().isGameEnd()) {
 //			this.getChildren().remove(gameEndText);
-//		}
-//
-//	}
-//	private void initializeNewGameButton() {
-//		
-//		
-//		if (GameLogic.getInstance().isGameEnd() && !hasNewGameButton) {
-//			newGameButton = new Button("New Game");
-//			newGameButton.setPrefWidth(100);
-//			newGameButton.setOnAction(new EventHandler<ActionEvent>() {
-//				@Override
-//				public void handle(ActionEvent event) {
-//					GameLogic.getInstance().setGameEnd(false);
-//					GameLogic.getInstance().newGame();
-//				}
-//			});
-//			this.getChildren().add(newGameButton);
-//			hasNewGameButton = true;
-//			
-//		} else if (!GameLogic.getInstance().isGameEnd()) {
-//			this.getChildren().remove(newGameButton);
-//			hasNewGameButton = false;
 //		}
 //
 //	}

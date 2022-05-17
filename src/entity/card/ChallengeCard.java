@@ -21,7 +21,6 @@ public class ChallengeCard extends EffectCard {
 		// for Bot, only challenge result is shown
 		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
 			GameLogic.getInstance().getCurrentPlayer().challenge();
-
 		}
 		// for User, create ColorSelection pane (interface) in status pane
 		// also challenge result after finishing the color selection

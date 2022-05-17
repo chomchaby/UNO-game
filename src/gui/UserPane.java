@@ -95,9 +95,9 @@ public class UserPane extends VBox implements Updatable {
 		}
 
 		// update only cards when they are changed
-		if (cardListSize != user.getCardList().size()) {
+//		if (cardListSize != user.getCardList().size()) {
 			updateCard();
-		}
+//		}
 
 	}
 

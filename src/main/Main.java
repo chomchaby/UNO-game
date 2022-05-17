@@ -100,7 +100,7 @@ public class Main extends Application {
 		Thread t = new Thread(() -> {
 			while (true) {
 				GameLogic.getInstance().shortProcessing();
-				while (!GameLogic.getInstance().isGameEnd()) {
+				while (!GameLogic.getInstance().isRoundEnd()) {
 					System.err.println("---- NEW TURN ----");
 					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
 //					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
@@ -114,12 +114,12 @@ public class Main extends Application {
 
 					} else {
 						System.out.println(" - Blocked - ");
-						GameLogic.getInstance().longProcessing();
+						GameLogic.getInstance().sleepThree();
 						GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
 
 					}
 					if (GameLogic.getInstance().getCurrentPlayer().isWin()) {
-						GameLogic.getInstance().setGameEnd(true);
+						GameLogic.getInstance().setRoundEnd(true);
 						break;
 					}
 					GameLogic.getInstance().setUpForNewTurn();

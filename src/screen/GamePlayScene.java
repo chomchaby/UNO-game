@@ -43,21 +43,6 @@ public class GamePlayScene extends BorderPane{
 		// set translation
 		botJesicaPane.setTranslateX(-45);
 		botVandaPane.setTranslateX(45);
-		
-//		Rotate rotation90 = new Rotate(90, Rotate.Z_AXIS);
-//		rotation90.setPivotX(195);
-//		rotation90.setPivotY(50);
-//		botJesicaPane.getTransforms().add(rotation90);		
-		
-//		Rotate rotation180 = new Rotate(180, Rotate.Z_AXIS);
-//		rotation180.setPivotX(180);
-//		rotation180.setPivotY(60);
-//		botMagaretPane.getTransforms().add(rotation180);
-
-//		Rotate rotation270 = new Rotate(270, Rotate.Z_AXIS);
-//		rotation270.setPivotX(165);
-//		rotation270.setPivotY(50);
-//		botVandaPane.getTransforms().add(rotation270);
 
 		// set up userPane 
 		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
@@ -67,16 +52,11 @@ public class GamePlayScene extends BorderPane{
 		this.setBottom(bottomGamePlayPane );
 		BorderPane.setAlignment(bottomGamePlayPane , Pos.CENTER);
 		
-		
-		
+		// set up centerPane
 		CenterPane centerPane = new CenterPane();
-		
-		
-		// set Pane in root
 		this.setCenter(centerPane);
 		BorderPane.setAlignment(centerPane, Pos.CENTER);
 
-		
 
 		// set up updatableItems
 		updatableItems = new ArrayList<Updatable>();

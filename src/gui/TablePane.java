@@ -2,10 +2,10 @@ package gui;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,8 +20,6 @@ public class TablePane extends HBox implements Updatable {
 	private VBox statusPane;
 	private boolean isClockwise;
 	private ImageView reverseImg;
-
-	private boolean hasCardPilePane;
 
 	public TablePane() {
 		// setting pane
@@ -40,6 +38,15 @@ public class TablePane extends HBox implements Updatable {
 				onClickHandler();
 			}
 		});
+		this.cardPilePane.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Pane pane = (Pane) event.getSource();
+				pane.setStyle("-fx-cursor: hand;");
+			}
+		});
+		this.getChildren().add(cardPilePane);
+
 		initializeReverseImg();
 		update();
 
@@ -48,7 +55,7 @@ public class TablePane extends HBox implements Updatable {
 	private void onClickHandler() {
 		// draw a card from card pile
 		// not user turn
-		if (GameLogic.getInstance().isGameEnd()) {
+		if (GameLogic.getInstance().isRoundEnd()) {
 			return;
 		}
 		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
@@ -65,19 +72,18 @@ public class TablePane extends HBox implements Updatable {
 		AudioLoader.mouseClick2Sound.play();
 		GameLogic.getInstance().getUser().drawCard(1);
 	}
-	
-	private void initializeReverseImg() { 
+
+	private void initializeReverseImg() {
 		isClockwise = GameLogic.getInstance().isClockwise();
 		if (isClockwise) {
 			reverseImg = new ImageView(ImageLoader.clockwiseImg);
-		}
-		else {
+		} else {
 			reverseImg = new ImageView(ImageLoader.counterClockwiseImg);
 		}
 		reverseImg.setFitHeight(50);
 		reverseImg.setFitWidth(50);
 	}
-	
+
 	@Override
 	public void update() {
 		initializeCardOnTablePane();
@@ -85,37 +91,30 @@ public class TablePane extends HBox implements Updatable {
 	}
 
 	private void initializeCardOnTablePane() {
-		if (GameLogic.getInstance().isGameEnd()) {
-			this.getChildren().remove(cardPilePane);
-			this.getChildren().remove(cardOnTablePane);
-			hasCardPilePane = false;
+		if (GameLogic.getInstance().isRoundEnd()) {
 
 		} else {
-			if (!hasCardPilePane) {
-				this.getChildren().add(cardPilePane);
-				hasCardPilePane = true;
-			}
 			this.getChildren().remove(cardOnTablePane);
 			this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
 			this.cardOnTablePane.setPrefWidth(86);
 			this.cardOnTablePane.setPrefHeight(120);
-			
+
 			this.cardOnTablePane.draw();
 			this.getChildren().add(cardOnTablePane);
 		}
 
 	}
-	
+
 	private void initializeStatusPane() {
 
-		if (GameLogic.getInstance().isGameEnd()) {
+		if (GameLogic.getInstance().isRoundEnd()) {
 			// clear
 			this.getChildren().remove(statusPane);
 
 		} else {
 			// clear
 			this.getChildren().remove(statusPane);
-			
+
 			// setting color bar
 			Color color = GameLogic.getInstance().getColorState();
 			Rectangle colorRec = new Rectangle(30, 30, color);
@@ -125,27 +124,24 @@ public class TablePane extends HBox implements Updatable {
 			// setting reverse sign
 			if (isClockwise != GameLogic.getInstance().isClockwise()) {
 				initializeReverseImg();
-			}
-			else {
+			} else {
 				if (isClockwise) {
-					reverseImg.setRotate(reverseImg.getRotate()+30);
+					reverseImg.setRotate(reverseImg.getRotate() + 30);
+				} else {
+					reverseImg.setRotate(reverseImg.getRotate() - 30);
 				}
-				else {
-					reverseImg.setRotate(reverseImg.getRotate()-30);
-				}
-				
+
 			}
 
 			// combine color bar and rotation sign
 			statusPane = new VBox();
 			statusPane.setAlignment(Pos.CENTER);
 			statusPane.setSpacing(25);
-			statusPane.getChildren().addAll(colorRec,reverseImg);
+			statusPane.getChildren().addAll(colorRec, reverseImg);
 
 			this.getChildren().add(statusPane);
 		}
 	}
-	
 
 //	private void initializeGameEndText() {
 //

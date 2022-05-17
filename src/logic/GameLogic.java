@@ -16,10 +16,9 @@ import sharedObject.ColorLoader;
 public class GameLogic {
 
 	private static GameLogic instance = null;
-	private Color[] colorArray = { ColorLoader.BLUE, ColorLoader.GREEN, ColorLoader.RED,
-			ColorLoader.YELLOW };
-	
-	// cards in game 
+	private Color[] colorArray = { ColorLoader.BLUE, ColorLoader.GREEN, ColorLoader.RED, ColorLoader.YELLOW };
+
+	// cards in game
 	private ArrayList<UnitCard> cardPile;
 	private UnitCard cardOnTable;
 
@@ -27,13 +26,13 @@ public class GameLogic {
 	private int playerTurn;
 	private Player currentPlayer;
 	private Player nextPlayer;
-//	private Player beforePlayer;
+	private Player beforePlayer;
 
 	// general parameters
 	private int numberState;
 	private Color colorState;
 	private boolean isClockwise;
-	private boolean isGameEnd;
+	private boolean isRoundEnd;
 
 	// special parameters
 	private boolean colorSelectionState;
@@ -45,10 +44,10 @@ public class GameLogic {
 	private Player botJesica;
 	private Player botMagaret;
 	private Player botVanda;
-	
-	// other 
+
+	// other
 	private int deckSize;
-	
+
 	public static GameLogic getInstance() {
 		if (instance == null) {
 			instance = new GameLogic();
@@ -63,7 +62,7 @@ public class GameLogic {
 		botMagaret = new Bot("Magaret");
 		botVanda = new Bot("Vanda");
 	}
-	
+
 	public void start(String name) {
 		// new user start new game...
 		user.setName(name);
@@ -86,32 +85,42 @@ public class GameLogic {
 		dealCard();
 
 		// set parameters
+
 		// general parameters
 		setNumberState(cardOnTable.getNumber());
 		setColorState(cardOnTable.getColor());
 		setClockwise(true);
-		setGameEnd(false);
+		setRoundEnd(false);
+		// special parameters
+		setColorSelectionState(false);
+		setChallengeState(false);
+
 		// player to play
 		Random rand = new Random();
 		setPlayerTurn(rand.nextInt(4) + 1000);
 		setCurrentPlayer();
 		setNextPlayer();
-//		setBeforePlayer();
-		// special parameters
-		setColorSelectionState(false);
-		setChallengeState(false);
+		setBeforePlayer();
 
+		// reset player playable state
+		user.setPlayable(true);
+		botJesica.setPlayable(true);
+		botMagaret.setPlayable(true);
+		botVanda.setPlayable(true);
+
+		// print state
+		System.err.println("...NEW GAME BEGINS...");
 	}
-
-
 
 	private void initilizeCardPile() {
 		deckSize = 0;
 		for (Color color : colorArray) {
-			for (int i = 0; i < 10; i++) {
-				UnitCard card = new NormalCard(i, color);
-				cardPile.add(card);
-				deckSize += 1;
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 10 ; j++) {
+					UnitCard card = new NormalCard(j, color);
+					cardPile.add(card);
+					deckSize += 1;
+				}
 			}
 			for (int i = 0; i < 2; i++) {
 				UnitCard card = new SkipCard(color);
@@ -134,16 +143,17 @@ public class GameLogic {
 			cardPile.add(card);
 			deckSize += 1;
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 20; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
 			deckSize += 1;
 		}
+		System.out.println(deckSize);
 	}
 
 	private void dealCard() {
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 5; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));
@@ -161,7 +171,7 @@ public class GameLogic {
 		move();
 		setCurrentPlayer();
 		setNextPlayer();
-//		setBeforePlayer();
+		setBeforePlayer();
 
 	}
 
@@ -170,24 +180,6 @@ public class GameLogic {
 			playerTurn += 1;
 		else
 			playerTurn -= 1;
-	}
-
-	public void longProcessing() {
-		try {
-			TimeUnit.SECONDS.sleep(3); // 3
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void shortProcessing() {
-		try {
-			TimeUnit.SECONDS.sleep(1); // 1
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public boolean isChallengeWin() {
@@ -204,35 +196,56 @@ public class GameLogic {
 	public void punishChallenge() {
 
 		// sleep for seconds to read challenge result
-		GameLogic.getInstance().longProcessing();
+		GameLogic.getInstance().sleepTwo();
 		// pick cards
 		if (GameLogic.getInstance().isChallengeWin()) {
 			if (GameLogic.getInstance().getNextPlayer() instanceof User) {
-				GameLogic.getInstance().longProcessing();
+				GameLogic.getInstance().sleepTwo();
 			}
 			GameLogic.getInstance().getNextPlayer().drawCard(4);
 		} else {
 			if (GameLogic.getInstance().getCurrentPlayer() instanceof User) {
-				GameLogic.getInstance().longProcessing();
+				GameLogic.getInstance().sleepTwo();
 			}
 			GameLogic.getInstance().getCurrentPlayer().drawCard(2);
 		}
 		// more time to read
-		GameLogic.getInstance().longProcessing();
-
+		GameLogic.getInstance().sleepOne();
 	}
 
-	public String myColorToString(Color color) {
-		if (color == ColorLoader.BLUE) {
-			return "BLUE";
-		} else if (color == ColorLoader.RED) {
-			return "RED";
-		} else if (color == ColorLoader.YELLOW) {
-			return "YELLOW";
-		} else if (color == ColorLoader.GREEN) {
-			return "GREEN";
+	public Player getWinner() {
+		int goal = 24;
+		if (currentPlayer.getScore() >= goal) {
+			return currentPlayer;
 		}
-		return "BLACK";
+		return null;
+	}
+
+	public void sleepOne() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void sleepTwo() {
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void sleepThree() {
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// setter and getter
@@ -328,12 +341,12 @@ public class GameLogic {
 		this.isClockwise = isClockwise;
 	}
 
-	public boolean isGameEnd() {
-		return isGameEnd;
+	public boolean isRoundEnd() {
+		return isRoundEnd;
 	}
 
-	public void setGameEnd(boolean isGameEnd) {
-		this.isGameEnd = isGameEnd;
+	public void setRoundEnd(boolean isRoundEnd) {
+		this.isRoundEnd = isRoundEnd;
 	}
 
 	public boolean isColorSelectionState() {
@@ -380,32 +393,32 @@ public class GameLogic {
 		return deckSize;
 	}
 
-//	public Player getBeforePlayer() {
-//		return beforePlayer;
-//	}
-//
-//	public void setBeforePlayer() {
-//		if (isClockwise) {
-//			if (playerTurn % 4 == 0) {
-//				beforePlayer = botVanda;
-//			} else if (playerTurn % 4 == 1) {
-//				beforePlayer = user;
-//			} else if (playerTurn % 4 == 2) {
-//				beforePlayer = botJesica;
-//			} else {
-//				beforePlayer = botMagaret;
-//			}
-//		} else {
-//			if (playerTurn % 4 == 0) {
-//				beforePlayer = botJesica;
-//			} else if (playerTurn % 4 == 1) {
-//				beforePlayer = botMagaret;
-//			} else if (playerTurn % 4 == 2) {
-//				beforePlayer = botVanda;
-//			} else {
-//				beforePlayer = user;
-//			}
-//		}
-//	}
+	public Player getBeforePlayer() {
+		return beforePlayer;
+	}
+
+	public void setBeforePlayer() {
+		if (isClockwise) {
+			if (playerTurn % 4 == 0) {
+				beforePlayer = botVanda;
+			} else if (playerTurn % 4 == 1) {
+				beforePlayer = user;
+			} else if (playerTurn % 4 == 2) {
+				beforePlayer = botJesica;
+			} else {
+				beforePlayer = botMagaret;
+			}
+		} else {
+			if (playerTurn % 4 == 0) {
+				beforePlayer = botJesica;
+			} else if (playerTurn % 4 == 1) {
+				beforePlayer = botMagaret;
+			} else if (playerTurn % 4 == 2) {
+				beforePlayer = botVanda;
+			} else {
+				beforePlayer = user;
+			}
+		}
+	}
 
 }
