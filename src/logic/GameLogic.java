@@ -46,6 +46,9 @@ public class GameLogic {
 	private Player botMagaret;
 	private Player botVanda;
 	
+	// other 
+	private int deckSize;
+	
 	public static GameLogic getInstance() {
 		if (instance == null) {
 			instance = new GameLogic();
@@ -103,37 +106,44 @@ public class GameLogic {
 
 
 	private void initilizeCardPile() {
+		deckSize = 0;
 		for (Color color : colorArray) {
 			for (int i = 0; i < 10; i++) {
 				UnitCard card = new NormalCard(i, color);
 				cardPile.add(card);
+				deckSize += 1;
 			}
 			for (int i = 0; i < 2; i++) {
 				UnitCard card = new SkipCard(color);
 				cardPile.add(card);
+				deckSize += 1;
 			}
 			for (int i = 0; i < 2; i++) {
 				UnitCard card = new ReverseCard(color);
 				cardPile.add(card);
+				deckSize += 1;
 			}
 			for (int i = 0; i < 2; i++) {
 				UnitCard card = new DrawCard(color);
 				cardPile.add(card);
+				deckSize += 1;
 			}
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 4; i++) {
 			UnitCard card = new ColorCard();
 			cardPile.add(card);
+			deckSize += 1;
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 6; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
+			deckSize += 1;
 		}
 	}
 
 	private void dealCard() {
 		Collections.shuffle(cardPile);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 1; i++) {
 			user.getCardList().add(cardPile.remove(0));
 			botJesica.getCardList().add(cardPile.remove(0));
 			botMagaret.getCardList().add(cardPile.remove(0));
@@ -366,6 +376,9 @@ public class GameLogic {
 		return (Bot) botVanda;
 	}
 
+	public int getDeckSize() {
+		return deckSize;
+	}
 
 //	public Player getBeforePlayer() {
 //		return beforePlayer;

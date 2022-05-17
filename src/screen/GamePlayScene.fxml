@@ -51,7 +51,7 @@
 		<StackPane fx:id="tablePane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
 				<HBox fx:id="colorSelectionPane" maxHeight="50.0" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER" />
-				<HBox fx:id="statusPane" maxHeight="120.0" prefHeight="120.0" prefWidth="200.0" StackPane.alignment="CENTER" />
+				<HBox fx:id="statusPane" alignment="CENTER" maxHeight="120.0" prefHeight="120.0" prefWidth="200.0" StackPane.alignment="CENTER" />
 			</children>
 			<padding>
 				<Insets bottom="10.0" top="10.0" />

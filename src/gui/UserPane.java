@@ -40,6 +40,7 @@ public class UserPane extends VBox implements Updatable {
 		this.setMaxHeight(300);
 		this.setPrefHeight(300);
 		this.setAlignment(Pos.CENTER);
+		this.setSpacing(5);
 		
 		// set up cardPane
 		cardPane = new GridPane();
@@ -54,8 +55,9 @@ public class UserPane extends VBox implements Updatable {
 		this.cardPane.setBackground(new Background(bgFillA));
 		
 		// create and set up turnText
-		this.turnText = new Text("Player: " + user.getName());
-		this.turnText.maxHeight(40);
+		this.turnText = new Text("Player : " + user.getName());
+		this.turnText.setStyle("-fx-font-size: 18;");
+		this.turnText.maxHeight(35);
 		this.setAlignment(Pos.CENTER);
 		this.setVisible(true);
 		

@@ -67,6 +67,7 @@ public class ColorSelectionPane extends HBox {
 			@Override
 			public void handle(MouseEvent event) {
 				AudioLoader.popSound.play();
+				redBtn.setStyle("-fx-cursor: hand;");
 				redBtn.setPrefWidth(40);
 				redBtn.setPrefHeight(40);
 			}
@@ -90,6 +91,7 @@ public class ColorSelectionPane extends HBox {
 			@Override
 			public void handle(MouseEvent event) {
 				AudioLoader.popSound.play();
+				yellowBtn.setStyle("-fx-cursor: hand;");
 				yellowBtn.setPrefWidth(40);
 				yellowBtn.setPrefHeight(40);
 			}
@@ -113,6 +115,7 @@ public class ColorSelectionPane extends HBox {
 			@Override
 			public void handle(MouseEvent event) {
 				AudioLoader.popSound.play();
+				blueBtn.setStyle("-fx-cursor: hand;");
 				blueBtn.setPrefWidth(40);
 				blueBtn.setPrefHeight(40);
 			}
@@ -137,6 +140,7 @@ public class ColorSelectionPane extends HBox {
 			@Override
 			public void handle(MouseEvent event) {
 				AudioLoader.popSound.play();
+				greenBtn.setStyle("-fx-cursor: hand;");
 				greenBtn.setPrefWidth(40);
 				greenBtn.setPrefHeight(40);
 			}

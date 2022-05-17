@@ -97,7 +97,7 @@ public class Main2 extends Application {
 			while (true) {
 				GameLogic.getInstance().shortProcessing();
 				while (!GameLogic.getInstance().isGameEnd()) {
-//					System.err.println("---- NEW TURN ----");
+					System.err.println("---- NEW TURN ----");
 //					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
 //					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
 //					System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());

@@ -38,6 +38,7 @@ public class BotPane extends VBox implements Updatable {
 		this.setMaxHeight(160);
 		this.setPrefHeight(160);
 		this.setAlignment(Pos.CENTER);
+		this.setSpacing(5);
 
 		// create and set up cardPane
 		this.cardPane = new GridPane();
@@ -55,8 +56,9 @@ public class BotPane extends VBox implements Updatable {
 		this.cardPane.setBackground(new Background(bgFillA));
 		
 		// create and set up turnText
-		this.turnText = new Text("Player: " + bot.getName());
-		this.turnText.maxHeight(40);
+		this.turnText = new Text("Player : " + bot.getName());
+		this.turnText.setStyle("-fx-font-size: 18;");
+		this.turnText.maxHeight(35);
 		this.setAlignment(Pos.CENTER);
 		this.setVisible(true);
 		if (bot.getName().equals("Magaret")) {

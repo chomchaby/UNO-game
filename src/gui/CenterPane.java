@@ -17,8 +17,9 @@ public class CenterPane extends StackPane implements Updatable {
 
 	private TablePane tablePane;
 	private ColorSelectionPane colorSelectionPane;
-	private	Text challengeResult;
-	
+	private Text challengeResult;
+	private ScorePane scoreBoard;
+
 	private VBox gameEndText;
 	private boolean hasGameEndText;
 
@@ -32,16 +33,22 @@ public class CenterPane extends StackPane implements Updatable {
 
 		// create colorSelectionPane
 		colorSelectionPane = new ColorSelectionPane();
-		
+
 		// create challengeResult
-		challengeResult = new Text("challenge result");		
-		
+		challengeResult = new Text("challenge result");
+
+		// create scoreBoard
+		scoreBoard = new ScorePane();
+		scoreBoard.setVisible(false);
+
 		// add fields
-		this.getChildren().addAll(tablePane,colorSelectionPane,challengeResult);
+		this.getChildren().addAll(tablePane, colorSelectionPane, challengeResult, scoreBoard);
 		StackPane.setAlignment(tablePane, Pos.CENTER);
 		StackPane.setAlignment(colorSelectionPane, Pos.BOTTOM_CENTER);
 		StackPane.setAlignment(challengeResult, Pos.BOTTOM_CENTER);
+		StackPane.setAlignment(scoreBoard, Pos.CENTER);
 		challengeResult.setTranslateY(-18);
+//		scoreBoard.setVisible(false);
 
 		update();
 
@@ -49,35 +56,53 @@ public class CenterPane extends StackPane implements Updatable {
 
 	@Override
 	public void update() {
+		// score board
+		if (GameLogic.getInstance().isGameEnd() && tablePane.isVisible()) {
+			// set score once after isGameEnd() becomes true
+			scoreBoard.setScore();
+			scoreBoard.setVisible(true);
+		}
+		if (!GameLogic.getInstance().isGameEnd()) {
+			scoreBoard.setVisible(false);
+		}
+		
+		// tablePane 
 		tablePane.update();
+		if (GameLogic.getInstance().isGameEnd()) {
+			tablePane.setVisible(false);
+		}
+		else {
+			tablePane.setVisible(true);
+		}
+		// colorSelectionPane and challengeResult
 		setColorSelectionAndChallengeResult();
-		setGameEndText();
+		
+
 	}
 
 	private void setColorSelectionAndChallengeResult() {
-	
+
 		if (GameLogic.getInstance().isColorSelectionState()) {
 			colorSelectionPane.setVisible(true);
-		}
-		else if (GameLogic.getInstance().isChallengeState()) {
+		} else if (GameLogic.getInstance().isChallengeState()) {
 			// end of color selection
 			colorSelectionPane.setVisible(false);
 			if (GameLogic.getInstance().isChallengeWin()) {
-				challengeResult.setText("Challenge Result : WIN (" 
-			+ GameLogic.getInstance().getNextPlayer().getName()
-			+ "draws 4 cards)");
+				challengeResult.setText("Challenge Result : WIN (" + GameLogic.getInstance().getNextPlayer().getName()
+						+ "draws 4 cards)");
 			} else {
-				challengeResult.setText("Challenge Result : LOSS (" 
-			+ GameLogic.getInstance().getCurrentPlayer().getName()
-			+ "draws 2 cards)");
+				challengeResult.setText("Challenge Result : LOSS ("
+						+ GameLogic.getInstance().getCurrentPlayer().getName() + "draws 2 cards)");
 			}
 			challengeResult.setVisible(true);
-		}
-		else {
+		} else {
 			colorSelectionPane.setVisible(false);
 			challengeResult.setVisible(false);
 		}
-		
+	}
+
+
+//	private void setColorSelectionAndChallengeResult() {
 //		// remove if the game is over
 //		if (GameLogic.getInstance().isGameEnd()) {
 //			this.getChildren().remove(colorSelectionPane);
@@ -125,11 +150,9 @@ public class CenterPane extends StackPane implements Updatable {
 //				hasChallegeResultText = false;
 //			}
 //		}
-	}
+//	}
 
-	private void setGameEndText() {
-		
-		
+//	private void setGameEndText() {
 
 //		if (GameLogic.getInstance().isGameEnd()) {
 //
@@ -176,8 +199,8 @@ public class CenterPane extends StackPane implements Updatable {
 //		} else if (!GameLogic.getInstance().isGameEnd()) {
 //			this.getChildren().remove(gameEndText);
 //		}
-
-	}
+//
+//	}
 //	private void initializeNewGameButton() {
 //		
 //		
@@ -200,6 +223,5 @@ public class CenterPane extends StackPane implements Updatable {
 //		}
 //
 //	}
-
 
 }
