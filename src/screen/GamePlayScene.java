@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import gui.BotPane;
 import gui.BottomGamePlayPane;
 import gui.CenterPane;
-import gui.Updatable;
 import gui.UserPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
+import logic.Updatable;
 import logic.UpdatableHolder;
 
 public class GamePlayScene extends BorderPane{

@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameLogic;
+import logic.Updatable;
 import sharedObject.AudioLoader;
 import sharedObject.ImageLoader;
 

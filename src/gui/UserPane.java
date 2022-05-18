@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import logic.Updatable;
 import sharedObject.ImageLoader;
 
 public class UserPane extends VBox implements Updatable {

@@ -43,8 +43,8 @@ public class User extends Player {
 //				}
 			}
 		}
-		System.out.println("Place: " + isPlaced());
-		System.out.println("Draw: " + isDrawn());
+//		System.out.println("Place: " + isPlaced());
+//		System.out.println("Draw: " + isDrawn());
 		setPlaced(false);
 		setDrawn(false);
 		turnEnd = false;

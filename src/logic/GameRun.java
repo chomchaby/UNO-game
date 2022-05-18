@@ -10,18 +10,17 @@ public class GameRun extends Thread {
 			while (!GameLogic.getInstance().isRoundEnd()) {
 				System.err.println("---- NEW TURN ----");
 				System.out.println(">>> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
-				System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
-				System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
-				System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
-				System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
+//				System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
+//				System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
+//				System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
+//				System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
 				if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
-					GameLogic.getInstance().getCurrentPlayer().setPlaceableCardList();
-					if (GameLogic.getInstance().getCurrentPlayer().getPlaceableCardList().size() > 0) {
-						for (UnitCard card : GameLogic.getInstance().getCurrentPlayer().getPlaceableCardList()) {
-							System.out.println(card.toString());
-						}
-					}
-
+//					GameLogic.getInstance().getCurrentPlayer().setPlaceableCardList();
+//					if (GameLogic.getInstance().getCurrentPlayer().getPlaceableCardList().size() > 0) {
+//						for (UnitCard card : GameLogic.getInstance().getCurrentPlayer().getPlaceableCardList()) {
+//							System.out.println(card.toString());
+//						}
+//					}
 					GameLogic.getInstance().getCurrentPlayer().play();
 
 				} else {

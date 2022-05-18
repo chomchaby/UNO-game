@@ -2,8 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 
-import gui.Updatable;
-
 public class UpdatableHolder {
 
 	private static UpdatableHolder instance = null;

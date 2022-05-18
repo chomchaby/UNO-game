@@ -16,6 +16,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import logic.Updatable;
 import sharedObject.ImageLoader;
 
 public class CenterPane extends StackPane implements Updatable {
