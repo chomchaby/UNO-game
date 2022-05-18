@@ -23,6 +23,7 @@ public class User extends Player {
 				turnEnd = true;
 			} else if (isDrawn()) {
 				if (placeableCardList.size() == 0) {
+					System.out.println("");
 					turnEnd = true;
 				}
 // 				java.util.ConcurrentModificationException...
@@ -42,8 +43,8 @@ public class User extends Player {
 //				}
 			}
 		}
-//		System.out.println("Drawn: " + isDrawn());
-//		System.out.println("Picked: " + isPicked());
+		System.out.println("Place: " + isPlaced());
+		System.out.println("Draw: " + isDrawn());
 		setPlaced(false);
 		setDrawn(false);
 		turnEnd = false;

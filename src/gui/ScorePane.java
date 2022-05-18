@@ -3,14 +3,19 @@ package gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
-import logic.GameRun;
+import main.Main;
 import sharedObject.AudioLoader;
 
 public class ScorePane extends StackPane {
@@ -33,51 +38,56 @@ public class ScorePane extends StackPane {
 
 	public ScorePane() {
 
-		// title
+		this.setPadding(new Insets(20, 0, 10, 0));
+		BackgroundFill bgFill = new BackgroundFill(Color.STEELBLUE, new CornerRadii(40), Insets.EMPTY);
+		BackgroundFill[] bgFillA = { bgFill };
+		this.setBackground(new Background(bgFillA));
+
+		// title //
 		title = new Text("SCORE BOARD");
-		title.setStyle("-fx-font-weight: bold; -fx-font-size: 30;");
+		title.setStyle("-fx-fill: white; -fx-font-weight: bold; -fx-font-size: 30;");
 		this.getChildren().add(title);
 		StackPane.setAlignment(title, Pos.TOP_CENTER);
 
-		// score table
+		// score table //
 		scoreTable = new GridPane();
 		scoreTable.setAlignment(Pos.CENTER);
-		scoreTable.setVgap(5);
+		scoreTable.setVgap(4);
 		scoreTable.setHgap(50);
 
 		// header
 		Text name = new Text("Name");
-		name.setStyle("-fx-font-weight: bold;-fx-font-size: 20;");
+		name.setStyle("-fx-fill: white;-fx-font-weight: bold;-fx-font-size: 18;");
 		Text score = new Text("Score");
-		score.setStyle("-fx-font-weight: bold;-fx-font-size: 20;");
+		score.setStyle("-fx-fill: white;-fx-font-weight: bold;-fx-font-size: 18;");
 
 		// name column
 		Text username = new Text(GameLogic.getInstance().getUser().getName() + " (You)");
 		Text jesica = new Text(GameLogic.getInstance().getBotJesica().getName());
 		Text magaret = new Text(GameLogic.getInstance().getBotMagaret().getName());
 		Text vanda = new Text(GameLogic.getInstance().getBotVanda().getName());
-		username.setStyle("-fx-font-size: 20;");
-		jesica.setStyle("-fx-font-size: 20;");
-		magaret.setStyle("-fx-font-size: 20;");
-		vanda.setStyle("-fx-font-size: 20;");
+		username.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		jesica.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		magaret.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		vanda.setStyle("-fx-fill: white;-fx-font-size: 18;");
 		// plus column
 		userPlus = new Text("");
 		jesicaPlus = new Text("");
 		magaretPlus = new Text("");
 		vandaPlus = new Text("");
-		userPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
-		jesicaPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
-		magaretPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
-		vandaPlus.setStyle("-fx-font-size: 20; -fx-stroke: green;");
+		userPlus.setStyle("-fx-fill: white;-fx-font-size: 18; ");
+		jesicaPlus.setStyle("-fx-fill: white;-fx-font-size: 18; ");
+		magaretPlus.setStyle("-fx-fill: white;-fx-font-size: 18; ");
+		vandaPlus.setStyle("-fx-fill: white;-fx-font-size: 18; ");
 		// score column
 		userScore = new Text("0");
 		jesicaScore = new Text("0");
 		magaretScore = new Text("0");
 		vandaScore = new Text("0");
-		userScore.setStyle("-fx-font-size: 20;");
-		jesicaScore.setStyle("-fx-font-size: 20;");
-		magaretScore.setStyle("-fx-font-size: 20;");
-		vandaScore.setStyle("-fx-font-size: 20;");
+		userScore.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		jesicaScore.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		magaretScore.setStyle("-fx-fill: white;-fx-font-size: 18;");
+		vandaScore.setStyle("-fx-fill: white;-fx-font-size: 18;");
 
 		// add fields
 		// name
@@ -104,40 +114,57 @@ public class ScorePane extends StackPane {
 		GridPane.setHalignment(vandaScore, HPos.RIGHT);
 		this.getChildren().add(scoreTable);
 		StackPane.setAlignment(scoreTable, Pos.CENTER);
-		scoreTable.setTranslateY(10);
+		scoreTable.setTranslateY(5);
 
-		// button
-		// continueBtn
+		// button //
 		btn = new Button("Continue");
-		btn.setStyle("-fx-font-size:15");
+		btn.setPrefWidth(100);
+		btn.setStyle("-fx-font-size:15;");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				AudioLoader.mouseClick1Sound.play();
+				// set disable until next round or game end
+				btn.setDisable(true);
 				if (GameLogic.getInstance().getWinner() != null) {
+					// gameRun thread is terminated
 					// the same user play new game
 					// set score of all players to zero
 					// reset cards in game
 					GameLogic.getInstance().start(GameLogic.getInstance().getUser().getName());
-					// create new GameRun thread
-					new GameRun().start();
+					// start gameRun thread again
+//					Main2.getRidOfGameRun();
+					Main.runGame();
 					// use the old gamePlayScene, reset scoreTable
 					resetScoreTable();
 				} else {
+					// save present scores
+					// go to second while loop again (game run thread)
 					GameLogic.getInstance().newGame();
-					GameLogic.getInstance().setRoundEnd(false);
 				}
+				// set isRoundEnd() to false
+				// set isScoreShown() to false
+				// automatically set scoreBoard invisible when new round or new game begin
 			}
 		});
 		btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				AudioLoader.mouseEnterSound.play();
-				btn.setStyle("-fx-font-size:15; -fx-cursor: hand;");
+				btn.setStyle("-fx-font-size:15; -fx-font-weight: bold; -fx-cursor: hand;");
+				btn.setPrefWidth(120);
+			}
+		});
+		btn.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				btn.setStyle("-fx-font-size:15;");
+				btn.setPrefWidth(100);
 			}
 		});
 		this.getChildren().add(btn);
 		StackPane.setAlignment(btn, Pos.BOTTOM_CENTER);
+		btn.setDisable(true);
 
 	}
 
@@ -179,14 +206,17 @@ public class ScorePane extends StackPane {
 		// check if whether the game is end
 		if (GameLogic.getInstance().getWinner() != null) {
 			title.setText(GameLogic.getInstance().getWinner().getName() + " WIN !");
-			btn.setText("NEW GAME");
+			btn.setText("New Game");
 			System.err.println("$$$$$ Final Winner : " + GameLogic.getInstance().getWinner().getName() + " $$$$$");
 		}
+		// enable btn
+		btn.setDisable(false);
 	}
 
 	private void resetScoreTable() {
-		// title
+		// title //
 		title.setText("SCORE BOARD");
+		// score table //
 		// plus column
 		userPlus.setText("");
 		jesicaPlus.setText("");
@@ -197,7 +227,8 @@ public class ScorePane extends StackPane {
 		jesicaScore.setText("0");
 		magaretScore.setText("0");
 		vandaScore.setText("0");
-		// btn
-		btn.setText("CONTINUE");
+		// btn //
+		btn.setText("Continue");
 	}
+
 }

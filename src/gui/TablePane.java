@@ -1,5 +1,6 @@
 package gui;
 
+import entity.player.Bot;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
@@ -58,7 +59,11 @@ public class TablePane extends HBox implements Updatable {
 		if (GameLogic.getInstance().isRoundEnd()) {
 			return;
 		}
-		if (GameLogic.getInstance().getCurrentPlayer() != GameLogic.getInstance().getUser()) {
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof Bot) {
+			return;
+		}
+		// not be skipped
+		if (!GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
 			return;
 		}
 		// user turn, but is not time to draw
@@ -98,7 +103,6 @@ public class TablePane extends HBox implements Updatable {
 			this.cardOnTablePane = new FontCardPane(GameLogic.getInstance().getCardOnTable());
 			this.cardOnTablePane.setPrefWidth(86);
 			this.cardOnTablePane.setPrefHeight(120);
-
 			this.cardOnTablePane.draw();
 			this.getChildren().add(cardOnTablePane);
 		}

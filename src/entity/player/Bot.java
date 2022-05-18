@@ -48,7 +48,7 @@ public class Bot extends Player {
 
 	@Override
 	public void drawCard(int n) {
-		if (GameLogic.getInstance().getBeforePlayer() instanceof User
+		if (GameLogic.getInstance().getCurrentPlayer() instanceof User
 				&& GameLogic.getInstance().getCardOnTable() instanceof DrawCard) {
 			// no waiting if it came from user's draw card
 		} else {
@@ -134,6 +134,10 @@ public class Bot extends Player {
 						return card;
 					}
 				}
+				if (normal.size() > 0)
+					return normal.get(0);
+				if (reverse.size() > 0)
+					return reverse.get(0);	
 			} else {
 				for (UnitCard card : drawableCardList) {
 					if (card instanceof ChallengeCard || card instanceof DrawCard || card instanceof SkipCard
@@ -141,9 +145,9 @@ public class Bot extends Player {
 						return card;
 					}
 				}
+				if (normal.size() > 0)
+					return normal.get(0);
 			}
-			if (normal.size() > 0)
-				return normal.get(0);
 			return color.get(0);
 		}
 		// > 5 cards

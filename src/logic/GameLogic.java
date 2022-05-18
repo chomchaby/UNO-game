@@ -38,6 +38,7 @@ public class GameLogic {
 	private boolean colorSelectionState;
 	private boolean challengeState;
 	private Color challengeColor;
+	private boolean isScoreShown;
 
 	// all players
 	private Player user;
@@ -94,6 +95,7 @@ public class GameLogic {
 		// special parameters
 		setColorSelectionState(false);
 		setChallengeState(false);
+		setScoreShown(false);
 
 		// player to play
 		Random rand = new Random();
@@ -143,7 +145,7 @@ public class GameLogic {
 			cardPile.add(card);
 			deckSize += 1;
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 6; i++) {
 			UnitCard card = new ChallengeCard();
 			cardPile.add(card);
 			deckSize += 1;
@@ -371,6 +373,14 @@ public class GameLogic {
 
 	public void setChallengeColor(Color challengeColor) {
 		this.challengeColor = challengeColor;
+	}
+	
+	public boolean isScoreShown() {
+		return isScoreShown;
+	}
+
+	public void setScoreShown(boolean isScoreShown) {
+		this.isScoreShown= isScoreShown;
 	}
 
 	public User getUser() {

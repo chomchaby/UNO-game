@@ -1,27 +1,27 @@
 package main;
 
-import java.util.Scanner;
-
-import gui.BotPane;
-import gui.CenterPane;
-import gui.Updatable;
-import gui.UserPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import logic.GameLogic;
+import logic.GameRun;
 import logic.UpdatableHolder;
+import screen.GamePlayScene;
+import sharedObject.AudioLoader;
+import sharedObject.ImageLoader;
+import javafx.scene.Parent;
 
 public class Main extends Application {
+
+	private static Stage primaryStage;
+	private static Parent startScene;
+	private static GamePlayScene gamePlayScene;
+	private static GameRun gameRun;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -29,170 +29,82 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// ask name
-		Scanner kb = new Scanner(System.in);
-		System.out.println("Enter your name: ");
-		String userName = kb.nextLine();
-		System.out.println("Let's get started");
 
-		// create game
-		GameLogic.getInstance().start(userName);
+		Main.primaryStage = primaryStage;
 
-		// set root pane
-		BorderPane root = new BorderPane();
-		root.setPadding(new Insets(10));
-		root.setPrefHeight(750);
-		root.setPrefWidth(1250);
+		// set up bgSound
+		AudioLoader.startBGSound.setCycleCount(Timeline.INDEFINITE);
+		AudioLoader.startBGSound.setVolume(0.8);
+		AudioLoader.gamePlayBGSound.setCycleCount(Timeline.INDEFINITE);
+		AudioLoader.gamePlayBGSound.setVolume(0.6);
+		// set up other sound volume
+		AudioLoader.mouseEnterSound.setVolume(0.5);
+		AudioLoader.buttonClickSound.setVolume(0.5);
 
-		// set other player pane & status pane
-		UserPane userPane = new UserPane(GameLogic.getInstance().getUser());
-		BotPane botJesicaPane = new BotPane(GameLogic.getInstance().getBotJesica());
-		Rotate rotation90 = new Rotate(90, Rotate.Z_AXIS);
-		rotation90.setPivotX(195);
-		rotation90.setPivotY(50);
-		botJesicaPane.getTransforms().add(rotation90);
+		// set up sound button image
+		ImageLoader.soundOffImg.setFitHeight(40);
+		ImageLoader.soundOffImg.setPreserveRatio(true);
+		ImageLoader.soundOnImg.setFitHeight(40);
+		ImageLoader.soundOnImg.setPreserveRatio(true);
 
-		BotPane botMagaretPane = new BotPane(GameLogic.getInstance().getBotMagaret());
-		Rotate rotation180 = new Rotate(180, Rotate.Z_AXIS);
-		rotation180.setPivotX(180);
-		rotation180.setPivotY(60);
-		botMagaretPane.getTransforms().add(rotation180);
-
-		BotPane botVandaPane = new BotPane(GameLogic.getInstance().getBotVanda());
-		Rotate rotation270 = new Rotate(270, Rotate.Z_AXIS);
-		rotation270.setPivotX(165);
-		rotation270.setPivotY(50);
-		botVandaPane.getTransforms().add(rotation270);
-
-		CenterPane centerPane = new CenterPane();
-
-		// set Pane in root
-		root.setCenter(centerPane);
-		BorderPane.setAlignment(centerPane, Pos.CENTER);
-		root.setBottom(userPane);
-		BorderPane.setAlignment(userPane, Pos.CENTER);
-		root.setLeft(botJesicaPane);
-		BorderPane.setAlignment(botJesicaPane, Pos.CENTER);
-		root.setTop(botMagaretPane);
-		BorderPane.setAlignment(botMagaretPane, Pos.CENTER);
-		root.setRight(botVandaPane);
-		BorderPane.setAlignment(botVandaPane, Pos.CENTER);
-
-		// create UpdatableHolder
-		Updatable[] updatableArray = { userPane, botJesicaPane, botMagaretPane, botVandaPane, centerPane };
-		UpdatableHolder.createInstance(updatableArray);
-		// set scene
-		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("I just wanna pen fan you dai bor?");
-		primaryStage.show();
-
+		// set timeline to consistently update screen
 		Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				UpdatableHolder.getInstance().updateScreen();
-
 			}
 		}), new KeyFrame(Duration.seconds(0.4)));
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 
-		Thread t = new Thread(() -> {
-			while (true) {
-				GameLogic.getInstance().shortProcessing();
-				while (!GameLogic.getInstance().isRoundEnd()) {
-					System.err.println("---- NEW TURN ----");
-					System.out.println(">> " + GameLogic.getInstance().getCurrentPlayer().getName() + " Turn");
-//					System.out.println("Turn : " + GameLogic.getInstance().getPlayerTurn());
-//					System.out.println("Playable : " + GameLogic.getInstance().getCurrentPlayer().isPlayable());
-//					System.out.println("Clockwise : " + GameLogic.getInstance().isClockwise());
-//					System.out.println("Current Player: " + GameLogic.getInstance().getCurrentPlayer().getName());
-//					System.out.println("Next Player: " + GameLogic.getInstance().getNextPlayer().getName());
-					if (GameLogic.getInstance().getCurrentPlayer().isPlayable()) {
+		initializeStartScene();
+	}
 
-						GameLogic.getInstance().getCurrentPlayer().play();
+	public static void initializeStartScene() {
 
-					} else {
-						System.out.println(" - Blocked - ");
-						GameLogic.getInstance().sleepThree();
-						GameLogic.getInstance().getCurrentPlayer().setPlayable(true);
+		// create startScene
+		try {
+			startScene = FXMLLoader.load(Main.class.getClassLoader().getResource("screen/StartScene.fxml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-					}
-					if (GameLogic.getInstance().getCurrentPlayer().isWin()) {
-						GameLogic.getInstance().setRoundEnd(true);
-						break;
-					}
-					GameLogic.getInstance().setUpForNewTurn();
-					GameLogic.getInstance().shortProcessing();
-				}
-			}
-		});
+		primaryStage.setScene(new Scene(startScene));
+		primaryStage.setTitle("UNO 24 | presented by chomchaby");
+		primaryStage.setResizable(false);
+		primaryStage.show();
 
-		t.start();
-
-//		try to run UpdatableHolder.getInstance().updateScreen() at times
-
-//		with thread is also working 
-//		Thread t = new Thread(() -> {
-//			Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new EventHandler<ActionEvent>() {
-//				@Override
-//				public void handle(ActionEvent actionEvent) {
-//					UpdatableHolder.getInstance().updateScreen();
-//
-//				}
-//			}), new KeyFrame(Duration.seconds(0.5)));
-//			timeline.setCycleCount(Timeline.INDEFINITE);
-//			Platform.runLater(new Runnable() {
-//				@Override
-//				public void run() {
-//					timeline.play();
-//				}
-//			});
-//		});
-//		t.start();
-
-//		Too fast
-//		AnimationTimer animation = new AnimationTimer() {
-//			public void handle(long now) {
-//				UpdatableHolder.getInstance().updateScreen();
-//			}
-//		};
-//		animation.start();
-
-// 		not working
-//		Thread showTurn = new Thread(() -> {
-//			try {
-//				while (true) {
-//					Thread.sleep(2000);
-//					Platform.runLater(new Runnable() {
-//						@Override
-//						public void run() {
-//							UpdatableHolder.getInstance().updateScreen();
-//						}
-//					});
-//				}
-//			}
-//			catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//		});
-//		showTurn.start();
-//		Thread.sleep(20000);
-//		showTurn.interrupt();
-
-//		stopping main crack!
-
-//		while (!GameLogic.getInstance().isGameEnd()) {
-//		if (GameLogic.getInstance().isPlayable()) {
-//			GameLogic.getInstance().getCurrentPlayer().play();
-//		} else {
-//			GameLogic.getInstance().setPlayable(true);
-//		}
-//		GameLogic.getInstance().setUpForNewTurn();
-//	}
+		// play bgSound
+		AudioLoader.gamePlayBGSound.stop();
+		AudioLoader.startBGSound.play();
 
 	}
 
+	public static void initializeGamePlayScene() {
+
+		// create gamePlayScene
+		gamePlayScene = new GamePlayScene();
+
+		primaryStage.setScene(new Scene(gamePlayScene));
+		primaryStage.setTitle("UNO 24 | presented by chomchaby");
+		primaryStage.show();
+		// play bgSound
+		AudioLoader.startBGSound.stop();
+		AudioLoader.gamePlayBGSound.play();
+
+		// start gameRun thread
+		runGame();
+
+	}
+
+	public static void runGame() {
+//		gameRun.interrupt();
+		gameRun = new GameRun();
+		gameRun.start();
+	}
+
+	public static void getRidOfGameRun() {
+		gameRun.interrupt();
+		gameRun.stop();
+	}
 }

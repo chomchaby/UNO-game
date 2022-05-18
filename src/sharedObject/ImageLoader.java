@@ -31,5 +31,8 @@ public class ImageLoader {
 	// sound setting sign
 	public static ImageView soundOnImg = new ImageView(new Image(ClassLoader.getSystemResource("image/SoundOn.jpg").toString()));
 	public static ImageView soundOffImg = new ImageView(new Image(ClassLoader.getSystemResource("image/SoundOff.jpg").toString()));
+
+	// table 
+	public static Image woodTableImg = new Image(ClassLoader.getSystemResource("image/LightTable.jpg").toString());
 	
 }

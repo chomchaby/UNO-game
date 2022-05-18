@@ -52,7 +52,6 @@ public class FontCardPane extends StackPane {
 				onMouseExitedHandler();
 			}
 		});
-
 	}
 
 	private void onClickHandler() {
@@ -126,7 +125,9 @@ public class FontCardPane extends StackPane {
 			this.getChildren().add(shape);
 
 			Text cardText = new Text(Integer.toString(card.getNumber()));
-			cardText.setStyle("-fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 50;");
+			cardText.setStyle(
+					"-fx-stroke: white; -fx-stroke-width: 1.5; -fx-font-style: italic; -fx-font-weight: bold; -fx-font-size:"
+							+ this.getPrefHeight() / 2 + ";");
 			this.getChildren().add(cardText);
 		}
 

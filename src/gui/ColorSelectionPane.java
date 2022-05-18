@@ -26,7 +26,7 @@ public class ColorSelectionPane extends HBox {
 		this.setMaxHeight(50);
 		
 		Text text = new Text("Select Color : ");
-//		text.setStyle("-fx-font-size:30;");
+		text.setStyle("-fx-font-size:18");
 
 		Button redBtn = new Button();
 		redBtn.setPrefWidth(25);

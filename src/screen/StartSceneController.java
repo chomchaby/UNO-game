@@ -16,7 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import logic.GameLogic;
-import main.Main2;
+import main.Main;
 import sharedObject.AudioLoader;
 import sharedObject.ImageLoader;
 
@@ -56,9 +56,10 @@ public class StartSceneController implements Initializable {
 			// set User name (create GameLogic Instance for the first time)
 			GameLogic.getInstance().start(name.get());
 			// change to GamePlayScene
-			Main2.initializeGamePlayScene();
+			Main.initializeGamePlayScene();
 		}
 		AudioLoader.mouseClick1Sound.play();
+		
 	}
 
 	public void showHowToPlay(ActionEvent event) {
@@ -70,6 +71,7 @@ public class StartSceneController implements Initializable {
 
 	public void quitGame(ActionEvent event) {
 		Platform.exit();
+		System.exit(0); 
 	}
 
 	public void enterPlayButtonHandler(MouseEvent event) {

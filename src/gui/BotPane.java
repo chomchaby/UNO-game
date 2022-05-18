@@ -5,6 +5,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -15,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
+import sharedObject.ImageLoader;
 
 public class BotPane extends VBox implements Updatable {
 	
@@ -23,11 +28,11 @@ public class BotPane extends VBox implements Updatable {
 	private Text turnText;
 
 	private static final Border NORMAL_BORDER = new Border(
-			new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(8)));
+			new BorderStroke(Color.TAN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(8)));
 	private static final Border GREEN_BORDER = new Border(
-			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(8)));
+			new BorderStroke(Color.CHARTREUSE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(8)));
 	private static final Border RED_BORDER = new Border(
-			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(8)));
+			new BorderStroke(Color.CRIMSON, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(8)));
 
 	public BotPane(Player bot) {
 		this.bot = bot;
@@ -35,8 +40,8 @@ public class BotPane extends VBox implements Updatable {
 		// set up BotPane
 		this.setMaxWidth(360);
 		this.setPrefWidth(360);
-		this.setMaxHeight(160);
-		this.setPrefHeight(160);
+		this.setMaxHeight(150);
+		this.setPrefHeight(150);
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(5);
 
@@ -51,14 +56,19 @@ public class BotPane extends VBox implements Updatable {
 		this.cardPane.setBorder(NORMAL_BORDER);
 		this.cardPane.setAlignment(Pos.CENTER);
 
-		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, new CornerRadii(8), Insets.EMPTY);
-		BackgroundFill[] bgFillA = { bgFill };
-		this.cardPane.setBackground(new Background(bgFillA));
+//		BackgroundFill bgFill = new BackgroundFill(Color.MOCCASIN, new CornerRadii(8), Insets.EMPTY);
+//		BackgroundFill[] bgFillA = { bgFill };
+//		this.cardPane.setBackground(new Background(bgFillA));
+		BackgroundImage bImg = new BackgroundImage(ImageLoader.woodTableImg, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+				new BackgroundSize(1.0, 1.0, true, true, false, false));
+		Background bGround = new Background(bImg);
+		this.cardPane.setBackground(bGround);
 		
 		// create and set up turnText
 		this.turnText = new Text("Player : " + bot.getName());
 		this.turnText.setStyle("-fx-font-size: 18;");
-		this.turnText.maxHeight(35);
+		this.turnText.maxHeight(25);
 		this.setAlignment(Pos.CENTER);
 		this.setVisible(true);
 		if (bot.getName().equals("Magaret")) {
@@ -78,10 +88,12 @@ public class BotPane extends VBox implements Updatable {
 		// update border
 		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
 			this.cardPane.setBorder(NORMAL_BORDER);
+			this.turnText.setStyle("-fx-font-size: 18;");
 			this.turnText.setVisible(true);
 		} else if (bot.isPlayable()) {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(GREEN_BORDER);
+				this.turnText.setStyle("-fx-font-size: 20; -fx-fill: green; -fx-font-weight: bold;");
 				this.turnText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
@@ -90,6 +102,7 @@ public class BotPane extends VBox implements Updatable {
 		} else {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(RED_BORDER);
+				this.turnText.setStyle("-fx-font-size: 20; -fx-fill: red; -fx-font-weight: bold;");
 				this.turnText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
