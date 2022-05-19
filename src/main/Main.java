@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.GameRun;
 import logic.UpdatableHolder;
-import screen.GamePlayScene;
+import screen.GameScene;
 import sharedObject.AudioLoader;
 import sharedObject.ImageLoader;
 import javafx.scene.Parent;
@@ -19,8 +19,8 @@ import javafx.scene.Parent;
 public class Main extends Application {
 
 	private static Stage primaryStage;
-	private static Parent startScene;
-	private static GamePlayScene gamePlayScene;
+	private static Parent homeScene;
+	private static GameScene gameScene;
 	private static GameRun gameRun;
 
 	public static void main(String[] args) {
@@ -57,19 +57,19 @@ public class Main extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 
-		initializeStartScene();
+		initializeHomeScene();
 	}
 
-	public static void initializeStartScene() {
+	public static void initializeHomeScene() {
 
 		// create startScene
 		try {
-			startScene = FXMLLoader.load(Main.class.getClassLoader().getResource("screen/StartScene.fxml"));
+			homeScene = FXMLLoader.load(Main.class.getClassLoader().getResource("screen/HomeScene.fxml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		primaryStage.setScene(new Scene(startScene));
+		primaryStage.setScene(new Scene(homeScene));
 		primaryStage.setTitle("UNO 24 | presented by chomchaby");
 		primaryStage.setResizable(false);
 		primaryStage.show();
@@ -83,10 +83,10 @@ public class Main extends Application {
 	public static void initializeGamePlayScene() {
 
 		// create gamePlayScene
-		gamePlayScene = new GamePlayScene();
+		gameScene = new GameScene();
 
-		primaryStage.setScene(new Scene(gamePlayScene));
-		primaryStage.setTitle("UNO 24 | presented by chomchaby");
+		primaryStage.setScene(new Scene(gameScene));
+//		primaryStage.setTitle("UNO 24 | presented by chomchaby");
 		primaryStage.show();
 		// play bgSound
 		AudioLoader.startBGSound.stop();

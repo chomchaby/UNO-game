@@ -18,6 +18,11 @@ import sharedObject.ColorLoader;
 
 public class ColorSelectionPane extends HBox {
 	
+	private Text text;
+	private Button redBtn;
+	private Button yellowBtn;
+	private Button greenBtn;
+	private Button blueBtn;
 	// This is UI for User only
 	
 	public ColorSelectionPane() {
@@ -25,29 +30,29 @@ public class ColorSelectionPane extends HBox {
 		this.setAlignment(Pos.CENTER);
 		this.setMaxHeight(50);
 		
-		Text text = new Text("Select Color : ");
+		text = new Text("Select Color : ");
 		text.setStyle("-fx-font-size:18");
 
-		Button redBtn = new Button();
+		redBtn = new Button();
 		redBtn.setPrefWidth(25);
 		redBtn.setPrefHeight(25);
 		BackgroundFill bgFill = new BackgroundFill(ColorLoader.RED, new CornerRadii(12), Insets.EMPTY);
 		BackgroundFill[] bgFillRedA = { bgFill };
 		redBtn.setBackground(new Background(bgFillRedA));
 
-		Button yellowBtn = new Button();
+		yellowBtn = new Button();
 		yellowBtn.setPrefWidth(25);
 		yellowBtn.setPrefHeight(25);
 		BackgroundFill[] bgFillYellowA = { new BackgroundFill(ColorLoader.YELLOW, new CornerRadii(12), Insets.EMPTY) };
 		yellowBtn.setBackground(new Background(bgFillYellowA));
 
-		Button blueBtn = new Button();
+		blueBtn = new Button();
 		blueBtn.setPrefWidth(25);
 		blueBtn.setPrefHeight(25);
 		BackgroundFill[] bgFillBlueA = { new BackgroundFill(ColorLoader.BLUE, new CornerRadii(12), Insets.EMPTY) };
 		blueBtn.setBackground(new Background(bgFillBlueA));
 
-		Button greenBtn = new Button();
+		greenBtn = new Button();
 		greenBtn.setPrefWidth(25);
 		greenBtn.setPrefHeight(25);
 		BackgroundFill[] bgFillGreenA = { new BackgroundFill(ColorLoader.GREEN, new CornerRadii(12), Insets.EMPTY) };

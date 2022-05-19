@@ -19,14 +19,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
-import logic.Updatable;
 import sharedObject.ImageLoader;
 
 public class BotPane extends VBox implements Updatable {
 	
 	private Player bot;
 	private GridPane cardPane;
-	private Text turnText;
+	private Text nameText;
 
 	private static final Border NORMAL_BORDER = new Border(
 			new BorderStroke(Color.TAN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(8)));
@@ -66,18 +65,17 @@ public class BotPane extends VBox implements Updatable {
 		Background bGround = new Background(bImg);
 		this.cardPane.setBackground(bGround);
 		
-		// create and set up turnText
-		this.turnText = new Text("Player : " + bot.getName());
-		this.turnText.setStyle("-fx-font-size: 18;");
-		this.turnText.maxHeight(25);
-		this.setAlignment(Pos.CENTER);
-		this.setVisible(true);
+		// create and set up nameText
+		this.nameText = new Text("Player : " + bot.getName());
+		this.nameText.setStyle("-fx-font-size: 18;");
+		this.nameText.maxHeight(25);
+		this.nameText.setVisible(true);
 		if (bot.getName().equals("Magaret")) {
-			this.turnText.setRotate(180);
+			this.nameText.setRotate(180);
 		}
 		
 		// add all field into BotPane
-		this.getChildren().addAll(turnText,cardPane);
+		this.getChildren().addAll(nameText,cardPane);
 		
 		// first time update to complete cardPane
 		update();
@@ -89,25 +87,25 @@ public class BotPane extends VBox implements Updatable {
 		// update border
 		if (!(GameLogic.getInstance().getCurrentPlayer() == bot)) {
 			this.cardPane.setBorder(NORMAL_BORDER);
-			this.turnText.setStyle("-fx-font-size: 18;");
-			this.turnText.setVisible(true);
+			this.nameText.setStyle("-fx-font-size: 18;");
+			this.nameText.setVisible(true);
 		} else if (bot.isPlayable()) {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(GREEN_BORDER);
-				this.turnText.setStyle("-fx-font-size: 20; -fx-fill: green; -fx-font-weight: bold;");
-				this.turnText.setVisible(true);
+				this.nameText.setStyle("-fx-font-size: 20; -fx-fill: green; -fx-font-weight: bold;");
+				this.nameText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
-				this.turnText.setVisible(false);
+				this.nameText.setVisible(false);
 			}
 		} else {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(RED_BORDER);
-				this.turnText.setStyle("-fx-font-size: 20; -fx-fill: red; -fx-font-weight: bold;");
-				this.turnText.setVisible(true);
+				this.nameText.setStyle("-fx-font-size: 20; -fx-fill: red; -fx-font-weight: bold;");
+				this.nameText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
-				this.turnText.setVisible(false);
+				this.nameText.setVisible(false);
 			}
 		}
 		// update cards

@@ -36,7 +36,6 @@ public class MenuPane extends VBox {
 		scoreBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				AudioLoader.popSound.play();
 				toggleScore();
 			}
 		});
@@ -58,8 +57,7 @@ public class MenuPane extends VBox {
 		homeBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				AudioLoader.popSound.play();
-				returnToStartScene();
+				returnToHomeScene();
 			}
 		});
 		homeBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -110,14 +108,16 @@ public class MenuPane extends VBox {
 	}
 
 	private void toggleScore() {
+		AudioLoader.popSound.play();
 		// set visibility at any time except at the end of the round or the game.
 		if (!GameLogic.getInstance().isRoundEnd())
 			GameLogic.getInstance().setScoreShown(!GameLogic.getInstance().isScoreShown());
 	}
 
-	private void returnToStartScene() {
+	private void returnToHomeScene() {
+		AudioLoader.popSound.play();
 		Main.getRidOfGameRun();
-		Main.initializeStartScene();
+		Main.initializeHomeScene();
 	}
 
 	private void quitGame() {

@@ -20,15 +20,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.GameLogic;
-import logic.Updatable;
 import sharedObject.ImageLoader;
 
 public class UserPane extends VBox implements Updatable {
 
 	private Player user;
-	private int cardListSize;
+//	private int cardListSize;
 	private GridPane cardPane;
-	private Text turnText;
+	private Text nameText;
 
 	private static final Border NORMAL_BORDER = new Border(
 			new BorderStroke(Color.TAN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(12)));
@@ -65,17 +64,16 @@ public class UserPane extends VBox implements Updatable {
 				new BackgroundSize(1.0, 1.0, true, true, false, false));
 		Background bGround = new Background(bImg);
 		this.cardPane.setBackground(bGround);
-		this.setStyle(getAccessibleHelp());
+//		this.setStyle(getAccessibleHelp());
 
-		// create and set up turnText
-		this.turnText = new Text("Player : " + user.getName());
-		this.turnText.setStyle("-fx-font-size: 20;");
-		this.turnText.maxHeight(35);
-		this.setAlignment(Pos.BOTTOM_CENTER);
-		this.setVisible(true);
+		// create and set up nameText
+		this.nameText = new Text("Player : " + user.getName());
+		this.nameText.setStyle("-fx-font-size: 20;");
+		this.nameText.maxHeight(35);
+		this.nameText.setVisible(true);
 
 		// add all field into UserPane
-		this.getChildren().addAll(turnText, cardPane);
+		this.getChildren().addAll(nameText, cardPane);
 
 		// first time update to complete cardPane
 		update();
@@ -88,25 +86,25 @@ public class UserPane extends VBox implements Updatable {
 		// update border
 		if (!(GameLogic.getInstance().getCurrentPlayer() == user)) {
 			this.cardPane.setBorder(NORMAL_BORDER);
-			this.turnText.setStyle("-fx-font-size: 20;");
-			this.turnText.setVisible(true);
+			this.nameText.setStyle("-fx-font-size: 20;");
+			this.nameText.setVisible(true);
 		} else if (user.isPlayable()) {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(GREEN_BORDER);
-				this.turnText.setStyle("-fx-font-size: 24; -fx-fill: green; -fx-font-weight: bold;");
-				this.turnText.setVisible(true);
+				this.nameText.setStyle("-fx-font-size: 24; -fx-fill: green; -fx-font-weight: bold;");
+				this.nameText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
-				this.turnText.setVisible(false);
+				this.nameText.setVisible(false);
 			}
 		} else {
 			if (this.cardPane.getBorder() == NORMAL_BORDER) {
 				this.cardPane.setBorder(RED_BORDER);
-				this.turnText.setStyle("-fx-font-size: 24; -fx-fill: red; -fx-font-weight: bold;");
-				this.turnText.setVisible(true);
+				this.nameText.setStyle("-fx-font-size: 24; -fx-fill: red; -fx-font-weight: bold;");
+				this.nameText.setVisible(true);
 			} else {
 				this.cardPane.setBorder(NORMAL_BORDER);
-				this.turnText.setVisible(false);
+				this.nameText.setVisible(false);
 			}
 		}
 
@@ -120,7 +118,7 @@ public class UserPane extends VBox implements Updatable {
 	private void updateCard() {
 
 		this.cardPane.getChildren().clear();
-		cardListSize = user.getCardList().size();
+		int cardListSize = user.getCardList().size();
 
 		// horizontal gap
 		if (cardListSize < 9) {

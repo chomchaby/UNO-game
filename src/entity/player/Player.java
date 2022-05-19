@@ -13,16 +13,17 @@ public abstract class Player {
 	protected boolean isPlayable;
 	protected int score;
 
-	public Player() {
+	protected Player() {
 		cardList = new ArrayList<UnitCard>();
 		setPlayable(true);
 		setScore(0);
 	}
 
-	public Player(String name) {
+	protected Player(String name) {
 		this.name = name;
 		cardList = new ArrayList<UnitCard>();
 		setPlayable(true);
+		setScore(0);
 	}
 
 	public abstract void play();

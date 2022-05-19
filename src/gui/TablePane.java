@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameLogic;
-import logic.Updatable;
 import sharedObject.AudioLoader;
 import sharedObject.ImageLoader;
 
@@ -21,7 +20,7 @@ public class TablePane extends HBox implements Updatable {
 	private FontCardPane cardOnTablePane;
 	private VBox statusPane;
 	private boolean isClockwise;
-	private ImageView reverseImg;
+	private ImageView rotationImg;
 
 	public TablePane() {
 		// setting pane
@@ -49,7 +48,7 @@ public class TablePane extends HBox implements Updatable {
 		});
 		this.getChildren().add(cardPilePane);
 
-		initializeReverseImg();
+		initializeRotationImg();
 		update();
 
 	}
@@ -79,15 +78,15 @@ public class TablePane extends HBox implements Updatable {
 		GameLogic.getInstance().getUser().drawCard(1);
 	}
 
-	private void initializeReverseImg() {
+	private void initializeRotationImg() {
 		isClockwise = GameLogic.getInstance().isClockwise();
 		if (isClockwise) {
-			reverseImg = new ImageView(ImageLoader.clockwiseImg);
+			rotationImg = new ImageView(ImageLoader.clockwiseImg);
 		} else {
-			reverseImg = new ImageView(ImageLoader.counterClockwiseImg);
+			rotationImg = new ImageView(ImageLoader.counterClockwiseImg);
 		}
-		reverseImg.setFitHeight(50);
-		reverseImg.setFitWidth(50);
+		rotationImg.setFitHeight(50);
+		rotationImg.setFitWidth(50);
 	}
 
 	@Override
@@ -128,12 +127,12 @@ public class TablePane extends HBox implements Updatable {
 
 			// setting reverse sign
 			if (isClockwise != GameLogic.getInstance().isClockwise()) {
-				initializeReverseImg();
+				initializeRotationImg();
 			} else {
 				if (isClockwise) {
-					reverseImg.setRotate(reverseImg.getRotate() + 30);
+					rotationImg.setRotate(rotationImg.getRotate() + 30);
 				} else {
-					reverseImg.setRotate(reverseImg.getRotate() - 30);
+					rotationImg.setRotate(rotationImg.getRotate() - 30);
 				}
 
 			}
@@ -142,7 +141,7 @@ public class TablePane extends HBox implements Updatable {
 			statusPane = new VBox();
 			statusPane.setAlignment(Pos.CENTER);
 			statusPane.setSpacing(25);
-			statusPane.getChildren().addAll(colorRec, reverseImg);
+			statusPane.getChildren().addAll(colorRec, rotationImg);
 
 			this.getChildren().add(statusPane);
 		}

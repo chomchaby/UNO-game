@@ -7,7 +7,7 @@ public abstract class UnitCard {
 	private int number;
 	private Color color;
 
-	public UnitCard(int number, Color color) {
+	protected UnitCard(int number, Color color) {
 		this.number = number;
 		this.color = color;
 	}
